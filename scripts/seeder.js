@@ -9,9 +9,16 @@ async function seedDatabase() {
         await sequelize.query(`CREATE SCHEMA ${config.DATABASE_SCHEMA_NAME};`);
         
         // Model Initialization
-        require(path.join(process.cwd(), 'src/server/models/user.model'));
-
+        const UserModel = require(path.join(process.cwd(), 'src/server/models/user.model'));
+        
         await sequelize.sync();
+
+        await UserModel.create({
+            first_name: 'System',
+            last_name: 'Admin',
+            email: 'shahriar_niloy@outlook.com',
+            password: 'admin123'
+        });
 
         console.info('Seeding finished.');
     } catch(err) {

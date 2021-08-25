@@ -7,6 +7,7 @@ module.exports = function (func) {
             func(req, res);
         } catch(err) {
             logger.error(err);
+            res.status(500).send('Internal server error.');
         }
     }
 }

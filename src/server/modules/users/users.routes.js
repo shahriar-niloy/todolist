@@ -4,4 +4,6 @@ const controllerFunctionWrapper = require(path.join(process.cwd(), 'src/server/u
 
 module.exports = function(app) {
     app.get('/api/profile', controllerFunctionWrapper(controller.getProfile));
+    
+    app.post('/api/login', controllerFunctionWrapper(controller.login));
 }
