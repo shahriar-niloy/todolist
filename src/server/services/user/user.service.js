@@ -11,4 +11,10 @@ async function login(email, password) {
     return user; 
 }
 
+async function getUsers() {
+    const users = await UserModel.findAll();
+    return users; 
+}
+
 exports.login = login;
+exports.getUsers = getUsers;
