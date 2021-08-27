@@ -1,5 +1,6 @@
 const path = require('path');
 const UserService = require(path.join(process.cwd(), 'src/server/services/user'));
+const AuthenticationService = require(path.join(process.cwd(), 'src/server/services/authentication'));
 const { UserViewModels } = require(path.join(process.cwd(), 'src/server/view-models'));
 
 async function getProfile(req, res) {
@@ -13,7 +14,7 @@ async function getProfile(req, res) {
 async function login(req, res) {
     const { email, password } = req.body;
 
-    const user = await UserService.login(email, password);
+    const user = await AuthenticationService.login(email, password);
 
     if (!user) return res.status(401).send('Unauthenticated.');
 
