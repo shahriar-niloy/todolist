@@ -4,4 +4,6 @@ const controllerFunctionWrapper = require(path.join(process.cwd(), 'src/server/u
 
 module.exports = function(app) {
     app.post('/api/login', controllerFunctionWrapper(controller.login));
+
+    app.get('/api/logout', controllerFunctionWrapper(controller.logout));
 }

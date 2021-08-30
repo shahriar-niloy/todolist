@@ -18,4 +18,10 @@ async function login(req, res) {
     res.json(UserViewModels.profile(user));
 }
 
+async function logout(req, res) {
+    res.clearCookie(AUTHENTICATION_COOKIE_NAME);
+    res.send('');
+}
+
 exports.login = login;
+exports.logout = logout;
