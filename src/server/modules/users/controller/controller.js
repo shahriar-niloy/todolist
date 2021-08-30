@@ -5,6 +5,7 @@ const UserService = require(path.join(process.cwd(), 'src/server/services/user')
 const AuthenticationService = require(path.join(process.cwd(), 'src/server/services/authentication'));
 const { UserViewModels } = require(path.join(process.cwd(), 'src/server/view-models'));
 const config = require(path.join(process.cwd(), 'src/server/config/config'));
+const { AUTHENTICATION_COOKIE_NAME } = require(path.join(process.cwd(), 'src/server/config/app.constants'));
 
 async function getProfile(req, res) {
     let users = await UserService.getUsers();
@@ -21,7 +22,7 @@ async function login(req, res) {
 
     if (!user) return res.status(401).send('Unauthenticated.');
 
-    res.cookie('access_token', jwt.sign({ id: user.id }, config.AUTHENTICATION_SECRET));
+    res.cookie(AUTHENTICATION_COOKIE_NAME, jwt.sign({ id: user.id }, config.AUTHENTICATION_SECRET));
 
     res.json(UserViewModels.profile(user));
 }
