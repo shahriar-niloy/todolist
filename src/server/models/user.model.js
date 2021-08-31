@@ -1,11 +1,18 @@
 const path = require('path');
 const bcrypt = require('bcrypt');
-const { DataTypes } = require("sequelize");
+const { DataTypes, UUID, UUIDV4 } = require("sequelize");
 
 const sequelize = require(path.join(process.cwd(), 'src/server/lib/sequelize'));
 const config = require(path.join(process.cwd(), 'src/server/config/config'));
 
 const User = sequelize.define("user", {
+    id: {
+        allowNull: false,
+        primaryKey: true,
+        type: UUID,
+        defaultValue: UUIDV4
+
+    },
     first_name: {
         type: DataTypes.STRING(50),
         allowNull: false
