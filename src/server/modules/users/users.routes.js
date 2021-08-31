@@ -5,4 +5,6 @@ const AUTHENTICATION_MIDDLEWARE = require(path.join(process.cwd(), 'src/server/m
 
 module.exports = function(app) {
     app.get('/api/profile', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.getProfile));
+
+    app.post('/api/users/:id/project', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.addProject));
 }
