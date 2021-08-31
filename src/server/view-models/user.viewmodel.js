@@ -16,4 +16,13 @@ function profile(user) {
     }
 }
 
+function projects(user) {
+    let viewModel = [];
+
+    if (user && user.projects) viewModel = user.projects.map(up => ({ id: up.id, name: up.name }));
+
+    return viewModel;
+}
+
 exports.profile = profile;
+exports.projects = projects;

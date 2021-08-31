@@ -19,12 +19,25 @@ async function addProject(req, res) {
 
     const user = await UserService.getUser(user_id);
 
-    if (!user) return res.status(404).send("Invalid parameters");
+    if (!user) return res.status(400).send("Invalid parameters.");
     
     await user.addProject(project_id, { through: { is_owner: is_owner || false } });
 
     res.json(UserViewModels.profile(user));
 }
 
+async function getUserProjects(req, res) {
+    const { id } = req.params;
+
+    if (!id) return res.status(400).send('Invalid parameters.');
+
+    const user = await UserService.getUser(id);
+
+    if (!user) return res.status(400).send('User not found.');
+
+    res.json(UserViewModels.projects(user));
+}
+
 exports.getProfile = getProfile;
 exports.addProject = addProject;
+exports.getUserProjects = getUserProjects;
