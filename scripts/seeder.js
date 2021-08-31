@@ -11,6 +11,7 @@ async function seedDatabase() {
         // Model Initialization
         const UserModel = require(path.join(process.cwd(), 'src/server/models/user.model'));
         require(path.join(process.cwd(), 'src/server/models/project.model'));
+        require(path.join(process.cwd(), 'src/server/models/task.model'));
 
         await sequelize.sync();
 
