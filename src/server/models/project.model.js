@@ -4,6 +4,7 @@ const { DataTypes, UUID, UUIDV4 } = require("sequelize");
 const sequelize = require(path.join(process.cwd(), 'src/server/lib/sequelize'));
 const config = require(path.join(process.cwd(), 'src/server/config/config'));
 const UserModel = require(path.join(process.cwd(), 'src/server/models/user.model'));
+const UserProjectModel = require(path.join(process.cwd(), 'src/server/models/user_project.model'));
 
 const Project = sequelize.define("project", {
     id: {
@@ -15,9 +16,6 @@ const Project = sequelize.define("project", {
     name: {
         type: DataTypes.STRING(50),
         allowNull: false
-    },
-    user_id: {
-        type: DataTypes.UUID
     }
 }, {
     timestamps: true,
@@ -26,6 +24,16 @@ const Project = sequelize.define("project", {
     updatedAt: 'updated_at'
 });
 
-Project.belongsTo(UserModel, { as: 'user', foreignKey: 'user_id' });
+Project.belongsToMany(UserModel, {
+    through: UserProjectModel,
+    foreignKey: 'project_id',
+    otherKey: 'user_id'
+});
+
+UserModel.belongsToMany(Project, {
+    through: UserProjectModel,
+    foreignKey: 'user_id',
+    otherKey: 'project_id'
+});
 
 module.exports = Project;
