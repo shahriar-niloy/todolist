@@ -16,9 +16,23 @@ const Task = sequelize.define("task", {
         type: DataTypes.STRING(50),
         allowNull: false
     },
+    description: {
+        type: DataTypes.STRING(200),
+    },
+    scheduled_at: {
+        type: DataTypes.DATE
+    },
+    is_completed: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    },
+    order: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
     project_id: {
         type: UUID
-    }
+    }    
 }, {
     timestamps: true,
     schema: config.DATABASE_SCHEMA_NAME,
