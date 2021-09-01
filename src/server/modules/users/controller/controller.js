@@ -2,13 +2,18 @@ const path = require('path');
 
 const UserService = require(path.join(process.cwd(), 'src/server/services/user'));
 const { UserViewModels } = require(path.join(process.cwd(), 'src/server/view-models'));
+const { Response } = require(path.join(process.cwd(), 'src/server/schemas'));
 
 async function getProfile(req, res) {
+    const successResponse = new Response.success();
+
     let users = await UserService.getUsers();
 
     users = users.map(user => UserViewModels.profile(user));
 
-    res.json(users);
+    successResponse.data = users;
+
+    res.json(successResponse);
 }
 
 async function addProject(req, res) {
