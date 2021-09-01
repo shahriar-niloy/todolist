@@ -16,6 +16,10 @@ const Project = sequelize.define("project", {
     name: {
         type: DataTypes.STRING(50),
         allowNull: false
+    },
+    is_archived: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
     }
 }, {
     timestamps: true,
