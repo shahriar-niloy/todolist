@@ -24,14 +24,16 @@ const Task = sequelize.define("task", {
     },
     is_completed: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false
+        defaultValue: false,
+        allowNull: false
     },
     order: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
     project_id: {
-        type: UUID
+        type: UUID,
+        allowNull: false
     }    
 }, {
     timestamps: true,
