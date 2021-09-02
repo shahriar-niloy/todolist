@@ -9,12 +9,10 @@ const routeConfig = [
     },
     { 
         "path": '/api',
-        "exact": true,
         "component": () => <>Hello, API!</>
     },
     { 
         "path": '*',
-        "exact": true,
         "component": () => <>No Match!</>
     }
 ]
