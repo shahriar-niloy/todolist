@@ -39,7 +39,7 @@ module.exports = {
     },  
     plugins: [
         new HTMLWebpackPlugin({
-        template: "index.html"
-        }),
+            template: "src/client/entry/index.html"
+        })
     ]
 }

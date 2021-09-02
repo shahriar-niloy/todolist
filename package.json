@@ -5,8 +5,11 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "rm -rf dist && ./node_modules/.bin/webpack --mode development --stats-children && nodemon src/server/server.js",
-    "seed": "node scripts/seeder.js"
+    "start": "nodemon --exec npm run startcycle",
+    "seed": "node scripts/seeder.js",
+    "cleardist": "rm -rf dist",
+    "build": "./node_modules/.bin/webpack --mode development --stats-children",
+    "startcycle": "npm run cleardist && npm run build && node --inspect src/server/server.js"
   },
   "author": "shahriar_niloy@outlook.com",
   "license": "ISC",
@@ -38,5 +41,8 @@
     "style-loader": "^3.2.1",
     "webpack": "^5.51.1",
     "webpack-cli": "^4.8.0"
+  },
+  "nodemonConfig": {
+    "ignore": ["node_modules/*", "dist/*"]
   }
 }
