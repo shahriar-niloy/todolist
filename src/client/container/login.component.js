@@ -1,14 +1,18 @@
 import React from 'react';
-import { loginActionCreator } from '../store/actions/authenticate.action';
+import { Redirect } from 'react-router-dom';
 import LoginForm from '../components/app/login-form.component';
-import { useDispatch } from 'react-redux';
+import useAuth from '../hooks/useAuth.hook';
 
 export default function Login() {
-    const dispatch = useDispatch();
+    const { isLoggedIn, login } = useAuth();
 
-    const handleSubmit = (values) => dispatch(loginActionCreator(values.email, values.password));
+    const handleSubmit = (values) => login(values.email, values.password);
 
     return <div>
-        <LoginForm onSubmit={handleSubmit} />
+        {
+            isLoggedIn
+                ? <Redirect to="/" />
+                : <LoginForm onSubmit={handleSubmit} />
+        }
     </div>;
 }

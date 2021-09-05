@@ -11,8 +11,7 @@ const routeConfig = [
     { 
         "path": '/login',
         "exact": true,
-        "component": Login,
-        "isPrivate": true
+        "component": Login
     },
     { 
         "path": '/api',
