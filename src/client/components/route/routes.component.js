@@ -5,7 +5,7 @@ import PrivateRoute from './privateroute.component';
 
 const Routes = () => {
     return <Switch>
-        {routeConfig.map(({ isPrivate, ...rest }) => isPrivate ? <PrivateRoute {...rest} /> : <Route {...rest} />)}
+        {routeConfig.map(({ isPrivate, ...rest }, i) => isPrivate ? <PrivateRoute key={i} {...rest} /> : <Route key={i} {...rest} />)}
     </Switch>
 }
 
