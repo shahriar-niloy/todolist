@@ -1,5 +1,5 @@
 import React from 'react';
-import Login from '../container/login.component';
+import Login from '../containers/login.component';
 
 const routeConfig = [
     { 
