@@ -21,17 +21,13 @@ const cookieExtractor = function(req) {
 opts.jwtFromRequest = cookieExtractor;
 opts.secretOrKey = config.AUTHENTICATION_SECRET;
 
-passport.use('user-jwt', new JwtStrategy(opts, function(jwt_payload, done) {
-    done(null, {});
-    UserModel.findOne({ where: { id: jwt_payload.id } }, function(err, user) {
-        if (err) {
-            return done(err, false);
-        }
-        if (user) {
-            return done(null, user);
-        } else {
-            return done(null, false);
-            // or you could create a new account
-        }
-    });
+passport.use('user-jwt', new JwtStrategy(opts, async function(jwt_payload, done) {
+    try {
+        const user = await UserModel.findOne({ where: { id: jwt_payload.id } })
+        if (user) done(null, user); 
+        else done(null, false);
+    } catch(err) {
+        console.error(err);
+        done(err, false);
+    }
 }));

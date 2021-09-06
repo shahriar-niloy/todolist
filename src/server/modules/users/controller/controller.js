@@ -16,6 +16,18 @@ async function getProfile(req, res) {
     res.json(successResponse);
 }
 
+async function getMyProfile(req, res) {
+    try {
+        const successResponse = new Response.success();
+
+        successResponse.data = UserViewModels.profile(req.user);
+
+        res.json(successResponse);
+    } catch(err) {
+        console.error(err);
+    }
+}
+
 async function addProject(req, res) {
     const successResponse = new Response.success();
     const errorResponse = new Response.error();
@@ -68,3 +80,4 @@ async function getUserProjects(req, res) {
 exports.getProfile = getProfile;
 exports.addProject = addProject;
 exports.getUserProjects = getUserProjects;
+exports.getMyProfile = getMyProfile;
