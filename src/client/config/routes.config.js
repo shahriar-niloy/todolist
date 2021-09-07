@@ -1,11 +1,12 @@
 import React from 'react';
+import Dashboard from '../components/dashboard';
 import Login from '../containers/login.component';
 
 const routeConfig = [
     { 
         "path": '/',
         "exact": true,
-        "component": () => <>Hello, World!</>,
+        "component": Dashboard,
         "isPrivate": true
     },
     { 
