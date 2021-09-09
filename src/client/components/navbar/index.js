@@ -1,8 +1,9 @@
 import React from 'react';
+import './style.css';
 
 export default function Navbar({ onInitialsClick, initials }) {
     return (
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg dashboard_navbar">
             <div class="container-fluid">
                 <button
                     class="navbar-toggler"
@@ -26,14 +27,14 @@ export default function Navbar({ onInitialsClick, initials }) {
                             placeholder="Search"
                             aria-label="Search"
                         />
-                        <button class="btn btn-outline-success" type="submit">
+                        <button className="btn navbar-search-button" type="submit">
                             Search
                         </button>
                     </form>
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
+                        <li className="nav-item">
                             <a
-                                class="nav-link active"
+                                className="nav-link active"
                                 aria-current="page"
                                 href="#"
                                 onClick={onInitialsClick}

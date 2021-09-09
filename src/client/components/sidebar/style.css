@@ -1,7 +1,7 @@
 .sidebar {
     background: #282828;
     width: 280px;
-    height: 100%;
+    min-height: 100vh;
 }
 
 .expandable_menu_section input:not(:checked) + .expanded_section {
@@ -15,13 +15,7 @@
 .expandable_menu_item {
     display: block;
     padding: 10px 5px;
-    color: gray;
-    cursor: pointer;
-}
-.expandable_menu_item {
-    display: block;
-    padding: 10px 5px;
-    color: gray;
+    color: white;
     cursor: pointer;
 }
 
@@ -44,4 +38,13 @@
 
 .hidden {
     display: none;
+}
+
+.expand_icon {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.rotate_90 {
+    transform: rotate(90deg);
 }
