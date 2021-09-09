@@ -58,6 +58,7 @@
     ],
     "events": {
       "restart": "kill-port 3000"
-    }
+    },
+    "ext": "js, css, json, html"
   }
 }
