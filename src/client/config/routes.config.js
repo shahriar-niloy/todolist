@@ -1,12 +1,12 @@
 import React from 'react';
-import Dashboard from '../components/dashboard';
 import Login from '../containers/login.component';
+import ToDoManager from '../containers/todo-manager.container';
 
 const routeConfig = [
     { 
         "path": '/',
         "exact": true,
-        "component": Dashboard,
+        "component": ToDoManager,
         "isPrivate": true
     },
     { 
