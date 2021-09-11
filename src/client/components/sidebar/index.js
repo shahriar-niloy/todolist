@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './style.css';
+
 function SidebarItem({ path, name }) {
     return <div className="menuitem">
         <Link to={path} aria-current="page">

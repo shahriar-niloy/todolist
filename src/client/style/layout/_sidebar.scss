@@ -1,0 +1,42 @@
+.sidebar {
+    background: #282828;
+    width: 280px;
+    min-height: 100vh;
+}
+
+.expandable_menu_section input:not(:checked) + .expanded_section {
+    display: none;
+}
+
+.expandable_menu_section input:checked ~ .expanded_section {
+    display: block;
+}
+
+.expandable_menu_item {
+    display: block;
+    padding: 10px 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.menuitem {
+    background: inherit;
+    border-radius: 5px;
+    padding: 5px 7px;
+    cursor: pointer;
+}
+
+.menuitem:hover {
+    background: #363636;
+}
+
+.menuitem a {
+    color: inherit !important;
+    text-decoration: none;
+    display: block;
+}
+
+.expand_icon {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+}
