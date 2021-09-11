@@ -10,7 +10,7 @@ function SidebarItem({ path, name }) {
     </div>
 }
 
-function Sidebar ({ menuItems }) {
+function Sidebar ({ menuItems, onProjectAddClick }) {
     const [isProjectExpanded, setIsProjectExanded]= useState(false);
 
     return (
@@ -18,9 +18,12 @@ function Sidebar ({ menuItems }) {
             className="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark sidebar"
         >
             <div className="nav nav-pills flex-column mb-auto expandable_menu_section">
-                <div className="d-flex align-items-center">
-                    <i class={`fas fa-chevron-right me-1 expand_icon ${isProjectExpanded ? 'rotate_90' : ''}`}></i>
-                    <label className="expandable_menu_item" for="expandable_menuitem">Projects</label>
+                <div className="d-flex align-items-center justify-content-between">
+                    <div className="d-flex align-items-center">
+                        <i class={`fas fa-chevron-right me-1 expand_icon ${isProjectExpanded ? 'rotate_90' : ''}`}></i>
+                        <label className="expandable_menu_item" for="expandable_menuitem">Projects</label>
+                    </div>
+                    <i class="fas fa-plus font-size-12 clickable" onClick={onProjectAddClick} />
                 </div>
                 <input class="hidden" id="expandable_menuitem" type="checkbox" onClick={() => setIsProjectExanded(!isProjectExpanded)} />
                 <div className="expanded_section">
@@ -36,7 +39,8 @@ function Sidebar ({ menuItems }) {
 }
 
 Sidebar.propTypes = {
-    menuItems: PropTypes.array.isRequired
+    menuItems: PropTypes.array.isRequired,
+    onProjectAddClick: PropTypes.func.isRequired
 }
 
 SidebarItem.propTypes = {

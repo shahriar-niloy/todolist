@@ -1,11 +1,12 @@
 import React from 'react';
+import Sidebar from '../../containers/sidebar.container';
 import Navbar from '../navbar';
-import Sidebar from '../sidebar';
+
 
 export default function Dashboard () {
     return <div>
         <Navbar initials="AN" />
-        <Sidebar menuItems={[{ name: 'Home', path: '/api' }]} />
+        <Sidebar />
         <div></div>
     </div>
 }
