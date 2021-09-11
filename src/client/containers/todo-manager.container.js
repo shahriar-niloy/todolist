@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Modal from '../components/modal';
 import Navbar from '../components/navbar';
+import ProjectFormContainer from './project/project-form.container';
 import Sidebar from './sidebar.container';
 
 
@@ -11,7 +12,7 @@ function ToDoManager() {
         <Navbar initials="AN" />
         <Sidebar onProjectAddClick={() => setShowProjectForm(true)} />
         <Modal isOpen={showProjectForm} onRequestClose={() => setShowProjectForm(false)} >
-            <div>This is a modal</div>
+            <ProjectFormContainer />
         </Modal>
     </div>
 }
