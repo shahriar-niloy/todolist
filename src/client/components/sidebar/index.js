@@ -2,15 +2,23 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-function SidebarItem({ path, name }) {
+function SidebarItem({ path, name, ContextMenu, contextID }) {
     return <div className="menuitem">
-        <Link to={path} aria-current="page">
-            <span>{name}</span>
-        </Link>
+        {
+            ContextMenu 
+                ? <ContextMenu id={contextID}>
+                    <Link to={path} aria-current="page">
+                        <span>{name}</span>
+                    </Link>    
+                </ContextMenu>
+                : <Link to={path} aria-current="page">
+                    <span>{name}</span>
+                </Link>    
+        }
     </div>
 }
 
-function Sidebar ({ projects, onProjectAddClick }) {
+function Sidebar ({ projects, onProjectAddClick, MenuItemContextMenu, menuItemContextMenuID }) {
     const [isProjectExpanded, setIsProjectExanded]= useState(false);
 
     return (
@@ -30,7 +38,13 @@ function Sidebar ({ projects, onProjectAddClick }) {
                     {projects &&
                         projects.length &&
                         projects.map((i) => (
-                            <SidebarItem key={i.path} path={i.path} name={i.name} />
+                            <SidebarItem 
+                                key={i.path} 
+                                path={i.path} 
+                                name={i.name} 
+                                ContextMenu={MenuItemContextMenu}
+                                contextID={menuItemContextMenuID}
+                            />
                         ))}
                 </div>
             </div>
@@ -40,12 +54,16 @@ function Sidebar ({ projects, onProjectAddClick }) {
 
 Sidebar.propTypes = {
     projects: PropTypes.array.isRequired,
-    onProjectAddClick: PropTypes.func.isRequired
+    onProjectAddClick: PropTypes.func.isRequired,
+    MenuItemContextMenu: PropTypes.func,
+    menuItemContextMenuID: PropTypes.string
 }
 
 SidebarItem.propTypes = {
     path: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired
+    name: PropTypes.string.isRequired,
+    ContextMenu: PropTypes.func,
+    contextMenuID: PropTypes.string
 }
 
 export default Sidebar;
