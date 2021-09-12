@@ -9,7 +9,7 @@ export default function userReducer(state = initialState, action) {
         case actions.LOGIN_SUCCESS:
             return { ...state, profile: action.payload.data };
         case actions.GET_MY_PROFILE_SUCCESS:
-            return { ...state, profile: action.payload.data };
+            return { ...state, profile: action.payload.data.data };
         default:
             break;
     }

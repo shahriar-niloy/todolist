@@ -4,7 +4,7 @@ const { DataTypes, UUID, UUIDV4 } = require("sequelize");
 const sequelize = require(path.join(process.cwd(), 'src/server/lib/sequelize'));
 const config = require(path.join(process.cwd(), 'src/server/config/config'));
 
-const User_Profile = sequelize.define('user_profile', {
+const User_Project = sequelize.define('user_project', {
         id: {
             allowNull: false,
             primaryKey: true,
@@ -24,4 +24,4 @@ const User_Profile = sequelize.define('user_profile', {
     }
 );
 
-module.exports = User_Profile;
+module.exports = User_Project;

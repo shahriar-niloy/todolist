@@ -4,7 +4,6 @@ import Navbar from '../components/navbar';
 import ProjectFormContainer from './project/project-form.container';
 import Sidebar from './sidebar.container';
 
-
 function ToDoManager() {
     const [showProjectForm, setShowProjectForm] = useState(false);
 
@@ -12,7 +11,7 @@ function ToDoManager() {
         <Navbar initials="AN" />
         <Sidebar onProjectAddClick={() => setShowProjectForm(true)} />
         <Modal isOpen={showProjectForm} onRequestClose={() => setShowProjectForm(false)} >
-            <ProjectFormContainer />
+            <ProjectFormContainer onClose={() => setShowProjectForm(false)} />
         </Modal>
     </div>
 }
