@@ -16,4 +16,15 @@ async function createProject({ name, user_id }) {
     return Return.service(project);
 }
 
+async function deleteProject(id) {
+    const project = await ProjectModel.findOne({ where: { id }});
+
+    if (!project) return Return.service(null, [{ message: 'Project does not exist.' }]);
+    
+    await project.destroy();
+
+    return Return.service(project);
+}
+
 exports.createProject = createProject;
+exports.deleteProject = deleteProject;

@@ -35,4 +35,17 @@ async function createProject(req, res) {
     res.json(successResponse);
 }
 
+async function deleteProject(req, res) {
+    const successResponse = new Response.success();
+
+    const id = req.params.id;
+
+    const project = await ProjectService.deleteProject(id);
+
+    successResponse.data = ProjectViewModels.project(project);
+
+    res.json(successResponse);
+}
+
 exports.createProject = createProject;
+exports.deleteProject = deleteProject;

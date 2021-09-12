@@ -19,3 +19,20 @@ export function* createProject(data) {
         console.log(err);
     }
 }
+
+export function deleteProjectAction(id) {
+    return {
+        type: actionTypes.DELETE_PROJECT,
+        payload: { id }
+    }
+}
+
+export function* deleteProject(data) {
+    try {
+        yield axios.delete(`/api/projects/${data.payload.id}`);
+        yield put({ type: actionTypes.DELETE_PROJECT_SUCCESS });
+        yield put(getMyProfileAction());
+    } catch(err) {
+        console.log(err);
+    }
+}
