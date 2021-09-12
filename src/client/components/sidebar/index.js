@@ -10,7 +10,7 @@ function SidebarItem({ path, name }) {
     </div>
 }
 
-function Sidebar ({ menuItems, onProjectAddClick }) {
+function Sidebar ({ projects, onProjectAddClick }) {
     const [isProjectExpanded, setIsProjectExanded]= useState(false);
 
     return (
@@ -27,9 +27,9 @@ function Sidebar ({ menuItems, onProjectAddClick }) {
                 </div>
                 <input class="hidden" id="expandable_menuitem" type="checkbox" onClick={() => setIsProjectExanded(!isProjectExpanded)} />
                 <div className="expanded_section">
-                    {menuItems &&
-                        menuItems.length &&
-                        menuItems.map((i) => (
+                    {projects &&
+                        projects.length &&
+                        projects.map((i) => (
                             <SidebarItem key={i.path} path={i.path} name={i.name} />
                         ))}
                 </div>
@@ -39,7 +39,7 @@ function Sidebar ({ menuItems, onProjectAddClick }) {
 }
 
 Sidebar.propTypes = {
-    menuItems: PropTypes.array.isRequired,
+    projects: PropTypes.array.isRequired,
     onProjectAddClick: PropTypes.func.isRequired
 }
 

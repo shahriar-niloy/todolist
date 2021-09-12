@@ -19,8 +19,16 @@ async function getProfile(req, res) {
 async function getMyProfile(req, res) {
     try {
         const successResponse = new Response.success();
+        const errorResponse = new Response.error();
 
-        successResponse.data = UserViewModels.profile(req.user);
+        const user = await UserService.getUser(req.user.id);
+
+        if (!user) {
+            errorResponse.addError('User does not exists.', '');
+            return res.status(400).json(errorResponse);
+        }
+
+        successResponse.data = UserViewModels.profile(user);
 
         res.json(successResponse);
     } catch(err) {

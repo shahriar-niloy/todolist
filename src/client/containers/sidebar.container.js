@@ -2,15 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Sidebar from '../components/sidebar';
 
-function SidebarContainer({ onProjectAddClick }) {
+function SidebarContainer({ onProjectAddClick, projects=[] }) {
     return <Sidebar 
-        menuItems={[{ name: 'Home', path: '/api' }]} 
+        projects={projects.map(project => ({ name: project.name, path: `/projects/${project.id}` }))} 
         onProjectAddClick={onProjectAddClick}
     />
 }
 
 SidebarContainer.propTypes = {
-    onProjectAddClick: PropTypes.func.isRequired
+    onProjectAddClick: PropTypes.func.isRequired,
+    projects: PropTypes.array
 }
 
 export default SidebarContainer;
