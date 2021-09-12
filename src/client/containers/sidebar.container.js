@@ -6,7 +6,7 @@ import Sidebar from '../components/sidebar';
 import contextMenuIDs from '../constants/context-menu.constants';
 import ProjectItemContextMenu from './context-menu/project-items.context-menu';
 
-function SidebarContainer({ onProjectAddClick, projects=[] }) {
+function SidebarContainer({ onProjectAddClick, onProjectEditClick, projects=[] }) {
     return <>
         <Sidebar 
             projects={projects.map(project => ({ id: project.id, name: project.name, path: `/projects/${project.id}` }))} 
@@ -14,13 +14,14 @@ function SidebarContainer({ onProjectAddClick, projects=[] }) {
             MenuItemContextMenuTrigger={ContextMenuTrigger}
             menuItemContextMenuID={contextMenuIDs.SIDEBAR_PROJECT_CHILD_CONTEXT_MENU}
         />
-        <ProjectItemContextMenu />
+        <ProjectItemContextMenu onProjectEditClick={onProjectEditClick} />
     </>
 }
 
 SidebarContainer.propTypes = {
+    projects: PropTypes.array,
     onProjectAddClick: PropTypes.func.isRequired,
-    projects: PropTypes.array
+    onProjectEditClick: PropTypes.func.isRequired
 }
 
 export default SidebarContainer;

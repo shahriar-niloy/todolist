@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import ProjectForm from '../../components/project/project-form.component';
-import { createProjectAction } from '../../store/actions/project.action';
+import PropTypes from 'prop-types';
 
-function ProjectFormContainer({ onClose }) {
+import ProjectForm from '../../components/project/project-form.component';
+import { createProjectAction, updateProjectAction } from '../../store/actions/project.action';
+import { getProjectAction } from '../../store/actions/project.action';
+
+function ProjectFormContainer({ onClose, projectID }) {
     const dispatch = useDispatch();
     const currentUser = useSelector(state => state.user.profile);
+    const project = useSelector(state => state.project.details);
 
     const createProject = (values) => {
         values.user_id = currentUser.id; 
@@ -13,7 +17,27 @@ function ProjectFormContainer({ onClose }) {
         onClose && onClose();
     };
 
-    return <ProjectForm onSubmit={createProject} />
+    const updateProject = (values) => {
+        dispatch(updateProjectAction(projectID, values));
+        onClose && onClose();
+    };
+
+    useEffect(() => {
+        if (projectID) {
+            dispatch(getProjectAction(projectID));
+        }
+    }, [projectID]);
+
+    return <ProjectForm 
+        initialValues={projectID && project ? { name: project?.name } : { name: '' }}
+        isEditing={!!projectID}
+        onSubmit={projectID ? updateProject : createProject} 
+    />;
+}
+
+ProjectFormContainer.propTypes = {
+    onClose: PropTypes.func,
+    projectID: PropTypes.string
 }
 
 export default ProjectFormContainer;

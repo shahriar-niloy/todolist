@@ -7,16 +7,26 @@ import Sidebar from './sidebar.container';
 
 function ToDoManager() {
     const [showProjectForm, setShowProjectForm] = useState(false);
+    const [selectedProjectID, setSelectedProjectID] = useState(null);
     const currentUser = useSelector(state => state.user.profile);
+
+    const handleClose = () => { 
+        setShowProjectForm(false); 
+        setSelectedProjectID(null);
+    };
 
     return <div>
         <Navbar initials="AN" />
         <Sidebar 
-            onProjectAddClick={() => setShowProjectForm(true)} 
             projects={currentUser.projects || []}
+            onProjectAddClick={() => setShowProjectForm(true)}
+            onProjectEditClick={id => {
+                setShowProjectForm(true);
+                setSelectedProjectID(id);
+            }} 
         />
-        <Modal isOpen={showProjectForm} onRequestClose={() => setShowProjectForm(false)} >
-            <ProjectFormContainer onClose={() => setShowProjectForm(false)} />
+        <Modal isOpen={showProjectForm} onRequestClose={handleClose} >
+            <ProjectFormContainer projectID={selectedProjectID} onClose={handleClose} />
         </Modal>
     </div>
 }

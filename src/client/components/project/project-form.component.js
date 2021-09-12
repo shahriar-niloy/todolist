@@ -2,14 +2,11 @@ import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import PropTypes from 'prop-types';
 
-function ProjectForm({ onSubmit }) {
+function ProjectForm({ isEditing, onSubmit, initialValues }) {
     return <Formik
-        initialValues={{ 
-            name: ''
-        }}
-        onSubmit={(values, actions) => {
-            onSubmit(values);
-        }}
+        initialValues={initialValues}
+        onSubmit={values => onSubmit(values)}
+        enableReinitialize
     >
         {props => (
             <Form className="container p-3" onSubmit={props.handleSubmit}>
@@ -20,7 +17,7 @@ function ProjectForm({ onSubmit }) {
                             <Field type="name" name="name" className="form-control" id="name" placeholder="Enter project name"/>
                         </div>
                         {props.errors.name && <div id="feedback">{props.errors.name}</div>}
-                        <button className="mt-3 btn btn-primary" type="submit">Add</button>
+                        <button className="mt-3 btn btn-primary" type="submit">{isEditing ? 'Save' : 'Add'}</button>
                     </div>
                 </div>
             </Form>
@@ -28,8 +25,14 @@ function ProjectForm({ onSubmit }) {
     </Formik>;
 }
 
+ProjectForm.defaultProps = {
+    initialValues: { name: '' },
+    isEditing: false
+}
+
 ProjectForm.propTypes = {
-    onSubmit: PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired,
+    isEditing: PropTypes.bool
 }
 
 export default ProjectForm;

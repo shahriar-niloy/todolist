@@ -6,5 +6,7 @@ const AUTHENTICATION_MIDDLEWARE = require(path.join(process.cwd(), 'src/server/m
 module.exports = function(app) {
     app.post('/api/projects', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.createProject));
     
-    app.delete('/api/projects/:id', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.deleteProject));
+    app.get('/api/projects/:id', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.getProject))
+        .put('/api/projects/:id', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.updateProject))
+        .delete('/api/projects/:id', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.deleteProject));
 }
