@@ -9,9 +9,9 @@ import ProjectItemContextMenu from './context-menu/project-items.context-menu';
 function SidebarContainer({ onProjectAddClick, projects=[] }) {
     return <>
         <Sidebar 
-            projects={projects.map(project => ({ name: project.name, path: `/projects/${project.id}` }))} 
+            projects={projects.map(project => ({ id: project.id, name: project.name, path: `/projects/${project.id}` }))} 
             onProjectAddClick={onProjectAddClick}
-            MenuItemContextMenu={ContextMenuTrigger}
+            MenuItemContextMenuTrigger={ContextMenuTrigger}
             menuItemContextMenuID={contextMenuIDs.SIDEBAR_PROJECT_CHILD_CONTEXT_MENU}
         />
         <ProjectItemContextMenu />

@@ -2,15 +2,15 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-function SidebarItem({ path, name, ContextMenu, contextID }) {
+function SidebarItem({ path, name, ContextMenuTrigger, contextID, triggerID }) {
     return <div className="menuitem">
         {
-            ContextMenu 
-                ? <ContextMenu id={contextID}>
+            ContextMenuTrigger 
+                ? <ContextMenuTrigger id={contextID} triggerID={triggerID} collect={props => ({ triggerID: props.triggerID })} >
                     <Link to={path} aria-current="page">
                         <span>{name}</span>
                     </Link>    
-                </ContextMenu>
+                </ContextMenuTrigger>
                 : <Link to={path} aria-current="page">
                     <span>{name}</span>
                 </Link>    
@@ -18,7 +18,7 @@ function SidebarItem({ path, name, ContextMenu, contextID }) {
     </div>
 }
 
-function Sidebar ({ projects, onProjectAddClick, MenuItemContextMenu, menuItemContextMenuID }) {
+function Sidebar ({ projects, onProjectAddClick, MenuItemContextMenuTrigger, menuItemContextMenuID }) {
     const [isProjectExpanded, setIsProjectExanded]= useState(false);
 
     return (
@@ -42,7 +42,8 @@ function Sidebar ({ projects, onProjectAddClick, MenuItemContextMenu, menuItemCo
                                 key={i.path} 
                                 path={i.path} 
                                 name={i.name} 
-                                ContextMenu={MenuItemContextMenu}
+                                triggerID={i.id}
+                                ContextMenuTrigger={MenuItemContextMenuTrigger}
                                 contextID={menuItemContextMenuID}
                             />
                         ))}
@@ -55,15 +56,16 @@ function Sidebar ({ projects, onProjectAddClick, MenuItemContextMenu, menuItemCo
 Sidebar.propTypes = {
     projects: PropTypes.array.isRequired,
     onProjectAddClick: PropTypes.func.isRequired,
-    MenuItemContextMenu: PropTypes.func,
+    MenuItemContextMenuTrigger: PropTypes.func,
     menuItemContextMenuID: PropTypes.string
 }
 
 SidebarItem.propTypes = {
     path: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    ContextMenu: PropTypes.func,
-    contextMenuID: PropTypes.string
+    ContextMenuTrigger: PropTypes.func,
+    contextMenuID: PropTypes.string,
+    triggerID: PropTypes.string
 }
 
 export default Sidebar;

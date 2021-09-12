@@ -4,14 +4,17 @@ import PropTypes from 'prop-types';
 
 function AppContextMenu({ onClick, contextID, menuItems }) {
     return (
-        <ContextMenu id={contextID} className="context-menu" >
-            {
-                menuItems.map(i => 
-                    <MenuItem key={i.id} attributes={{ className:"context-menu-item" }} onClick={() => onClick(i.id)} >
-                        {i.name}
-                    </MenuItem>
-                )
-            }
+        <ContextMenu id={contextID} className="context-menu">
+            {menuItems.map(i => (
+                <MenuItem
+                    key={i.id}
+                    attributes={{ className: "context-menu-item" }}
+                    data={{ itemID: i.id }}
+                    onClick={onClick}
+                >
+                    {i.name}
+                </MenuItem>
+            ))}
         </ContextMenu>
     );
 }

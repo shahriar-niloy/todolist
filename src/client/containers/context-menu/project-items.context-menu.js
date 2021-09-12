@@ -12,7 +12,7 @@ function ProjectItemContextMenu() {
     return <AppContextMenu 
         contextID={contextMenuConstants.SIDEBAR_PROJECT_CHILD_CONTEXT_MENU}
         menuItems={menuItems} 
-        onClick={id => console.log(id)}
+        onClick={(e, data) => console.log(e, data)}
     />
 }
 
