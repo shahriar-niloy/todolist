@@ -5,3 +5,15 @@ body {
     font-family: $roboto-slab !important;
     font-size: $default-font-size !important;
 }
+
+.todo-body {
+    flex-direction: column;
+    display: flex;
+    height: 100vh;
+}
+
+.todo-main {
+    display: flex;
+    min-height: 100px;
+    flex-grow: 1;
+}

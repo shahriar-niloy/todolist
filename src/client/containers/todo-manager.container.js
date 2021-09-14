@@ -15,16 +15,21 @@ function ToDoManager() {
         setSelectedProjectID(null);
     };
 
-    return <div>
+    return <div className="todo-body">
         <Navbar initials="AN" />
-        <Sidebar 
-            projects={currentUser?.projects || []}
-            onProjectAddClick={() => setShowProjectForm(true)}
-            onProjectEditClick={id => {
-                setShowProjectForm(true);
-                setSelectedProjectID(id);
-            }} 
-        />
+        <div className="todo-main">
+            <Sidebar 
+                projects={currentUser?.projects || []}
+                onProjectAddClick={() => setShowProjectForm(true)}
+                onProjectEditClick={id => {
+                    setShowProjectForm(true);
+                    setSelectedProjectID(id);
+                }} 
+            />
+            <div>
+                Editor
+            </div>
+        </div>
         <Modal isOpen={showProjectForm} onRequestClose={handleClose} >
             <ProjectFormContainer projectID={selectedProjectID} onClose={handleClose} />
         </Modal>

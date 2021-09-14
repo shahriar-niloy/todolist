@@ -1,9 +1,7 @@
 .sidebar {
     background: #282828;
     width: 280px;
-    min-height: 100vh;
-    top: 56px;
-    position: fixed;
+    overflow-y: scroll;
 }
 
 .expandable_menu_section input:not(:checked) + .expanded_section {
