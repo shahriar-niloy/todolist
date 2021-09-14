@@ -4,23 +4,23 @@ import ToDoManager from '../containers/todo-manager.container';
 
 const routeConfig = [
     { 
-        "path": '/',
-        "exact": true,
-        "component": ToDoManager,
-        "isPrivate": true
+        path: '/login',
+        exact: true,
+        component: Login
     },
     { 
-        "path": '/login',
-        "exact": true,
-        "component": Login
-    },
-    { 
-        "path": '/api',
-        "component": () => <>Hello, API!</>
-    },
-    { 
-        "path": '*',
-        "component": () => <>No Match!</>
+        path: '',
+        child: [
+            { 
+                path: '/projects/:id',
+                component: () => <>Hello, API!</>
+            },
+            {
+                path: '',
+                component: ToDoManager,
+                isPrivate: true
+            }
+        ]
     }
 ]
 

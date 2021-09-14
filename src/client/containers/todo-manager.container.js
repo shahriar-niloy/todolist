@@ -18,7 +18,7 @@ function ToDoManager() {
     return <div>
         <Navbar initials="AN" />
         <Sidebar 
-            projects={currentUser.projects || []}
+            projects={currentUser?.projects || []}
             onProjectAddClick={() => setShowProjectForm(true)}
             onProjectEditClick={id => {
                 setShowProjectForm(true);
