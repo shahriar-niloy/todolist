@@ -11,9 +11,9 @@ const App = () => {
         dispatch(getMyProfileAction());
     }, []);
 
-    return <div>
+    return <>
         <Routes />
-    </div>;
+    </>;
 };
 
 export default App;
