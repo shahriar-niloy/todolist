@@ -1,7 +1,7 @@
 .sidebar {
     background: #282828;
     width: 280px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .expandable_menu_section input:not(:checked) + .expanded_section {
