@@ -10,17 +10,7 @@ const routeConfig = [
     },
     { 
         path: '',
-        child: [
-            { 
-                path: '/projects/:id',
-                component: () => <>Hello, API!</>
-            },
-            {
-                path: '',
-                component: ToDoManager,
-                isPrivate: true
-            }
-        ]
+        component: ToDoManager
     }
 ]
 

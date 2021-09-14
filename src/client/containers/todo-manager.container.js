@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import Editor from '../components/editor/editor.component';
 import Modal from '../components/modal';
 import Navbar from '../components/navbar';
 import ProjectFormContainer from './project/project-form.container';
@@ -26,9 +28,9 @@ function ToDoManager() {
                     setSelectedProjectID(id);
                 }} 
             />
-            <div>
-                Editor
-            </div>
+            <Switch>
+                <Route path="/projects/:id" exact component={Editor} />
+            </Switch>
         </div>
         <Modal isOpen={showProjectForm} onRequestClose={handleClose} >
             <ProjectFormContainer projectID={selectedProjectID} onClose={handleClose} />
