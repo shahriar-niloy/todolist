@@ -43,5 +43,6 @@ const Task = sequelize.define("task", {
 });
 
 Task.belongsTo(ProjectModel, { foreignKey: 'project_id' });
+ProjectModel.hasMany(Task, { foreignKey: 'project_id' });
 
 module.exports = Task;

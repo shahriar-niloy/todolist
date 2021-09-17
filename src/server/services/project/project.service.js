@@ -1,11 +1,12 @@
 const path = require('path');
 const ProjectModel = require(path.join(process.cwd(), 'src/server/models/project.model'));
+const TaskModel = require(path.join(process.cwd(), 'src/server/models/task.model'));
 const { Return } = require(path.join(process.cwd(), 'src/server/schemas'));
 
 async function getProject(id) {
     if (!id) return Return.service(null, [{ message: 'Must provide project id.' }]);
     
-    const project = await ProjectModel.findOne({ where: { id }});
+    const project = await ProjectModel.findOne({ where: { id }, include: [{ model: TaskModel }]});
 
     if (!project) return Return.service(null, [{ message: 'Project does not exist.' }]);
     

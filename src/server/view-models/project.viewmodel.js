@@ -14,6 +14,20 @@ function project(project) {
                 is_owner: u?.user_profile?.is_owner || false
             }));
         }
+
+        if (project.tasks) {
+            viewModel.tasks = project.tasks.map(task => ({
+                id: task.id,
+                name: task.name,
+                description: task.description,
+                scheduled_at: task.scheduled_at,
+                is_completed: task.is_completed,
+                order: task.order,
+                project_id: task.project_id,
+                created_at: task.created_at,
+                updated_at: task.updated_at
+            }));
+        }
     };
 
     return viewModel;
