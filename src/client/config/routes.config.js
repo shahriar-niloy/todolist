@@ -10,7 +10,8 @@ const routeConfig = [
     },
     { 
         path: '',
-        component: ToDoManager
+        component: ToDoManager,
+        isPrivate: true
     }
 ]
 
