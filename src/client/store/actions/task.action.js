@@ -30,7 +30,24 @@ export function* createTask(data) {
     try {
         const task = yield axios.post('/api/tasks', data.payload);
         yield put({ type: actionTypes.CREATE_TASK_SUCCESS , payload: task });
-        yield put(getProjectAction(data.payload.project_id));
+        yield put(getProjectAction(task.data.data.project_id));
+    } catch(err) {
+        console.log(err);
+    }
+}
+
+export function updateTaskAction(id, data) {
+    return {
+        type: actionTypes.UPDATE_TASK,
+        payload: { id, data }
+    }
+}
+
+export function* updateTask(data) {
+    try {
+        const task = yield axios.put(`/api/tasks/${data.payload.id}`, data.payload.data);
+        yield put({ type: actionTypes.UPDATE_TASK_SUCCESS , payload: task });
+        yield put(getProjectAction(task.data.data.project_id));
     } catch(err) {
         console.log(err);
     }

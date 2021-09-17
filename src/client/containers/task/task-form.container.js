@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import TaskForm from '../../components/task/task-form.component';
 import { useDispatch, useSelector } from 'react-redux';
-import { createTaskAction, getTaskAction } from '../../store/actions/task.action';
+import { createTaskAction, getTaskAction, updateTaskAction } from '../../store/actions/task.action';
 
 function TaskFormContainer({ onSubmitSuccess, order, projectID, taskID }) {
     const dispatch = useDispatch();
@@ -11,7 +11,10 @@ function TaskFormContainer({ onSubmitSuccess, order, projectID, taskID }) {
     const handleSubmit = values => {
         values.order = order;
         values.project_id = projectID;
-        dispatch(createTaskAction(values));
+        
+        if (taskID) dispatch(updateTaskAction(taskID, values))
+        else dispatch(createTaskAction(values));
+
         onSubmitSuccess && onSubmitSuccess();
     };
 
