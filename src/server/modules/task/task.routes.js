@@ -6,6 +6,7 @@ const AUTHENTICATION_MIDDLEWARE = require(path.join(process.cwd(), 'src/server/m
 module.exports = function(app) {
     app.post('/api/tasks', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.createTask));
     
-    app.put('/api/tasks/:id', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.updateTask))
+    app.get('/api/tasks/:id', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.getTask))
+        .put('/api/tasks/:id', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.updateTask))
         .delete('/api/tasks/:id', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.deleteTask));
 }

@@ -3,6 +3,22 @@ import { put } from "redux-saga/effects";
 import actionTypes from "../../constants/action.types"
 import { getProjectAction } from "./project.action";
 
+export function getTaskAction(taskID) {
+    return {
+        type: actionTypes.GET_TASK,
+        payload: { taskID }
+    }
+}
+
+export function* getTask(data) {
+    try {
+        const task = yield axios.get(`/api/tasks/${data.payload.taskID}`);
+        yield put({ type: actionTypes.GET_TASK_SUCCESS , payload: task });
+    } catch(err) {
+        console.log(err);
+    }
+}
+
 export function createTaskAction(data) {
     return {
         type: actionTypes.CREATE_TASK,

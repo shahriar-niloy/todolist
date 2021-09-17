@@ -6,8 +6,10 @@ const initialState = {
 
 export default function taskReducer(state = initialState, action) {
     switch (action.type) {
-        case actions.TASK__CREATE_SUCCESS:
-            return { ...state, details: action.payload.data };
+        case actions.GET_TASK_SUCCESS:
+            return { ...state, details: action.payload.data.data };
+        case actions.CREATE_TASK_SUCCESS:
+            return { ...state, details: action.payload.data.data };
         default:
             break;
     }

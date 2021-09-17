@@ -2,11 +2,11 @@ import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import PropTypes from 'prop-types';
 
-function TaskForm({ onSubmit, isEditing }) {
+function TaskForm({ onSubmit, isEditing, task }) {
     return <Formik
         initialValues={{
-            name: '',
-            description: ''
+            name: isEditing && task ? task?.name : '',
+            description: isEditing && task ? task?.description : ''
         }}
         onSubmit={values => onSubmit(values)}
         enableReinitialize
@@ -33,7 +33,9 @@ function TaskForm({ onSubmit, isEditing }) {
 }
 
 TaskForm.propTypes = {
-    onSubmit: PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired,
+    task: PropTypes.object,
+    isEditing: PropTypes.bool
 }
 
 export default TaskForm;

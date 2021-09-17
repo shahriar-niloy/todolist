@@ -4,6 +4,16 @@ const ProjectModel = require(path.join(process.cwd(), 'src/server/models/project
 const { Return } = require(path.join(process.cwd(), 'src/server/schemas'));
 const { TaskViewModels } = require(path.join(process.cwd(), 'src/server/view-models'));
 
+async function getTask(id) {
+    if (!id) return Return.service(null, [{ message: 'Must provide required paramters.' }]);
+
+    const task = await TaskModel.findOne({ where: { id }});
+
+    if (!task) return Return.service(null, [{ message: 'Task not found.' }]);
+    
+    return Return.service(task);
+}
+
 async function createTask(data) {
     const {
         name,
@@ -77,6 +87,7 @@ async function deleteTask(id) {
     return Return.service(TaskViewModels.task(task));
 }
 
+exports.getTask = getTask;
 exports.createTask = createTask;
 exports.updateTask = updateTask;
 exports.deleteTask = deleteTask;

@@ -13,6 +13,7 @@ function TaskEditorContainer() {
     const projectID = params.id;
     const project = useSelector(state => state.project.details);
     const [showTaskForm, setShowTaskForm] = useState(false);
+    const [taskID, setTaskID] = useState(null);
 
     const handleTaskAddIconClick = () => {
         setShowTaskForm(true);
@@ -21,6 +22,11 @@ function TaskEditorContainer() {
     const handleTaskDelete = (id) => {
         const response = confirm('Are you sure you want to delete the task?');
         if (response) dispatch(deleteTaskAction(id, project?.id));
+    }
+
+    const handleTaskEdit = (id) => {
+        setShowTaskForm(true);
+        setTaskID(id);
     }
 
     useEffect(() => {
@@ -33,11 +39,17 @@ function TaskEditorContainer() {
             tasks={project?.tasks}
             onTaskDelete={handleTaskDelete} 
             onTaskAddIconClick={handleTaskAddIconClick} 
+            onTaskEdit={handleTaskEdit}
         />
         <Modal isOpen={showTaskForm} onRequestClose={() => setShowTaskForm(false)} >
             <TaskFormContainer 
                 projectID={project?.id}
-                onSubmitSuccess={() => setShowTaskForm(false)} order={project?.tasks?.length || 0} 
+                taskID={taskID}
+                onSubmitSuccess={() => { 
+                    setShowTaskForm(false); 
+                    setTaskID(null); 
+                }} 
+                order={project?.tasks?.length || 0} 
             />
         </Modal>
     </>

@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import TaskForm from '../../components/task/task-form.component';
-import { useDispatch } from 'react-redux';
-import { createTaskAction } from '../../store/actions/task.action';
+import { useDispatch, useSelector } from 'react-redux';
+import { createTaskAction, getTaskAction } from '../../store/actions/task.action';
 
-function TaskFormContainer({ onSubmitSuccess, order, projectID }) {
+function TaskFormContainer({ onSubmitSuccess, order, projectID, taskID }) {
     const dispatch = useDispatch();
+    const task = useSelector(state => state.task.details);
 
     const handleSubmit = values => {
         values.order = order;
@@ -14,13 +15,18 @@ function TaskFormContainer({ onSubmitSuccess, order, projectID }) {
         onSubmitSuccess && onSubmitSuccess();
     };
 
-    return <TaskForm onSubmit={handleSubmit} />
+    useEffect(() => {
+        if (taskID) dispatch(getTaskAction(taskID));
+    }, [taskID]);
+
+    return <TaskForm task={task} isEditing={!!taskID} onSubmit={handleSubmit} />
 }
 
 TaskFormContainer.propTypes = {
     onSubmitSuccess: PropTypes.func.isRequired,
     order: PropTypes.number.isRequired,
-    projectID: PropTypes.string.isRequired
+    projectID: PropTypes.string.isRequired,
+    taskID: PropTypes.string
 }
 
 export default TaskFormContainer;
