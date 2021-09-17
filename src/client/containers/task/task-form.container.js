@@ -10,8 +10,7 @@ function TaskFormContainer({ onSubmitSuccess, order, projectID }) {
     const handleSubmit = values => {
         values.order = order;
         values.project_id = projectID;
-        const res = dispatch(createTaskAction(values));
-        console.log(res)
+        dispatch(createTaskAction(values));
         onSubmitSuccess && onSubmitSuccess();
     };
 

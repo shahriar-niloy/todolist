@@ -19,3 +19,20 @@ export function* createTask(data) {
         console.log(err);
     }
 }
+
+export function deleteTaskAction(taskID, projectID) {
+    return {
+        type: actionTypes.DELETE_TASK,
+        payload: { taskID, projectID }
+    }
+}
+
+export function* deleteTask(data) {
+    try {
+        const task = yield axios.delete(`/api/tasks/${data.payload.taskID}`);
+        yield put({ type: actionTypes.DELETE_TASK_SUCCESS , payload: task });
+        yield put(getProjectAction(data.payload.projectID));
+    } catch(err) {
+        console.log(err);
+    }
+}

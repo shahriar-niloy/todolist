@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import TaskEditor from '../../components/editor/task-editor.component';
 import Modal from '../../components/modal';
 import { getProjectAction } from '../../store/actions/project.action';
+import { deleteTaskAction } from '../../store/actions/task.action';
 import TaskFormContainer from './task-form.container';
 
 function TaskEditorContainer() {
@@ -17,6 +18,11 @@ function TaskEditorContainer() {
         setShowTaskForm(true);
     }
 
+    const handleTaskDelete = (id) => {
+        const response = confirm('Are you sure you want to delete the task?');
+        if (response) dispatch(deleteTaskAction(id, project?.id));
+    }
+
     useEffect(() => {
         dispatch(getProjectAction(projectID));
     }, [projectID]);
@@ -24,13 +30,14 @@ function TaskEditorContainer() {
     return <>
         <TaskEditor 
             projectName={project?.name} 
-            tasks={project?.tasks} 
+            tasks={project?.tasks}
+            onTaskDelete={handleTaskDelete} 
             onTaskAddIconClick={handleTaskAddIconClick} 
         />
         <Modal isOpen={showTaskForm} onRequestClose={() => setShowTaskForm(false)} >
             <TaskFormContainer 
-                onSubmitSuccess={() => setShowTaskForm(false)} order={project?.tasks?.length || 0} 
                 projectID={project?.id}
+                onSubmitSuccess={() => setShowTaskForm(false)} order={project?.tasks?.length || 0} 
             />
         </Modal>
     </>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import EditIcon from '../ui/icons/edit.component';
 import DeleteIcon from '../ui/icons/delete.component';
 
-function TaskEditor({ projectName, tasks, onTaskAddIconClick }) {
+function TaskEditor({ projectName, tasks, onTaskAddIconClick, onTaskDelete }) {
     return <div className="task-editor">
         <div className="d-flex justify-content-between align-items-center">
             <h4>{projectName}</h4>
@@ -18,7 +18,7 @@ function TaskEditor({ projectName, tasks, onTaskAddIconClick }) {
                             <h5>{task.name}</h5>
                             <div>
                                 <EditIcon className="font-size-16 me-3 clickable" />
-                                <DeleteIcon className="font-size-16 clickable" />
+                                <DeleteIcon className="font-size-16 clickable" onClick={() => onTaskDelete(task.id)} />
                             </div>
                         </div>
                         <div>{task.description}</div>
@@ -34,7 +34,8 @@ function TaskEditor({ projectName, tasks, onTaskAddIconClick }) {
 TaskEditor.propTypes = {
     projectName: PropTypes.string.isRequired,
     tasks: PropTypes.array.isRequired,
-    onTaskAddIconClick: PropTypes.func.isRequired
+    onTaskAddIconClick: PropTypes.func.isRequired,
+    onTaskDelete: PropTypes.func.isRequired
 }
 
 export default TaskEditor;
