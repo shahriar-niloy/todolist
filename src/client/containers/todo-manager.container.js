@@ -6,7 +6,7 @@ import Modal from '../components/modal';
 import Navbar from '../components/navbar';
 import ProjectFormContainer from './project/project-form.container';
 import Sidebar from './sidebar.container';
-import TaskContainer from './task/task.container';
+import TaskEditorContainer from './task/task-editor.container';
 
 function ToDoManager() {
     const [showProjectForm, setShowProjectForm] = useState(false);
@@ -30,7 +30,7 @@ function ToDoManager() {
                 }} 
             />
             <Switch>
-                <Route path="/projects/:id" exact ><BaseEditor><TaskContainer /></BaseEditor></Route>
+                <Route path="/projects/:id" exact ><BaseEditor><TaskEditorContainer /></BaseEditor></Route>
             </Switch>
         </div>
         <Modal isOpen={showProjectForm} onRequestClose={handleClose} >
