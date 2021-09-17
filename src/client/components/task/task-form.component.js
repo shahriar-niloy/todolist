@@ -12,7 +12,7 @@ function TaskForm({ onSubmit, isEditing }) {
         enableReinitialize
     >
         {props => (
-            <Form className="container p-3" onSubmit={props.handleSubmit}>
+            <Form className="container p-3 task-form" onSubmit={props.handleSubmit}>
                 <div className="row justify-content-center">
                     <div className="col-12">
                         <div class="form-group">
@@ -21,7 +21,7 @@ function TaskForm({ onSubmit, isEditing }) {
                     </div>
                     <div className="col-12">
                         <div class="form-group">
-                            <Field as="textarea" type="text" name="description" className="form-control" id="description" placeholder="Enter task description"/>
+                            <Field as="textarea" rows="4" type="text" name="description" className="form-control" id="description" placeholder="Enter task description"/>
                         </div>
                     </div>
                 </div>
