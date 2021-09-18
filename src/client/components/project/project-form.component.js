@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import PropTypes from 'prop-types';
+import SubmitButton from '../ui/buttons/submit-button.component';
 
 function ProjectForm({ isEditing, onSubmit, initialValues }) {
     return <Formik
@@ -17,7 +18,7 @@ function ProjectForm({ isEditing, onSubmit, initialValues }) {
                             <Field type="name" name="name" className="form-control" id="name" placeholder="Enter project name"/>
                         </div>
                         {props.errors.name && <div id="feedback">{props.errors.name}</div>}
-                        <button className="mt-3 btn btn-primary" type="submit">{isEditing ? 'Save' : 'Add'}</button>
+                        <SubmitButton extendedClass="mt-3" label={isEditing ? 'Save' : 'Add'} onClick={props.handleSubmit} />
                     </div>
                 </div>
             </Form>
