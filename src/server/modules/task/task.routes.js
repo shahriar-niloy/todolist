@@ -4,7 +4,8 @@ const controllerFunctionWrapper = require(path.join(process.cwd(), 'src/server/u
 const AUTHENTICATION_MIDDLEWARE = require(path.join(process.cwd(), 'src/server/middlewares/authentication.middleware'));
 
 module.exports = function(app) {
-    app.post('/api/tasks', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.createTask));
+    app.post('/api/tasks', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.createTask))
+        .put('/api/tasks', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.bulkUpdateTasks));
     
     app.get('/api/tasks/:id', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.getTask))
         .put('/api/tasks/:id', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.updateTask))

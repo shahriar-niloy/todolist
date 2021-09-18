@@ -6,7 +6,13 @@ const { Return } = require(path.join(process.cwd(), 'src/server/schemas'));
 async function getProject(id) {
     if (!id) return Return.service(null, [{ message: 'Must provide project id.' }]);
     
-    const project = await ProjectModel.findOne({ where: { id }, include: [{ model: TaskModel }]});
+    const project = await ProjectModel.findOne({ 
+        where: { id }, 
+        include: [{ 
+            model: TaskModel, 
+            order: ['order', 'ASC'] 
+        }]
+    });
 
     if (!project) return Return.service(null, [{ message: 'Project does not exist.' }]);
     

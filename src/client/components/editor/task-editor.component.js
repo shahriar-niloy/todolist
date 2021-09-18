@@ -20,7 +20,7 @@ function TaskListItem ({ task, onTaskDelete, onTaskEdit, onDrop }) {
           accept: dragItemTypes.TASK,
           drop: source => onDrop(source.id, task.id)
         }),
-        [task]
+        [task, onDrop]
     );
 
     return <React.Fragment>

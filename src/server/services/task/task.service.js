@@ -87,7 +87,23 @@ async function deleteTask(id) {
     return Return.service(TaskViewModels.task(task));
 }
 
+async function bulkUpdateTasks(tasks) {
+    if (!tasks) return Return.service(null, [{ message: 'Must provide required paramters.' }]);
+    
+    if (!Array.isArray(tasks)) return Return.service(null, [{ message: 'Tasks must be of type array.' }]);
+
+    for (task of tasks) await TaskModel.update(task, { where: { id: task.id } });
+    
+    const updatedTasks = await TaskModel.findAll({ 
+        where: { id: tasks.map(task => task.id) },
+        order: [['order', 'ASC']]
+    });
+
+    return Return.service(updatedTasks);
+}
+
 exports.getTask = getTask;
 exports.createTask = createTask;
 exports.updateTask = updateTask;
 exports.deleteTask = deleteTask;
+exports.bulkUpdateTasks = bulkUpdateTasks;

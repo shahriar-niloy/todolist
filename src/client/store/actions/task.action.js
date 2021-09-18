@@ -70,9 +70,21 @@ export function* deleteTask(data) {
     }
 }
 
-export function dropTask(source, target) {
+export function dropTask(tasks) {
     return {
         type: actionTypes.DROP_TASK,
-        payload: { source, target }
+        payload: { tasks }
     }
+}
+
+export function bulkUpdateTasksAction(tasks) {
+    return {
+        type: actionTypes.BULK_UPDATE_TASKS,
+        payload: { tasks }
+    }
+}
+
+export function* bulkUpdateTasks(data) {
+    const tasks = yield axios.put('/api/tasks', data.payload.tasks);
+    yield put({ type: actionTypes.BULK_UPDATE_TASKS_SUCCESS , payload: tasks });
 }
