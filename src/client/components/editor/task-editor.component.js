@@ -27,7 +27,7 @@ function TaskListItem ({ task, onTaskDelete, onTaskEdit, onDrop }) {
     return <React.Fragment>
         <div ref={drag} >
             <div className="d-flex" ref={drop} >
-                <GripIcon className="me-2 font-size-16 clickable" />
+                <GripIcon className="me-2 clickable gripicon" />
                 <Checkbox />
                 <div className="flex-grow-1">
                     <div className="d-flex justify-content-between">
