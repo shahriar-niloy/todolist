@@ -8,7 +8,7 @@ import dragItemTypes from '../../constants/drag-item.types';
 import Checkbox from '../ui/icons/checkbox.component';
 
 function TaskListItem ({ task, onTaskDelete, onTaskEdit, onDrop }) {
-    const [props, drag] = useDrag(() => ({
+    const [dragProps, drag] = useDrag(() => ({
         type: dragItemTypes.TASK,
         item: { id: task.id },
         collect: monitor => ({
@@ -16,29 +16,28 @@ function TaskListItem ({ task, onTaskDelete, onTaskEdit, onDrop }) {
         })
     }));
 
-    const [, drop] = useDrop(
+    const [dropProps, drop] = useDrop(
         () => ({
           accept: dragItemTypes.TASK,
-          drop: source => onDrop(source.id, task.id)
+          drop: source => onDrop(source.id, task.id),
+          collect: monitor => ({ isOver: monitor.isOver() })
         }),
         [task, onDrop]
     );
 
     return <React.Fragment>
-        <div ref={drag} >
-            <div className="d-flex" ref={drop} >
-                <GripIcon className="me-2 clickable gripicon" />
-                <Checkbox />
-                <div className="flex-grow-1">
-                    <div className="d-flex justify-content-between">
-                        <h5>{task.name}</h5>
-                        <div>
-                            <EditIcon className="font-size-16 me-3 clickable" onClick={() => onTaskEdit(task.id)} />
-                            <DeleteIcon className="font-size-16 clickable" onClick={() => onTaskDelete(task.id)} />
-                        </div>
+        <div className={`list-item ${dropProps.isOver ? 'drop-highlight' : ''}`} ref={drop} >
+            <GripIcon className="me-2 clickable gripicon" innerRef={drag} />
+            <Checkbox />
+            <div className="flex-grow-1">
+                <div className="d-flex justify-content-between">
+                    <h5>{task.name}</h5>
+                    <div>
+                        <EditIcon className="font-size-16 me-3 clickable" onClick={() => onTaskEdit(task.id)} />
+                        <DeleteIcon className="font-size-16 clickable" onClick={() => onTaskDelete(task.id)} />
                     </div>
-                    <div>{task.description}</div>
                 </div>
+                <div>{task.description}</div>
             </div>
         </div>
         <hr></hr>
