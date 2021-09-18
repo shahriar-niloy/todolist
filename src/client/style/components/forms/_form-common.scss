@@ -1,0 +1,16 @@
+.form-primary {
+    min-width: 400px;
+
+    input,
+    textarea,
+    input:focus,
+    textarea:focus {
+        border-radius: 0;
+        border: 0;
+        background: #1e1e1e !important;
+        color: #cacaca;
+        box-shadow: none;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+}

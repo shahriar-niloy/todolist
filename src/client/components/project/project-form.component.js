@@ -11,10 +11,9 @@ function ProjectForm({ isEditing, onSubmit, initialValues }) {
     >
         {props => (
             <Form className="container p-3" onSubmit={props.handleSubmit}>
-                <div className="row justify-content-center">
+                <div className="row justify-content-center form-primary">
                     <div className="col">
                         <div class="form-group">
-                            <label className="fw-bold" for="name">Name</label>
                             <Field type="name" name="name" className="form-control" id="name" placeholder="Enter project name"/>
                         </div>
                         {props.errors.name && <div id="feedback">{props.errors.name}</div>}

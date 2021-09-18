@@ -13,7 +13,7 @@ function TaskForm({ onSubmit, isEditing, task }) {
         enableReinitialize
     >
         {props => (
-            <Form className="container p-3 task-form" onSubmit={props.handleSubmit}>
+            <Form className="container p-3 form-primary" onSubmit={props.handleSubmit}>
                 <div className="row justify-content-center">
                     <div className="col-12">
                         <div class="form-group">
