@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import TaskEditor from '../../components/editor/task-editor.component';
 import Modal from '../../components/modal';
 import { getProjectAction } from '../../store/actions/project.action';
-import { deleteTaskAction } from '../../store/actions/task.action';
+import { deleteTaskAction, dropTask } from '../../store/actions/task.action';
 import TaskFormContainer from './task-form.container';
 
 function TaskEditorContainer() {
@@ -12,6 +12,7 @@ function TaskEditorContainer() {
     const params = useParams();
     const projectID = params.id;
     const project = useSelector(state => state.project.details);
+    const tasks = useSelector(state => state.task.list);
     const [showTaskForm, setShowTaskForm] = useState(false);
     const [taskID, setTaskID] = useState(null);
 
@@ -29,6 +30,10 @@ function TaskEditorContainer() {
         setTaskID(id);
     }
 
+    const handleTaskDrop = (source, target) => {
+        dispatch(dropTask(source, target));
+    }
+
     useEffect(() => {
         dispatch(getProjectAction(projectID));
     }, [projectID]);
@@ -36,10 +41,11 @@ function TaskEditorContainer() {
     return <>
         <TaskEditor 
             projectName={project?.name} 
-            tasks={project?.tasks}
+            tasks={tasks}
             onTaskDelete={handleTaskDelete} 
             onTaskAddIconClick={handleTaskAddIconClick} 
             onTaskEdit={handleTaskEdit}
+            onDrop={handleTaskDrop}
         />
         <Modal isOpen={showTaskForm} onRequestClose={() => setShowTaskForm(false)} >
             <TaskFormContainer 
@@ -49,7 +55,7 @@ function TaskEditorContainer() {
                     setShowTaskForm(false); 
                     setTaskID(null); 
                 }} 
-                order={project?.tasks?.length || 0} 
+                order={tasks?.length || 0} 
             />
         </Modal>
     </>

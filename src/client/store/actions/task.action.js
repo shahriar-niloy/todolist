@@ -69,3 +69,10 @@ export function* deleteTask(data) {
         console.log(err);
     }
 }
+
+export function dropTask(source, target) {
+    return {
+        type: actionTypes.DROP_TASK,
+        payload: { source, target }
+    }
+}
