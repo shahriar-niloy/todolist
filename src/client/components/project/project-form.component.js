@@ -17,7 +17,9 @@ function ProjectForm({ isEditing, onSubmit, initialValues }) {
                             <Field type="name" name="name" className="form-control" id="name" placeholder="Enter project name"/>
                         </div>
                         {props.errors.name && <div id="feedback">{props.errors.name}</div>}
-                        <SubmitButton extendedClass="mt-3" label={isEditing ? 'Save' : 'Add'} onClick={props.handleSubmit} />
+                        <div className="d-flex justify-content-end" >
+                            <SubmitButton extendedClass="mt-3" label={isEditing ? 'Save' : 'Add'} onClick={props.handleSubmit} />
+                        </div>
                     </div>
                 </div>
             </Form>

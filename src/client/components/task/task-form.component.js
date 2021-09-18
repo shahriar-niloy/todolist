@@ -27,7 +27,9 @@ function TaskForm({ onSubmit, isEditing, task }) {
                     </div>
                 </div>
                 {props.errors.name && <div id="feedback">{props.errors.name}</div>}
-                <SubmitButton extendedClass="mt-3" label={isEditing ? 'Save' : 'Add task'} onClick={props.handleSubmit} />
+                <div className="d-flex justify-content-end" >
+                    <SubmitButton extendedClass="mt-3" label={isEditing ? 'Save' : 'Add task'} onClick={props.handleSubmit} />
+                </div>
             </Form>
         )}
     </Formik>;
