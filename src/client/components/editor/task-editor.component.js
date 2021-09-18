@@ -5,6 +5,7 @@ import EditIcon from '../ui/icons/edit.component';
 import DeleteIcon from '../ui/icons/delete.component';
 import GripIcon from '../ui/icons/grip.component';
 import dragItemTypes from '../../constants/drag-item.types';
+import Checkbox from '../ui/icons/checkbox.component';
 
 function TaskListItem ({ task, onTaskDelete, onTaskEdit, onDrop }) {
     const [props, drag] = useDrag(() => ({
@@ -26,7 +27,8 @@ function TaskListItem ({ task, onTaskDelete, onTaskEdit, onDrop }) {
     return <React.Fragment>
         <div ref={drag} >
             <div className="d-flex" ref={drop} >
-                <GripIcon className="me-3 font-size-16 clickable" />
+                <GripIcon className="me-2 font-size-16 clickable" />
+                <Checkbox />
                 <div className="flex-grow-1">
                     <div className="d-flex justify-content-between">
                         <h5>{task.name}</h5>
