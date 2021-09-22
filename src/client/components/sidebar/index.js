@@ -23,7 +23,7 @@ function Sidebar ({ projects, onProjectAddClick, MenuItemContextMenuTrigger, men
 
     return (
         <div
-            className="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark sidebar"
+            className="d-flex flex-column flex-shrink-0 p-3 text-white sidebar"
         >
             <div className="nav nav-pills flex-column mb-auto expandable_menu_section">
                 <div className="d-flex align-items-center justify-content-between">
