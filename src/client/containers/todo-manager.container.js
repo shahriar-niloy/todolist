@@ -4,6 +4,7 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import BaseEditor from '../components/editor/base-editor.component';
 import Modal from '../components/modal';
 import Navbar from '../components/navbar';
+import { getInitials } from '../utility';
 import ProjectFormContainer from './project/project-form.container';
 import Sidebar from './sidebar.container';
 import TaskEditorContainer from './task/task-editor.container';
@@ -13,13 +14,18 @@ function ToDoManager() {
     const [selectedProjectID, setSelectedProjectID] = useState(null);
     const currentUser = useSelector(state => state.user.profile);
 
+    const initials = getInitials(currentUser 
+        ? `${currentUser?.first_name} ${currentUser?.last_name}` 
+        : ''
+    );
+
     const handleClose = () => { 
         setShowProjectForm(false); 
         setSelectedProjectID(null);
     };
 
     return <div className="todo-body">
-        <Navbar initials="AN" />
+        <Navbar initials={initials} />
         <div className="todo-main">
             <Sidebar 
                 projects={currentUser?.projects || []}

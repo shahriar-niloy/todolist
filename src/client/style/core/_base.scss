@@ -9,12 +9,12 @@
 }
 
 .align-xy {
-    display: flex;
+    display: flex !important;
     justify-content: center;
     align-items: center;
 }
 
 .align-y {
-    display: flex;
+    display: flex !important;
     align-items: center;
 }

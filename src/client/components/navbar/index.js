@@ -36,9 +36,9 @@ export default function Navbar({ onInitialsClick, initials }) {
                         <li className="nav-item">
                             <Popover component={UserMenuContainer} >
                                 <a
-                                className="nav-link active"
-                                aria-current="page"
-                                href="#"
+                                    className="nav-link active initials align-xy"
+                                    aria-current="page"
+                                    href="#"
                                 >
                                     {initials}
                                 </a>
