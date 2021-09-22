@@ -1,4 +1,6 @@
 import React from 'react';
+import UserMenuContainer from '../../containers/app/user-menu.container';
+import Popover from '../lib/popover';
 
 export default function Navbar({ onInitialsClick, initials }) {
     return (
@@ -32,14 +34,15 @@ export default function Navbar({ onInitialsClick, initials }) {
                     </form>
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <a
+                            <Popover component={UserMenuContainer} >
+                                <a
                                 className="nav-link active"
                                 aria-current="page"
                                 href="#"
-                                onClick={onInitialsClick}
-                            >
-                                {initials}
-                            </a>
+                                >
+                                    {initials}
+                                </a>
+                            </Popover>
                         </li>
                     </ul>
                 </div>

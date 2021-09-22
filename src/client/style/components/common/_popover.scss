@@ -1,0 +1,28 @@
+.popover-default {
+    min-width: 300px;
+    background-color: $primary-bg !important;
+    border: 1px solid $default-border-color !important;
+    transition: opacity 0.05s linear !important;
+}
+
+.popover-body {
+    color: $default-font-color !important;
+    padding: 10px 0px !important;
+}
+
+.popover-default {
+    ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    li {
+        padding: 8px 20px;
+        list-style: none;
+        cursor: pointer;
+    }
+
+    li:hover {
+        background-color: $default-hover-color !important;
+    }
+}
