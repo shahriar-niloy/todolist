@@ -32,7 +32,10 @@
     }
 
     .completed {
-        text-decoration: line-through;
-        color: $task-completed-color !important;
+        h5,
+        div {
+            text-decoration: line-through;
+            color: $task-completed-color !important;
+        }
     }
 }
