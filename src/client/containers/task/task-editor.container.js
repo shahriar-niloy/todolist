@@ -5,6 +5,7 @@ import TaskEditor from '../../components/editor/task-editor.component';
 import Modal from '../../components/modal';
 import { getProjectAction } from '../../store/actions/project.action';
 import { bulkUpdateTasksAction, deleteTaskAction, dropTask, updateTaskAction } from '../../store/actions/task.action';
+import ProjectMenuContainer from '../project/project-menu.container';
 import TaskFormContainer from './task-form.container';
 
 function TaskEditorContainer() {
@@ -62,6 +63,7 @@ function TaskEditorContainer() {
             onTaskEdit={handleTaskEdit}
             onDrop={handleTaskDrop}
             onTaskComplete={handleTaskComplete}
+            ProjectMenu={() => <ProjectMenuContainer />}
         />
         <Modal isOpen={showTaskForm} onRequestClose={() => setShowTaskForm(false)} >
             <TaskFormContainer 

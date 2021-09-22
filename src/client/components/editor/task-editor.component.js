@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useDrag, useDrop } from 'react-dnd'
 import EditIcon from '../ui/icons/edit.component';
-import DeleteIcon from '../ui/icons/delete.component';
+import DeleteIcon from '../ui/icons/delete.icon';
 import GripIcon from '../ui/icons/grip.component';
 import dragItemTypes from '../../constants/drag-item.types';
 import Checkbox from '../ui/icons/checkbox.component';
 import OptionIcon from '../ui/icons/options.component';
+import Popover from '../lib/popover';
 
 function TaskListItem ({ task, onTaskDelete, onTaskEdit, onDrop, onTaskComplete }) {
     const [dragProps, drag] = useDrag(() => ({
@@ -45,13 +46,15 @@ function TaskListItem ({ task, onTaskDelete, onTaskEdit, onDrop, onTaskComplete 
     </React.Fragment>
 }
 
-function TaskEditor({ projectName, tasks, onTaskAddIconClick, onTaskDelete, onTaskEdit, onDrop, onTaskComplete }) {
+function TaskEditor({ projectName, tasks, onTaskAddIconClick, onTaskDelete, onTaskEdit, onDrop, onTaskComplete, ProjectMenu }) {
     return <div className="task-editor">
         <div className="d-flex justify-content-between align-items-center">
             <h4>{projectName}</h4>
             <div className="align-xy">
                 <i class="fal fa-plus font-size-21 clickable me-3" onClick={onTaskAddIconClick} ></i>
-                <OptionIcon />
+                <Popover component={ProjectMenu} >
+                    <OptionIcon />
+                </Popover>
             </div>
         </div>
         <hr></hr>
@@ -86,7 +89,8 @@ TaskEditor.propTypes = {
     onTaskDelete: PropTypes.func.isRequired,
     onTaskEdit: PropTypes.func.isRequired,
     onDrop: PropTypes.func.isRequired,
-    onTaskComplete: PropTypes.func.isRequired
+    onTaskComplete: PropTypes.func.isRequired,
+    ProjectMenu: PropTypes.func.isRequired
 }
 
 export default TaskEditor;
