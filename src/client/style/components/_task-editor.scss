@@ -30,4 +30,9 @@
         padding: 12px 0px;
         user-select: none;
     }
+
+    .completed {
+        text-decoration: line-through;
+        color: $task-completed-color !important;
+    }
 }

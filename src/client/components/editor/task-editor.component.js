@@ -27,7 +27,7 @@ function TaskListItem ({ task, onTaskDelete, onTaskEdit, onDrop, onTaskComplete 
     );
 
     return <React.Fragment>
-        <div className={`list-item ${dropProps.isOver ? 'drop-highlight' : ''}`} ref={drop} >
+        <div className={`list-item ${task.is_completed ? 'completed' : ''} ${dropProps.isOver ? 'drop-highlight' : ''}`} ref={drop} >
             <GripIcon className="me-2 clickable gripicon" innerRef={drag} />
             <Checkbox checked={task.is_completed} onClick={() => onTaskComplete(task.id, task.is_completed)} />
             <div className="flex-grow-1">
