@@ -8,7 +8,7 @@ import dragItemTypes from '../../constants/drag-item.types';
 import Checkbox from '../ui/icons/checkbox.component';
 import OptionIcon from '../ui/icons/options.component';
 
-function TaskListItem ({ task, onTaskDelete, onTaskEdit, onDrop }) {
+function TaskListItem ({ task, onTaskDelete, onTaskEdit, onDrop, onTaskComplete }) {
     const [dragProps, drag] = useDrag(() => ({
         type: dragItemTypes.TASK,
         item: { id: task.id },
@@ -29,7 +29,7 @@ function TaskListItem ({ task, onTaskDelete, onTaskEdit, onDrop }) {
     return <React.Fragment>
         <div className={`list-item ${dropProps.isOver ? 'drop-highlight' : ''}`} ref={drop} >
             <GripIcon className="me-2 clickable gripicon" innerRef={drag} />
-            <Checkbox />
+            <Checkbox checked={task.is_completed} onClick={() => onTaskComplete(task.id, task.is_completed)} />
             <div className="flex-grow-1">
                 <div className="d-flex justify-content-between">
                     <h5>{task.name}</h5>
@@ -45,7 +45,7 @@ function TaskListItem ({ task, onTaskDelete, onTaskEdit, onDrop }) {
     </React.Fragment>
 }
 
-function TaskEditor({ projectName, tasks, onTaskAddIconClick, onTaskDelete, onTaskEdit, onDrop }) {
+function TaskEditor({ projectName, tasks, onTaskAddIconClick, onTaskDelete, onTaskEdit, onDrop, onTaskComplete }) {
     return <div className="task-editor">
         <div className="d-flex justify-content-between align-items-center">
             <h4>{projectName}</h4>
@@ -63,6 +63,7 @@ function TaskEditor({ projectName, tasks, onTaskAddIconClick, onTaskDelete, onTa
                     onTaskEdit={onTaskEdit} 
                     onTaskDelete={onTaskDelete} 
                     onDrop={onDrop}
+                    onTaskComplete={onTaskComplete}
                 />)
             }
         </div>
@@ -74,7 +75,8 @@ TaskListItem.propTypes = {
     task: PropTypes.object.isRequired,
     onTaskDelete: PropTypes.func.isRequired,
     onTaskEdit: PropTypes.func.isRequired,
-    onDrop: PropTypes.func.isRequired
+    onDrop: PropTypes.func.isRequired,
+    onTaskComplete: PropTypes.func.isRequired
 }
 
 TaskEditor.propTypes = {
@@ -83,7 +85,8 @@ TaskEditor.propTypes = {
     onTaskAddIconClick: PropTypes.func.isRequired,
     onTaskDelete: PropTypes.func.isRequired,
     onTaskEdit: PropTypes.func.isRequired,
-    onDrop: PropTypes.func.isRequired
+    onDrop: PropTypes.func.isRequired,
+    onTaskComplete: PropTypes.func.isRequired
 }
 
 export default TaskEditor;

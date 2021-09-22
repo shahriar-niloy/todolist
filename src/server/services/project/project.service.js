@@ -9,9 +9,9 @@ async function getProject(id) {
     const project = await ProjectModel.findOne({ 
         where: { id }, 
         include: [{ 
-            model: TaskModel, 
-            order: ['order', 'ASC'] 
-        }]
+            model: TaskModel
+        }],
+        order: [[TaskModel, 'order', 'ASC']] 
     });
 
     if (!project) return Return.service(null, [{ message: 'Project does not exist.' }]);

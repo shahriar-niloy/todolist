@@ -53,11 +53,10 @@ async function updateTask(data) {
         project_id 
     } = data;
 
-    if (!name || !order || !project_id) return Return.service(null, [{ message: 'Must provide required paramters.' }]);
-
-    const project = await ProjectModel.findOne({ where: { id: project_id }});
-
-    if (!project) return Return.service(null, [{ message: 'Project not found.' }]);
+    if (project_id) {
+        const project = await ProjectModel.findOne({ where: { id: project_id }});
+        if (!project) return Return.service(null, [{ message: 'Project not found.' }]);
+    }
 
     const task = await TaskModel.findOne({ where: { id } });
 

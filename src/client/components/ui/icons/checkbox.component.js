@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Checkbox({ label, name, value, onClick }) {
+function Checkbox({ label, name, checked, onClick }) {
     return <label class="checkbox-wrapper">
         {label}
-        <input type="checkbox" name={name} value={value} onClick={onClick} />
+        <input type="checkbox" name={name} checked={checked} onClick={onClick} />
         <span className="checkmark"></span>
     </label>
 };
@@ -19,7 +19,7 @@ Checkbox.proptType = {
     onClick: PropTypes.func.isRequired,
     label: PropTypes.string.isRequired,
     name: PropTypes.string,
-    value: PropTypes.string
+    checked: PropTypes.string
 }
 
 export default Checkbox;

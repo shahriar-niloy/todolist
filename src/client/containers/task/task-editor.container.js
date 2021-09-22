@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import TaskEditor from '../../components/editor/task-editor.component';
 import Modal from '../../components/modal';
 import { getProjectAction } from '../../store/actions/project.action';
-import { bulkUpdateTasksAction, deleteTaskAction, dropTask } from '../../store/actions/task.action';
+import { bulkUpdateTasksAction, deleteTaskAction, dropTask, updateTaskAction } from '../../store/actions/task.action';
 import TaskFormContainer from './task-form.container';
 
 function TaskEditorContainer() {
@@ -45,6 +45,10 @@ function TaskEditorContainer() {
         dispatch(bulkUpdateTasksAction(requestBody));
     }, [taskList]);
 
+    const handleTaskComplete = (taskID, isCurrentlyComplete) => {
+        dispatch(updateTaskAction(taskID, { is_completed: !isCurrentlyComplete }));
+    }
+
     useEffect(() => {
         dispatch(getProjectAction(projectID));
     }, [projectID]);
@@ -57,6 +61,7 @@ function TaskEditorContainer() {
             onTaskAddIconClick={handleTaskAddIconClick} 
             onTaskEdit={handleTaskEdit}
             onDrop={handleTaskDrop}
+            onTaskComplete={handleTaskComplete}
         />
         <Modal isOpen={showTaskForm} onRequestClose={() => setShowTaskForm(false)} >
             <TaskFormContainer 
