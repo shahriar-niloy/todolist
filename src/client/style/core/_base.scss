@@ -7,3 +7,9 @@
 .hidden {
     display: none;
 }
+
+.align-xy {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -6,6 +6,7 @@ import DeleteIcon from '../ui/icons/delete.component';
 import GripIcon from '../ui/icons/grip.component';
 import dragItemTypes from '../../constants/drag-item.types';
 import Checkbox from '../ui/icons/checkbox.component';
+import OptionIcon from '../ui/icons/options.component';
 
 function TaskListItem ({ task, onTaskDelete, onTaskEdit, onDrop }) {
     const [dragProps, drag] = useDrag(() => ({
@@ -48,7 +49,10 @@ function TaskEditor({ projectName, tasks, onTaskAddIconClick, onTaskDelete, onTa
     return <div className="task-editor">
         <div className="d-flex justify-content-between align-items-center">
             <h4>{projectName}</h4>
-            <i class="fas fa-plus font-size-16 clickable" onClick={onTaskAddIconClick} ></i>
+            <div className="align-xy">
+                <i class="fal fa-plus font-size-21 clickable me-3" onClick={onTaskAddIconClick} ></i>
+                <OptionIcon />
+            </div>
         </div>
         <hr></hr>
         <div>
