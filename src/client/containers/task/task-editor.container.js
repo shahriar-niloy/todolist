@@ -18,6 +18,7 @@ function TaskEditorContainer() {
     const [taskID, setTaskID] = useState(null);
 
     const handleTaskAddIconClick = () => {
+        setTaskID(null);
         setShowTaskForm(true);
     }
 
