@@ -29,6 +29,14 @@
         display: flex;
         padding: 12px 0px;
         user-select: none;
+
+        .active-on-hover {
+            opacity: 0%;
+        }
+
+        &:hover .active-on-hover {
+            opacity: 100%;
+        }
     }
 
     .completed {

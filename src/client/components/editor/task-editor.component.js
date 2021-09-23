@@ -29,14 +29,14 @@ function TaskListItem ({ task, onTaskDelete, onTaskEdit, onDrop, onTaskComplete 
 
     return <React.Fragment>
         <div className={`list-item ${task.is_completed ? 'completed' : ''} ${dropProps.isOver ? 'drop-highlight' : ''}`} ref={drop} >
-            <GripIcon className="me-2 clickable gripicon" innerRef={drag} />
+            <GripIcon className="me-2 clickable gripicon active-on-hover" innerRef={drag} />
             <Checkbox checked={task.is_completed} onClick={() => onTaskComplete(task.id, task.is_completed)} />
             <div className="flex-grow-1">
                 <div className="d-flex justify-content-between">
                     <h5>{task.name}</h5>
                     <div>
-                        <EditIcon className="font-size-16 me-3 clickable" onClick={() => onTaskEdit(task.id)} />
-                        <DeleteIcon className="font-size-16 clickable" onClick={() => onTaskDelete(task.id)} />
+                        <EditIcon className="font-size-16 me-3 clickable active-on-hover" onClick={() => onTaskEdit(task.id)} />
+                        <DeleteIcon className="font-size-16 clickable active-on-hover" onClick={() => onTaskDelete(task.id)} />
                     </div>
                 </div>
                 <div>{task.description}</div>
