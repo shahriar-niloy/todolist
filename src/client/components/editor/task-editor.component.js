@@ -8,6 +8,7 @@ import dragItemTypes from '../../constants/drag-item.types';
 import Checkbox from '../ui/icons/checkbox.component';
 import OptionIcon from '../ui/icons/options.component';
 import Popover from '../lib/popover';
+import NoTask from '../task/no-task.component';
 
 function TaskListItem ({ task, onTaskDelete, onTaskEdit, onDrop, onTaskComplete }) {
     const [dragProps, drag] = useDrag(() => ({
@@ -71,6 +72,9 @@ function TaskEditor({ projectName, tasks, showCompletedTasks, onTaskAddIconClick
                     /> 
                     : null
                 )
+            }
+            {
+                tasks && tasks.length === 0 && <NoTask />
             }
         </div>
         <div></div>

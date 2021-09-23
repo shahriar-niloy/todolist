@@ -47,3 +47,27 @@
         }
     }
 }
+
+.notask {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    color: aqua;
+
+    h5 {
+        text-align: center;
+        color: #d4d4d4;
+        font-size: 14px;
+    }
+
+    &-img {
+        width: 200px;
+        height: 200px;
+    }
+
+    path {
+        fill: #797979;
+    }
+}
