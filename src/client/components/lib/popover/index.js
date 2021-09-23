@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Overlay, Popover as ReactPopover, PopoverBody } from 'react-bootstrap';
 
-function Popover({ children, component, placement }) {
+function Popover({ children, component: Component, placement }) {
     const [show, setShow] = useState(false);
     const ref = useRef(null);
 
@@ -16,7 +16,7 @@ function Popover({ children, component, placement }) {
                         className="popover-default"
                     >
                     <PopoverBody className="popover-body">
-                        {component()}
+                        <Component hidePopover={() => setShow(false)} />
                     </PopoverBody>
                 </ReactPopover>
             }

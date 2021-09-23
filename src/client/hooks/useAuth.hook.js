@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { loginActionCreator } from '../store/actions/authenticate.action';
+import { loginActionCreator, logoutActionCreator } from '../store/actions/authenticate.action';
 
 export default function useAuth() {
     const profile = useSelector(state => state.user.profile);
@@ -11,7 +11,7 @@ export default function useAuth() {
         dispatch(loginActionCreator(email, password));    
     };
 
-    const logout = () => null; // Logout 
+    const logout = () => dispatch(logoutActionCreator());
 
     return {
         isLoggedIn, 

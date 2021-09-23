@@ -19,3 +19,15 @@ export function loginActionCreator(email, password) {
     };
 }
 
+export function* logout() {
+    try {
+        yield axios.get('/api/logout');
+        yield put({ type: actionTypes.LOGOUT_SUCCESS });
+    } catch(err) {
+        console.log(err);
+    }
+}
+
+export function logoutActionCreator() {
+    return { type: actionTypes.LOGOUT };
+}
