@@ -63,7 +63,7 @@ function TaskEditorContainer() {
             onTaskEdit={handleTaskEdit}
             onDrop={handleTaskDrop}
             onTaskComplete={handleTaskComplete}
-            ProjectMenu={() => <ProjectMenuContainer />}
+            ProjectMenu={props => <ProjectMenuContainer {...props} projectID={projectID} />}
         />
         <Modal isOpen={showTaskForm} onRequestClose={() => setShowTaskForm(false)} >
             <TaskFormContainer 
