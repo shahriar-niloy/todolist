@@ -16,6 +16,24 @@ function TaskEditorContainer() {
     const taskList = useSelector(state => state.task.list);
     const [showTaskForm, setShowTaskForm] = useState(false);
     const [taskID, setTaskID] = useState(null);
+    const [showCompletedTasks, setShowCompletedTask] = useState(false);
+    
+    const reorderTasksOnComplete = (taskID, isCompleted) => {
+        const latestTaskList = [...taskList];
+        
+        const taskIndex = latestTaskList.findIndex(task => task.id === taskID);
+        latestTaskList[taskIndex].is_completed =  isCompleted;
+
+        const rearrangedTasks = [...latestTaskList.filter(task => !task.is_completed), ...latestTaskList.filter(task => task.is_completed)];
+
+        return rearrangedTasks.map((task, index) => {
+            return { 
+                id: task.id, 
+                order: index,
+                is_completed: task.is_completed
+            };
+        });
+    }
 
     const handleTaskAddIconClick = () => {
         setTaskID(null);
@@ -48,7 +66,8 @@ function TaskEditorContainer() {
     }, [taskList]);
 
     const handleTaskComplete = (taskID, isCurrentlyComplete) => {
-        dispatch(updateTaskAction(taskID, { is_completed: !isCurrentlyComplete }));
+        const rearrangedTasks = reorderTasksOnComplete(taskID, !isCurrentlyComplete);
+        dispatch(bulkUpdateTasksAction(rearrangedTasks));
     }
 
     useEffect(() => {
@@ -59,12 +78,18 @@ function TaskEditorContainer() {
         <TaskEditor 
             projectName={project?.name} 
             tasks={taskList}
+            showCompletedTasks={showCompletedTasks}
             onTaskDelete={handleTaskDelete} 
             onTaskAddIconClick={handleTaskAddIconClick} 
             onTaskEdit={handleTaskEdit}
             onDrop={handleTaskDrop}
             onTaskComplete={handleTaskComplete}
-            ProjectMenu={props => <ProjectMenuContainer {...props} projectID={projectID} />}
+            ProjectMenu={props => <ProjectMenuContainer 
+                projectID={projectID} 
+                showCompletedTasks={showCompletedTasks}
+                onShowCompletedTaskChange={show => setShowCompletedTask(show)}
+                {...props} 
+            />}
         />
         <Modal isOpen={showTaskForm} onRequestClose={() => setShowTaskForm(false)} >
             <TaskFormContainer 

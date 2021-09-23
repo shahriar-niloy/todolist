@@ -46,7 +46,7 @@ function TaskListItem ({ task, onTaskDelete, onTaskEdit, onDrop, onTaskComplete 
     </React.Fragment>
 }
 
-function TaskEditor({ projectName, tasks, onTaskAddIconClick, onTaskDelete, onTaskEdit, onDrop, onTaskComplete, ProjectMenu }) {
+function TaskEditor({ projectName, tasks, showCompletedTasks, onTaskAddIconClick, onTaskDelete, onTaskEdit, onDrop, onTaskComplete, ProjectMenu }) {
     return <div className="task-editor">
         <div className="d-flex justify-content-between align-items-center">
             <h4>{projectName}</h4>
@@ -60,14 +60,17 @@ function TaskEditor({ projectName, tasks, onTaskAddIconClick, onTaskDelete, onTa
         <hr></hr>
         <div>
             {
-                tasks && tasks.map(task => <TaskListItem 
-                    key={task.id}
-                    task={task} 
-                    onTaskEdit={onTaskEdit} 
-                    onTaskDelete={onTaskDelete} 
-                    onDrop={onDrop}
-                    onTaskComplete={onTaskComplete}
-                />)
+                tasks && tasks.map(task => showCompletedTasks || !task.is_completed 
+                    ? <TaskListItem 
+                        key={task.id}
+                        task={task} 
+                        onTaskEdit={onTaskEdit} 
+                        onTaskDelete={onTaskDelete} 
+                        onDrop={onDrop}
+                        onTaskComplete={onTaskComplete}
+                    /> 
+                    : null
+                )
             }
         </div>
         <div></div>
@@ -85,6 +88,7 @@ TaskListItem.propTypes = {
 TaskEditor.propTypes = {
     projectName: PropTypes.string.isRequired,
     tasks: PropTypes.array.isRequired,
+    showCompletedTasks: PropTypes.bool,
     onTaskAddIconClick: PropTypes.func.isRequired,
     onTaskDelete: PropTypes.func.isRequired,
     onTaskEdit: PropTypes.func.isRequired,
