@@ -34,7 +34,10 @@ const Task = sequelize.define("task", {
     project_id: {
         type: UUID,
         allowNull: false
-    }    
+    },
+    parent_task_id: {
+        type: UUID
+    }
 }, {
     timestamps: true,
     schema: config.DATABASE_SCHEMA_NAME,
@@ -44,5 +47,7 @@ const Task = sequelize.define("task", {
 
 Task.belongsTo(ProjectModel, { foreignKey: 'project_id' });
 ProjectModel.hasMany(Task, { foreignKey: 'project_id' });
+Task.hasMany(Task, { as: 'subtasks', foreignKey: 'parent_task_id' });
+Task.belongsTo(Task, { as: 'parentTask', foreignKey: 'parent_task_id' });
 
 module.exports = Task;
