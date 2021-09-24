@@ -24,7 +24,7 @@ async function createTask(data) {
         project_id 
     } = data;
 
-    if (!name || !order || !project_id) return Return.service(null, [{ message: 'Must provide required paramters.' }]);
+    if (!name || !Number.isInteger(order) || !project_id) return Return.service(null, [{ message: 'Must provide required paramters.' }]);
 
     const project = await ProjectModel.findOne({ where: { id: project_id }});
 
