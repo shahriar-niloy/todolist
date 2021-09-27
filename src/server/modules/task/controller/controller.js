@@ -109,8 +109,26 @@ async function bulkUpdateTasks(req, res) {
     res.json(successResponse);
 }
 
+async function getAllSubtasks(req, res) {
+    const successResponse = new Response.success();
+    const errorResponse = new Response.error();
+    const id = req.params.id;
+
+    const [taskHierarchy, errors] = await TaskService.getAllSubtasks(id);
+
+    if (errors) {
+        errors.forEach(e => errorResponse.addError(e.message, ''));
+        return res.status(400).json(errorResponse);
+    }
+
+    successResponse.data = TaskViewModels.subtaskHierarchy(taskHierarchy);
+
+    res.json(successResponse);
+}
+
 exports.getTask = getTask;
 exports.createTask = createTask;
 exports.updateTask = updateTask;
 exports.deleteTask = deleteTask;
 exports.bulkUpdateTasks = bulkUpdateTasks;
+exports.getAllSubtasks = getAllSubtasks;

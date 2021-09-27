@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import TaskEditor from '../../components/editor/task-editor.component';
@@ -13,11 +13,16 @@ function TaskEditorContainer() {
     const params = useParams();
     const projectID = params.id;
     const project = useSelector(state => state.project.details);
-    const taskList = useSelector(state => state.task.list);
     const [showTaskForm, setShowTaskForm] = useState(false);
     const [taskID, setTaskID] = useState(null);
     const [showCompletedTasks, setShowCompletedTask] = useState(false);
-    
+    const { 
+        flat: taskList, 
+        tree: taskTree, 
+        taskToSubtask, 
+        subtaskToTask
+    } = useSelector(state => state.task.list);
+
     const reorderTasksOnComplete = (taskID, isCompleted) => {
         const latestTaskList = [...taskList];
         
@@ -50,19 +55,50 @@ function TaskEditorContainer() {
         setTaskID(id);
     }
 
-    const handleTaskDrop = useCallback((source, target) => {
-        const rearrangedTasks = [...taskList];
+    const handleTaskDrop = useCallback((source, target) => {        
+        const updatedTaskToSubtask = new Map(taskToSubtask);
 
-        const sourceIndex = rearrangedTasks.findIndex(task => task.id === source);
-        const targetIndex = rearrangedTasks.findIndex(task => task.id === target);
-        
-        rearrangedTasks.splice(targetIndex, 0, rearrangedTasks.splice(sourceIndex, 1)[0]);
+        const sourceParent = subtaskToTask.get(source);
+        const targetParent = subtaskToTask.get(target);
 
-        dispatch(dropTask(rearrangedTasks));
+        if (sourceParent === targetParent) {
+            const subtasks = taskToSubtask.get(sourceParent);
+            
+            const sourceIndex = subtasks.findIndex(task => task.id === source);
+            const targetIndex = subtasks.findIndex(task => task.id === target);
 
-        const requestBody = rearrangedTasks.map((task, index) => { task.order = index; return task; });
+            subtasks.splice(targetIndex, 0, subtasks.splice(sourceIndex, 1)[0]);
 
-        dispatch(bulkUpdateTasksAction(requestBody));
+            for (let i = 0; i < subtasks.length; ++i) subtasks[i].order = i;
+
+            updatedTaskToSubtask.set(sourceParent, subtasks);
+        } else {
+            const sourceSubtasks = taskToSubtask.get(sourceParent); 
+            const targetSubtasks = taskToSubtask.get(targetParent);
+            
+            const sourceIndex = sourceSubtasks.findIndex(task => task.id === source);
+            const targetIndex = targetSubtasks.findIndex(task => task.id === target);
+            
+            const removedTask = sourceSubtasks.splice(sourceIndex, 1)[0];
+            
+            removedTask.parent_task_id = targetParent;
+
+            targetSubtasks.splice(targetIndex, 0, removedTask);
+
+            for (let i = 0; i < sourceSubtasks.length; ++i) sourceSubtasks[i].order = i;
+            for (let i = 0; i < targetSubtasks.length; ++i) targetSubtasks[i].order = i;
+
+            updatedTaskToSubtask.set(source, sourceSubtasks);
+            updatedTaskToSubtask.set(target, targetSubtasks);
+        }
+
+        const rearrangedTasksFlat = [];
+
+        updatedTaskToSubtask.forEach(value => rearrangedTasksFlat.push(...value));
+
+        dispatch(dropTask(rearrangedTasksFlat));
+
+        dispatch(bulkUpdateTasksAction(rearrangedTasksFlat));
     }, [taskList]);
 
     const handleTaskComplete = (taskID, isCurrentlyComplete) => {
@@ -77,7 +113,7 @@ function TaskEditorContainer() {
     return <>
         <TaskEditor 
             projectName={project?.name} 
-            tasks={taskList}
+            tasks={[...(taskTree||[])]}
             showCompletedTasks={showCompletedTasks}
             onTaskDelete={handleTaskDelete} 
             onTaskAddIconClick={handleTaskAddIconClick} 
@@ -99,7 +135,7 @@ function TaskEditorContainer() {
                     setShowTaskForm(false); 
                     setTaskID(null); 
                 }} 
-                order={taskList?.length || 0} 
+                createAtOrder={taskList?.length || 0} 
             />
         </Modal>
     </>

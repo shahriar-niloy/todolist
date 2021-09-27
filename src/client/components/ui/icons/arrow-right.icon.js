@@ -1,23 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function GripIcon({ className, fontSize, innerRef, onClick }) {
+function ArrowRightIcon({ className, fontSize, onClick }) {
     return <i 
-        ref={innerRef}
-        class={`fas fa-grip-vertical clickable font-size-${fontSize} ${className || ''}`} 
+        class={`fal fa-angle-right clickable font-size-${fontSize} ${className || ''}`} 
         onClick={onClick} 
     />
 }
 
-GripIcon.defaultProps = {
+ArrowRightIcon.defaultProps = {
     fontSize: '18',
     onclick: () => null
 };
 
-GripIcon.proptType = {
+ArrowRightIcon.proptType = {
     onClick: PropTypes.func,
     className: PropTypes.string,
     fontSize: PropTypes.string
 };
 
-export default GripIcon;
+export default ArrowRightIcon;

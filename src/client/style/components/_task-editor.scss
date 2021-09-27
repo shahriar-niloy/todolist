@@ -1,5 +1,5 @@
 .task-editor {
-    min-width: 80%;
+    min-width: 100%;
 
     h4 {
         font-weight: bold;
@@ -15,12 +15,6 @@
         margin: 0px;
     }
 
-    .gripicon {
-        margin-left: -1rem !important;
-        padding-top: 2px;
-        font-size: 17px !important;
-    }
-
     .drop-highlight {
         background-color: #ffffff17;
     }
@@ -30,6 +24,10 @@
         padding: 12px 0px;
         user-select: none;
 
+        .description {
+            color: $secorday-font-color !important;
+        }
+
         .active-on-hover {
             opacity: 0%;
         }
@@ -37,14 +35,64 @@
         &:hover .active-on-hover {
             opacity: 100%;
         }
+
+        .right-actions {
+            color: hsla(0, 0%, 100%, 0.56);
+
+            i {
+                padding: 4px;
+                border-radius: 3px;
+            }
+
+            i:hover {
+                color: $primary-font-color;
+                background: #4d4d4d;
+                color: rgba(255, 255, 255, 0.87);
+            }
+        }
+
+        .left-actions {
+            margin-left: -1.5rem;
+            color: hsla(0, 0%, 100%, 0.56);
+
+            i,
+            &-wide i {
+                padding: 4px;
+                border-radius: 3px;
+            }
+
+            &-wide {
+                color: hsla(0, 0%, 100%, 0.56);
+                margin-left: -2.9rem;
+            }
+
+            i:hover,
+            &-wide i:hover {
+                background: #4d4d4d;
+                color: $primary-font-color;
+            }
+
+            &:hover {
+                color: $primary-font-color;
+            }
+        }
     }
 
     .completed {
+        h5 {
+            text-decoration: line-through;
+        }
+
         h5,
         div {
-            text-decoration: line-through;
             color: $task-completed-color !important;
         }
+    }
+
+    .slide-down {
+        padding-top: 3rem;
+        background: #252525;
+        transition: padding-top 0.25s;
     }
 }
 
