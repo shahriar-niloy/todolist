@@ -11,80 +11,124 @@ import Popover from '../lib/popover';
 import NoTask from '../task/no-task.component';
 import ArrowRightIcon from '../ui/icons/arrow-right.icon';
 import DragPreview from '../dragpreview/drag-preview.component';
+import DROP_HIGHLIGHT_DRAWERS from '../../constants/taskitem-drop-highlight.constant';
 
 function TaskListItem ({ task, tasks, showCompletedTasks, onTaskDelete, onTaskEdit, onDrop, onTaskComplete }) {
     const [showSubtasks, setShowSubtasks] = useState(false);
     const containerRef = useRef();
     const [containerWidth, setContainerWidth] = useState();
+    const [containerHeight, setContainerHeight] = useState();
+    const [openedDropHighlightDrawer, setOpenedDropHighlightDrawer] = useState(null);
+    const [dragItemContainerHeight, setDragItemContainerHeight] = useState(0);
+    const adjustSlideDownHeight = -10;
 
-    const [dragProps, drag] = useDrag(
+    const [, drag] = useDrag(
         () => ({
             type: dragItemTypes.TASK,
             item: {
                 id: task.id,
                 name: task.name,
                 description: task.description,
-                previewWidth: containerWidth
+                previewWidth: containerWidth,
+                previewHeight: containerHeight
             },
-            collect: (monitor) => ({
-                isDragging: !!monitor.isDragging(),
-            }),
+            collect: monitor => {
+                return {
+                    isDragging: !!monitor.isDragging(),
+                    getClientOffset: monitor.getClientOffset()
+                }
+            }
         }),
-        [containerWidth, task, dragItemTypes]
+        [containerWidth, containerHeight, task, dragItemTypes]
     );
 
     const [dropProps, drop] = useDrop(
         () => ({
-          accept: dragItemTypes.TASK,
-          drop: source => onDrop(source.id, task.id),
-          collect: monitor => ({ isOver: monitor.isOver() })
-        }),
-        [task, onDrop]
-    );
+            accept: dragItemTypes.TASK,
+            drop: source => onDrop(source.id, task.id, openedDropHighlightDrawer),
+            collect: monitor => { 
+                return ({ 
+                    isOver: monitor.isOver(),
+                    getClientOffset: monitor.getClientOffset()
+                })
+            },
+            hover: (item, monitor) => {
+                let { x: pointerX, y: pointerY } = monitor.getClientOffset();
+                const posFromTop = containerRef.current?.offsetTop;
+                const posFromLeft = containerRef.current?.offsetLeft;
+                const containerWidth = containerRef?.current?.clientWidth;
+                const containerHeight = containerRef?.current?.clientHeight;
+                let middlePointOnY = posFromTop + (containerHeight / 2.0) ;
+                const isOver = monitor.isOver();
+                const positionAboveScroll = document.querySelector('.editor-main').scrollTop;
+                const adjustMiddlePointYBy = -(containerHeight*0.05);
+                const subtaskDropHighlightPadLeftFactor = 0.1;
+                const subtaskDropHighlightLeftPad = posFromLeft + (containerWidth * subtaskDropHighlightPadLeftFactor);
 
-    const [dropSliderProps, dropSlider] = useDrop(
-        () => ({
-          accept: dragItemTypes.TASK,
-          drop: source => onDrop(source.id, task.id),
-          collect: monitor => ({ isOver: monitor.isOver() })
+                pointerY += positionAboveScroll;
+                middlePointOnY += adjustMiddlePointYBy;
+
+                if (pointerY < middlePointOnY) {
+                    setOpenedDropHighlightDrawer(DROP_HIGHLIGHT_DRAWERS.TOP);
+                } else {
+                    if (pointerX > subtaskDropHighlightLeftPad) {
+                        setOpenedDropHighlightDrawer(DROP_HIGHLIGHT_DRAWERS.SUBTASK);
+                    } else {
+                        setOpenedDropHighlightDrawer(DROP_HIGHLIGHT_DRAWERS.BOTTOM);
+                    }
+                }
+
+                setDragItemContainerHeight(isOver ? item.previewHeight : null);
+            }
         }),
-        [task, onDrop]
+        [task, onDrop, containerRef.current, openedDropHighlightDrawer]
     );
 
     useEffect(() => {
         setContainerWidth(
             containerRef?.current?.clientWidth 
-                ? containerRef?.current?.clientWidth + 'px'
+                ? containerRef?.current?.clientWidth
                 : ''
-            );
+        );
+        setContainerHeight(
+            containerRef?.current?.clientHeight 
+                ? containerRef?.current?.clientHeight
+                : ''
+        );
     }, [containerRef.current])
 
-    return <div ref={containerRef}>
-        <div className={dropProps.isOver || dropSliderProps.isOver  ? 'slide-down' : ''} ref={dropSlider} ></div>
-        <div className={`list-item ${task.is_completed ? 'completed' : ''} ${dropProps.isOver || dropSliderProps.isOver ? 'drop-highlight' : ''}`} ref={drop} >
-            <div className={task?.subtasks?.length ? 'left-actions-wide' : 'left-actions'}>
-                <GripIcon className="me-2 active-on-hover" fontSize="16" innerRef={drag} />
-                { task.subtasks && task.subtasks.length > 0 && 
-                    <ArrowRightIcon 
-                        className="me-2 active-on-hover" 
-                        fontSize="19" 
-                        onClick={() => setShowSubtasks(!showSubtasks)}
-                    /> 
-                }
-            </div>
-            <Checkbox checked={task.is_completed} onClick={() => onTaskComplete(task.id, task.is_completed)} />
-            <div className="flex-grow-1">
-                <div className="d-flex justify-content-between">
-                    <h5>{task.name}</h5>
-                    <div className="right-actions">
-                        <EditIcon className="font-size-16 me-2 clickable active-on-hover" onClick={() => onTaskEdit(task.id)} />
-                        <DeleteIcon className="font-size-16 clickable active-on-hover" onClick={() => onTaskDelete(task.id)} />
+    return <div>
+        <div ref={containerRef}>
+            <div ref={drop}>
+                <div style={dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.TOP ? { height: dragItemContainerHeight + adjustSlideDownHeight } : { height: '0px' }} className={`drop-extendable ${dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.TOP  ? 'drop-highlight' : ''}`} ></div>
+                <div className={`list-item ${task.is_completed ? 'completed' : ''}`} >
+                    <div className={task?.subtasks?.length ? 'left-actions-wide' : 'left-actions'}>
+                        <GripIcon className="me-2 active-on-hover" fontSize="16" innerRef={drag} />
+                        { task.subtasks && task.subtasks.length > 0 && 
+                            <ArrowRightIcon 
+                                className="me-2 active-on-hover" 
+                                fontSize="19" 
+                                onClick={() => setShowSubtasks(!showSubtasks)}
+                            /> 
+                        }
+                    </div>
+                    <Checkbox checked={task.is_completed} onClick={() => onTaskComplete(task.id, task.is_completed)} />
+                    <div className="flex-grow-1">
+                        <div className="d-flex justify-content-between">
+                            <h5>{task.name}</h5>
+                            <div className="right-actions">
+                                <EditIcon className="font-size-16 me-2 clickable active-on-hover" onClick={() => onTaskEdit(task.id)} />
+                                <DeleteIcon className="font-size-16 clickable active-on-hover" onClick={() => onTaskDelete(task.id)} />
+                            </div>
+                        </div>
+                        <div className="description">{task.description}</div>
                     </div>
                 </div>
-                <div className="description">{task.description}</div>
+                {!showSubtasks && <div style={dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.BOTTOM ? { height: dragItemContainerHeight + adjustSlideDownHeight } : { height: '0px' }} className={`drop-extendable ${dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.BOTTOM  ? 'drop-highlight' : ''}`} ></div>}
+                <div style={dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.SUBTASK ? { height: dragItemContainerHeight + adjustSlideDownHeight } : { height: '0px' }} className={`ms-4 drop-extendable ${dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.SUBTASK  ? 'drop-highlight' : ''}`} ></div>
+                <hr></hr>
             </div>
         </div>
-        <hr></hr>
         {
             showSubtasks && task.subtasks && <div className="ms-4">
                 {

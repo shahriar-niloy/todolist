@@ -4,9 +4,10 @@ import { useParams } from 'react-router-dom';
 import TaskEditor from '../../components/editor/task-editor.component';
 import Modal from '../../components/modal';
 import { getProjectAction } from '../../store/actions/project.action';
-import { bulkUpdateTasksAction, deleteTaskAction, dropTask, updateTaskAction } from '../../store/actions/task.action';
+import { bulkUpdateTasksAction, deleteTaskAction, dropTask } from '../../store/actions/task.action';
 import ProjectMenuContainer from '../project/project-menu.container';
 import TaskFormContainer from './task-form.container';
+import DROP_HIGHLIGHT_DRAWERS from '../../constants/taskitem-drop-highlight.constant';
 
 function TaskEditorContainer() {
     const dispatch = useDispatch();
@@ -55,17 +56,25 @@ function TaskEditorContainer() {
         setTaskID(id);
     }
 
-    const handleTaskDrop = useCallback((source, target) => {        
+    const handleTaskDrop = useCallback((source, target, droppedOn) => {        
         const updatedTaskToSubtask = new Map(taskToSubtask);
 
         const sourceParent = subtaskToTask.get(source);
-        const targetParent = subtaskToTask.get(target);
+        const targetParent = droppedOn === DROP_HIGHLIGHT_DRAWERS.SUBTASK 
+            ? target
+            : subtaskToTask.get(target);
 
         if (sourceParent === targetParent) {
             const subtasks = taskToSubtask.get(sourceParent);
             
             const sourceIndex = subtasks.findIndex(task => task.id === source);
-            const targetIndex = subtasks.findIndex(task => task.id === target);
+            let targetIndex = subtasks.findIndex(task => task.id === target);
+
+            if (sourceIndex > targetIndex && droppedOn === DROP_HIGHLIGHT_DRAWERS.BOTTOM) {
+                targetIndex++;
+            } else if (targetIndex > sourceIndex && !(droppedOn === DROP_HIGHLIGHT_DRAWERS.BOTTOM)) {
+                targetIndex--;
+            }
 
             subtasks.splice(targetIndex, 0, subtasks.splice(sourceIndex, 1)[0]);
 
@@ -74,10 +83,13 @@ function TaskEditorContainer() {
             updatedTaskToSubtask.set(sourceParent, subtasks);
         } else {
             const sourceSubtasks = taskToSubtask.get(sourceParent); 
-            const targetSubtasks = taskToSubtask.get(targetParent);
+            const targetSubtasks = taskToSubtask.get(targetParent) || [];
             
             const sourceIndex = sourceSubtasks.findIndex(task => task.id === source);
-            const targetIndex = targetSubtasks.findIndex(task => task.id === target);
+            let targetIndex = targetSubtasks.findIndex(task => task.id === target);
+
+            if (targetIndex === -1) targetIndex = 0;
+            if (droppedOn === DROP_HIGHLIGHT_DRAWERS.BOTTOM) targetIndex++;
             
             const removedTask = sourceSubtasks.splice(sourceIndex, 1)[0];
             
@@ -88,8 +100,8 @@ function TaskEditorContainer() {
             for (let i = 0; i < sourceSubtasks.length; ++i) sourceSubtasks[i].order = i;
             for (let i = 0; i < targetSubtasks.length; ++i) targetSubtasks[i].order = i;
 
-            updatedTaskToSubtask.set(source, sourceSubtasks);
-            updatedTaskToSubtask.set(target, targetSubtasks);
+            updatedTaskToSubtask.set(sourceParent, sourceSubtasks);
+            updatedTaskToSubtask.set(targetParent, targetSubtasks);
         }
 
         const rearrangedTasksFlat = [];
@@ -99,7 +111,7 @@ function TaskEditorContainer() {
         dispatch(dropTask(rearrangedTasksFlat));
 
         dispatch(bulkUpdateTasksAction(rearrangedTasksFlat));
-    }, [taskList]);
+    }, [taskList, taskToSubtask, subtaskToTask]);
 
     const handleTaskComplete = (taskID, isCurrentlyComplete) => {
         const rearrangedTasks = reorderTasksOnComplete(taskID, !isCurrentlyComplete);

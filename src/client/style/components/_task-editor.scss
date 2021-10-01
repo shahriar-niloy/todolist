@@ -15,10 +15,6 @@
         margin: 0px;
     }
 
-    .drop-highlight {
-        background-color: #ffffff17;
-    }
-
     .list-item {
         display: flex;
         padding: 12px 0px;
@@ -89,10 +85,14 @@
         }
     }
 
-    .slide-down {
-        padding-top: 3rem;
-        background: #252525;
-        transition: padding-top 0.25s;
+    .drop {
+        &-highlight {
+            background: #252525;
+        }
+
+        &-extendable {
+            transition: height 0.1s;
+        }
     }
 }
 
