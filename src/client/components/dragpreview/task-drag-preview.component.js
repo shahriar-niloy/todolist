@@ -12,7 +12,6 @@ function TaskDragPreview ({ task }) {
                 <div>{task.description}</div>
             </div>
         </div>
-        <hr></hr>
     </>
 }
 

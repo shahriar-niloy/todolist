@@ -21,6 +21,7 @@ function TaskListItem ({ task, tasks, showCompletedTasks, onTaskDelete, onTaskEd
     const [openedDropHighlightDrawer, setOpenedDropHighlightDrawer] = useState(null);
     const [dragItemContainerHeight, setDragItemContainerHeight] = useState(0);
     const adjustSlideDownHeight = -10;
+    const hasSubtasks = task?.subtasks?.length;
 
     const [, drag] = useDrag(
         () => ({
@@ -99,10 +100,10 @@ function TaskListItem ({ task, tasks, showCompletedTasks, onTaskDelete, onTaskEd
 
     return <div>
         <div ref={containerRef}>
-            <div ref={drop}>
-                <div style={dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.TOP ? { height: dragItemContainerHeight + adjustSlideDownHeight } : { height: '0px' }} className={`drop-extendable ${dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.TOP  ? 'drop-highlight' : ''}`} ></div>
+            <div ref={drop} className={hasSubtasks ? "list-item-container-wide" : "list-item-container"}>
+                <div style={dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.TOP ? { height: dragItemContainerHeight + adjustSlideDownHeight } : { height: '0px' }} className={`drop-extendable ${dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.TOP  ? `drop-highlight${hasSubtasks ? '-wide' : ''}` : ''}`} ></div>
                 <div className={`list-item ${task.is_completed ? 'completed' : ''}`} >
-                    <div className={task?.subtasks?.length ? 'left-actions-wide' : 'left-actions'}>
+                    <div className="left-actions">
                         <GripIcon className="me-2 active-on-hover" fontSize="16" innerRef={drag} />
                         { task.subtasks && task.subtasks.length > 0 && 
                             <ArrowRightIcon 
@@ -124,10 +125,13 @@ function TaskListItem ({ task, tasks, showCompletedTasks, onTaskDelete, onTaskEd
                         <div className="description">{task.description}</div>
                     </div>
                 </div>
-                {!showSubtasks && <div style={dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.BOTTOM ? { height: dragItemContainerHeight + adjustSlideDownHeight } : { height: '0px' }} className={`drop-extendable ${dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.BOTTOM  ? 'drop-highlight' : ''}`} ></div>}
-                <div style={dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.SUBTASK ? { height: dragItemContainerHeight + adjustSlideDownHeight } : { height: '0px' }} className={`ms-4 drop-extendable ${dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.SUBTASK  ? 'drop-highlight' : ''}`} ></div>
-                <hr></hr>
+                {!showSubtasks && <div style={dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.BOTTOM ? { height: dragItemContainerHeight + adjustSlideDownHeight } : { height: '0px' }} className={`drop-extendable ${dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.BOTTOM  ? `drop-highlight${hasSubtasks ? '-wide' : ''}` : ''}`} ></div>}
+                <div className="d-flex">
+                    <div className="subtask-drawer-pad"></div>
+                    <div style={dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.SUBTASK ? { height: dragItemContainerHeight + adjustSlideDownHeight } : { height: '0px' }} className={`drop-extendable subtask-drawer ${dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.SUBTASK  ? `drop-highlight${hasSubtasks ? '-wide' : ''}` : ''}`} ></div>
+                </div>
             </div>
+            <hr></hr>
         </div>
         {
             showSubtasks && task.subtasks && <div className="ms-4">

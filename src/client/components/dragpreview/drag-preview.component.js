@@ -7,7 +7,7 @@ const layerStyles = {
     position: "fixed",
     pointerEvents: "none",
     zIndex: 100,
-    left: 18,
+    left: 0,
     top: -13
 };
 
@@ -30,9 +30,7 @@ function getItemStyles(props) {
 function CustomDragLayer(props) {
     const { item, itemType, isDragging } = props;
     
-    if (!isDragging) {
-        return null;
-    }
+    if (!isDragging) return null;
 
     function renderItem(type, item) {
         switch (type) {

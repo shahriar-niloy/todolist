@@ -20,6 +20,14 @@
         padding: 12px 0px;
         user-select: none;
 
+        &-container {
+            margin-left: -1.5rem;
+        }
+
+        &-container-wide {
+            margin-left: -2.9rem;
+        }
+
         .description {
             color: $secorday-font-color !important;
         }
@@ -48,18 +56,11 @@
         }
 
         .left-actions {
-            margin-left: -1.5rem;
             color: hsla(0, 0%, 100%, 0.56);
 
-            i,
-            &-wide i {
+            i {
                 padding: 4px;
                 border-radius: 3px;
-            }
-
-            &-wide {
-                color: hsla(0, 0%, 100%, 0.56);
-                margin-left: -2.9rem;
             }
 
             i:hover,
@@ -72,6 +73,10 @@
                 color: $primary-font-color;
             }
         }
+    }
+
+    .subtask-drawer-pad {
+        margin-left: 2rem;
     }
 
     .completed {
@@ -88,6 +93,14 @@
     .drop {
         &-highlight {
             background: #252525;
+            margin-left: 1.5rem;
+            width: 100%;
+        }
+
+        &-highlight-wide {
+            background: #252525;
+            margin-left: 2.9rem !important;
+            width: 100%;
         }
 
         &-extendable {
