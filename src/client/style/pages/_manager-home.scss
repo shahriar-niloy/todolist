@@ -1,0 +1,27 @@
+.manager-home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    color: #d4d4d4;
+    flex-grow: 1;
+
+    h5 {
+        text-align: center;
+        font-size: 22px;
+        margin-bottom: 5px;
+    }
+
+    h6 {
+        font-size: 16px;
+    }
+
+    .icon {
+        font-size: 70px;
+        margin-bottom: 25px;
+        padding: 20px;
+        border: 5px solid #d4d4d4;
+        border-radius: 10px;
+    }
+}

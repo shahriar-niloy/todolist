@@ -4,6 +4,7 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import BaseEditor from '../components/editor/base-editor.component';
 import Modal from '../components/modal';
 import Navbar from '../components/navbar';
+import ManagerHome from '../components/states/manager-home.component';
 import { getInitials } from '../utility';
 import ProjectFormContainer from './project/project-form.container';
 import Sidebar from './sidebar.container';
@@ -37,6 +38,7 @@ function ToDoManager() {
             />
             <Switch>
                 <Route path="/projects/:id" exact ><BaseEditor><TaskEditorContainer /></BaseEditor></Route>
+                <Route path="" exact ><ManagerHome /></Route>
             </Switch>
         </div>
         <Modal isOpen={showProjectForm} onRequestClose={handleClose} >
