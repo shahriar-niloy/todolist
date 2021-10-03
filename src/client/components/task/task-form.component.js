@@ -2,18 +2,31 @@ import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import PropTypes from 'prop-types';
 import SubmitButton from '../ui/buttons/submit-button.component';
+import PriorityLevelIcon from '../ui/icons/priority-level.icon';
+import ActionButton from '../ui/buttons/action-button.component';
+import CalendarIcon from '../ui/icons/calendar.icon';
+import Popover from '../lib/popover';
+import TaskScheduler from './task-schedule.component';
+import PrioritySelector from './priority-selector.component';
 
 function TaskForm({ onSubmit, isEditing, task }) {
+    const handleScheduledDateChange = (date, formikProps) => {
+        console.log(date);
+        formikProps.setFieldValue('scheduled_at', date);
+    };
+
     return <Formik
         initialValues={{
-            name: isEditing && task ? task?.name : '',
-            description: isEditing && task ? task?.description : ''
+            name: isEditing && task ? task.name : '',
+            description: isEditing && task ? task.description : '',
+            scheduled_at: isEditing && task ? task.scheduled_at : '',
+            priority: isEditing && task ? task.priority : 'NONE'
         }}
         onSubmit={values => onSubmit(values)}
         enableReinitialize
     >
-        {props => (
-            <Form className="container p-3 form-primary" onSubmit={props.handleSubmit}>
+        {formikProps => (
+            <Form className="container p-3 form-primary" onSubmit={formikProps.handleSubmit}>
                 <div className="row justify-content-center">
                     <div className="col-12">
                         <div class="form-group">
@@ -26,9 +39,39 @@ function TaskForm({ onSubmit, isEditing, task }) {
                         </div>
                     </div>
                 </div>
-                {props.errors.name && <div id="feedback">{props.errors.name}</div>}
+                {formikProps.errors.name && <div id="feedback">{formikProps.errors.name}</div>}
+                <div className="d-flex justify-content-between task-form-actions align-xy">
+                    <Popover 
+                        component={props => 
+                            <TaskScheduler 
+                                date={formikProps.values.scheduled_at} 
+                                onDateChange={date => handleScheduledDateChange(date, formikProps)} 
+                                {...props} 
+                            />} 
+                        extendedClassName="task-scheduler-popup" 
+                        placement="left" 
+                    >
+                        <ActionButton>
+                            <div className="align-xy">
+                                <CalendarIcon fontSize={12} className="me-1" />
+                                <span>{formikProps.values.scheduled_at && new Date(formikProps.values.scheduled_at).toLocaleString('default', { day: 'numeric', month: 'short' }) || 'Schedule'}</span>
+                            </div>
+                        </ActionButton>
+                    </Popover>
+                    <Popover 
+                        component={props => 
+                            <PrioritySelector
+                                priority={formikProps.values.priority} 
+                                onSelect={priority => formikProps.setFieldValue('priority', priority)} 
+                                {...props} 
+                            />} 
+                        extendedClassName="task-scheduler-popup" 
+                    >
+                        <PriorityLevelIcon className="task-form-action-icon" fontSize={16} level={formikProps.values.priority} />
+                    </Popover>
+                </div>
                 <div className="d-flex justify-content-end" >
-                    <SubmitButton extendedClass="mt-3" label={isEditing ? 'Save' : 'Add task'} onClick={props.handleSubmit} />
+                    <SubmitButton extendedClass="mt-3" label={isEditing ? 'Save' : 'Add task'} onClick={formikProps.handleSubmit} />
                 </div>
             </Form>
         )}

@@ -7,7 +7,7 @@ export default function Login() {
     const { isLoggedIn, login } = useAuth();
     const location = useLocation();
 
-    const redirectToPath = location.state.redirectedFromPath || '/';
+    const redirectToPath = location.state?.redirectedFromPath || '/';
 
     const handleSubmit = (values) => login(values.email, values.password);
 

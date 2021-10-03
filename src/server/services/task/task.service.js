@@ -26,6 +26,7 @@ async function createTask(data) {
         name,
         description,
         scheduled_at,
+        priority,
         is_completed,
         order, 
         project_id 
@@ -40,9 +41,10 @@ async function createTask(data) {
     const task = await TaskModel.create({ 
         name, 
         description, 
-        scheduled_at, 
+        scheduled_at: scheduled_at || null, 
         is_completed, 
         order, 
+        priority,
         project_id 
     });
     
@@ -56,7 +58,8 @@ async function updateTask(data) {
         description,
         scheduled_at,
         is_completed,
-        order, 
+        order,
+        priority, 
         project_id 
     } = data;
 
@@ -75,6 +78,7 @@ async function updateTask(data) {
         scheduled_at, 
         is_completed, 
         order, 
+        priority,
         project_id 
     });
     

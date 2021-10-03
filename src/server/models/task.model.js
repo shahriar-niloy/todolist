@@ -31,6 +31,11 @@ const Task = sequelize.define("task", {
         type: DataTypes.INTEGER,
         allowNull: false
     },
+    priority: {
+        type: DataTypes.ENUM,
+        values: ['HIGH','LOW', 'MEDIUM', 'NONE'],
+        defaultValue: 'NONE'
+    }, 
     project_id: {
         type: UUID,
         allowNull: false

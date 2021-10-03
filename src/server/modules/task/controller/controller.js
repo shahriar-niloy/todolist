@@ -32,10 +32,11 @@ async function createTask(req, res) {
         scheduled_at,
         is_completed,
         order, 
+        priority,
         project_id 
     } = req.body;
 
-    const [task, errors] = await TaskService.createTask({ name, description, scheduled_at, is_completed, order, project_id });
+    const [task, errors] = await TaskService.createTask({ name, description, scheduled_at, is_completed, order, project_id, priority });
 
     if (errors) {
         errors.forEach(e => errorResponse.addError(e.message, ''));
@@ -58,11 +59,12 @@ async function updateTask(req, res) {
         description,
         scheduled_at,
         is_completed,
-        order, 
+        order,
+        priority, 
         project_id 
     } = req.body;
 
-    const [task, errors] = await TaskService.updateTask({ id, name, description, scheduled_at, is_completed, order, project_id });
+    const [task, errors] = await TaskService.updateTask({ id, name, description, scheduled_at, is_completed, order, project_id, priority });
 
     if (errors) {
         errors.forEach(e => errorResponse.addError(e.message, ''));

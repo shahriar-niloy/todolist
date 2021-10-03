@@ -6,6 +6,16 @@
     padding-left: 15px !important;
 }
 
-.btn-submit:hover {
+.btn:hover {
     background-color: $default-hover-color !important;
+    color: $primary-font-color !important;
+}
+
+.btn-action {
+    color: #adadad !important;
+    font-weight: 600 !important;
+    border: 1px solid #999999a6 !important;
+    font-size: 12px !important;
+    padding: 0.25rem 0.6rem !important;
+    border-radius: 0.2rem !important;
 }

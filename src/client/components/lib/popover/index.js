@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Overlay, Popover as ReactPopover, PopoverBody } from 'react-bootstrap';
 
-function Popover({ children, component: Component, placement }) {
+function Popover({ children, component: Component, placement, className, extendedClassName }) {
     const [show, setShow] = useState(false);
     const ref = useRef(null);
 
@@ -13,7 +13,7 @@ function Popover({ children, component: Component, placement }) {
                 props => <ReactPopover 
                         {...props}
                         arrowProps={{ ref: null, style: { display: 'none' } }}
-                        className="popover-default"
+                        className={`${className} ${extendedClassName}`}
                     >
                     <PopoverBody className="popover-body">
                         <Component hidePopover={() => setShow(false)} />
@@ -25,7 +25,9 @@ function Popover({ children, component: Component, placement }) {
 }
 
 Popover.defaultProps = {
-    placement: 'bottom'
+    placement: 'bottom',
+    className: 'popover-default',
+    extendedClassName: ''
 }
 
 Popover.propTypes = {

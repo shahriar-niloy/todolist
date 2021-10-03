@@ -8,6 +8,7 @@ function task(_task) {
     viewModel.name = _task.name;
     viewModel.description = _task.description;
     viewModel.scheduled_at = _task.scheduled_at;
+    viewModel.priority = _task.priority;
     viewModel.is_completed = _task.is_completed;
     viewModel.order = _task.order;
     viewModel.project_id = _task.project_id;

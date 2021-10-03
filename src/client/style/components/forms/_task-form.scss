@@ -1,1 +1,17 @@
+.task-form {
+    &-action-icon {
+        padding: 0.25rem;
+        color: #adadad;
+        cursor: pointer;
 
+        &:hover {
+            background: #4d4d4d;
+            color: $primary-font-color;
+            border-radius: 0.15rem;
+        }
+    }
+
+    &-actions {
+        margin-top: 1rem;
+    }
+}
