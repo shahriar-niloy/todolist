@@ -104,7 +104,7 @@ async function bulkUpdateTasks(tasks) {
     
     if (!Array.isArray(tasks)) return Return.service(null, [{ message: 'Tasks must be of type array.' }]);
 
-    for (task of tasks) await TaskModel.update(task, { where: { id: task.id } });
+    for (task of tasks) await TaskModel.update(task, { where: { id: task.id }, individualHooks: true });
     
     const updatedTasks = await TaskModel.findAll({ 
         where: { id: tasks.map(task => task.id) },

@@ -64,7 +64,8 @@
       "dist/*"
     ],
     "events": {
-      "restart": "kill-port 3000"
+        "restart": "sh -c 'lsof -i :${PORT:-3000} -t | xargs kill'",
+        "crash": "sh -c 'lsof -i :${PORT:-3000} -t | xargs kill'"
     },
     "ext": "js, css, json, html, scss"
   }

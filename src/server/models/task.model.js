@@ -55,4 +55,19 @@ ProjectModel.hasMany(Task, { foreignKey: 'project_id' });
 Task.hasMany(Task, { as: 'subtasks', foreignKey: 'parent_task_id' });
 Task.belongsTo(Task, { as: 'parentTask', foreignKey: 'parent_task_id' });
 
+Task.beforeUpdate(async task => {
+    if (task.is_completed && (task.dataValues.is_completed !== task._previousDataValues.is_completed)) {
+        await Task.update(
+            { is_completed: true }, 
+            { 
+                where: { 
+                    parent_task_id: task.id, 
+                    is_completed: false 
+                },
+                individualHooks: true
+            }
+        );
+    }
+});
+
 module.exports = Task;
