@@ -33,10 +33,11 @@ async function createTask(req, res) {
         is_completed,
         order, 
         priority,
-        project_id 
+        project_id,
+        parent_task_id
     } = req.body;
 
-    const [task, errors] = await TaskService.createTask({ name, description, scheduled_at, is_completed, order, project_id, priority });
+    const [task, errors] = await TaskService.createTask({ name, description, scheduled_at, is_completed, order, project_id, priority, parent_task_id });
 
     if (errors) {
         errors.forEach(e => errorResponse.addError(e.message, ''));

@@ -8,6 +8,14 @@
     display: none;
 }
 
+.click-disabled {
+    pointer-events: none !important;
+}
+
+.invisible {
+    opacity: 0% !important;
+}
+
 .align-xy {
     display: flex !important;
     justify-content: center;

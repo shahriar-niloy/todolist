@@ -55,7 +55,12 @@ function processTaskList(tasks) {
 export default function taskReducer(state = initialState, action) {
     switch (action.type) {
         case actions.GET_TASK_SUCCESS:
-            return { ...state, details: action.payload.data.data };
+            const taskDetails = action.payload.data.data;
+            const parentTask = state.list?.flat?.find(task => task.id === taskDetails.parent_task_id);
+            
+            if (parentTask) taskDetails.parentTask = parentTask;
+
+            return { ...state, details: taskDetails };
         case actions.CREATE_TASK_SUCCESS:
             return { ...state, details: action.payload.data.data };
         case actions.GET_PROJECT_SUCCESS:{

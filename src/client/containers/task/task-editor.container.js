@@ -9,6 +9,12 @@ import ProjectMenuContainer from '../project/project-menu.container';
 import TaskFormContainer from './task-form.container';
 import DROP_HIGHLIGHT_DRAWERS from '../../constants/taskitem-drop-highlight.constant';
 
+const taskFormModalStyle = {
+    content: {
+      minWidth: '700px'
+    }
+};
+
 function TaskEditorContainer() {
     const dispatch = useDispatch();
     const params = useParams();
@@ -16,6 +22,7 @@ function TaskEditorContainer() {
     const project = useSelector(state => state.project.details);
     const [showTaskForm, setShowTaskForm] = useState(false);
     const [taskID, setTaskID] = useState(null);
+    const [openTaskFormInDetailView, setOpenTaskFormInDetailView] = useState(false);
     const [showCompletedTasks, setShowCompletedTask] = useState(false);
     const { 
         flat: taskList, 
@@ -118,6 +125,22 @@ function TaskEditorContainer() {
         dispatch(bulkUpdateTasksAction(rearrangedTasks));
     }
 
+    const handleTaskClick = id => {
+        setTaskID(id);
+        setShowTaskForm(true);
+        setOpenTaskFormInDetailView(true);
+    }
+
+    const handleTaskFormClose = () => {
+        setTaskID(null);
+        setOpenTaskFormInDetailView(false);
+        setShowTaskForm(false);
+    }
+
+    const handleNavigateToParentTask = taskID => {
+        setTaskID(taskID);
+    };
+
     useEffect(() => {
         dispatch(getProjectAction(projectID));
     }, [projectID]);
@@ -132,22 +155,32 @@ function TaskEditorContainer() {
             onTaskEdit={handleTaskEdit}
             onDrop={handleTaskDrop}
             onTaskComplete={handleTaskComplete}
+            onTaskClick={handleTaskClick}
             ProjectMenu={props => <ProjectMenuContainer 
                 projectID={projectID} 
                 showCompletedTasks={showCompletedTasks}
                 onShowCompletedTaskChange={show => setShowCompletedTask(show)}
                 {...props} 
             />}
+            isDetailView={openTaskFormInDetailView} 
         />
-        <Modal isOpen={showTaskForm} onRequestClose={() => setShowTaskForm(false)} >
+        <Modal isOpen={showTaskForm} onRequestClose={handleTaskFormClose} style={taskFormModalStyle} >
             <TaskFormContainer 
                 projectID={project?.id}
                 taskID={taskID}
+                subtasks={taskToSubtask?.get(taskID)}
+                isDetailView={openTaskFormInDetailView}
+                createAtOrder={taskList?.length || 0} 
                 onSubmitSuccess={() => { 
                     setShowTaskForm(false); 
                     setTaskID(null); 
                 }} 
-                createAtOrder={taskList?.length || 0} 
+                onTaskEdit={handleTaskEdit}
+                onTaskDelete={handleTaskDelete}
+                onDrop={handleTaskDrop}
+                onTaskComplete={handleTaskComplete}
+                onTaskClick={handleTaskClick}
+                onNavigateToParentTask={handleNavigateToParentTask}
             />
         </Modal>
     </>

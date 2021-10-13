@@ -14,4 +14,102 @@
     &-actions {
         margin-top: 1rem;
     }
+
+    &-detailview {
+        .title-container {
+            margin-bottom: 10px;
+
+            .title {
+                font-size: 16px;
+                font-weight: bold;
+                user-select: text;
+            }
+        }
+
+        .desc-container {
+            margin-bottom: 20px;
+
+            .placeholder-text {
+                color: $secondary-font-color;
+            }
+        }
+    }
+
+    &-tabs {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        margin-bottom: 1rem !important;
+        margin-top: 1rem !important;
+        display: flex;
+
+        .tab-container {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .tab-button {
+            color: $secondary-font-color !important;
+            border: 0 !important;
+            padding: 7px 12px;
+            background-color: transparent !important;
+            border-color: none;
+            width: 100%;
+        }
+
+        .selected {
+            color: $primary-font-color !important;
+            font-weight: 700;
+            border-bottom: 1px solid white !important;
+        }
+
+        .nav-item {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+        }
+    }
+}
+
+.parent-task-navigator {
+    margin-bottom: 0.5rem !important;
+    cursor: pointer;
+    display: flex !important;
+    align-items: center;
+    color: $secondary-font-color;
+
+    i {
+        margin-right: 0.5rem !important;
+    }
+}
+
+.add-subtask {
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem !important;
+    user-select: none;
+    cursor: pointer;
+    color: $secondary-font-color;
+
+    span:hover {
+        color: #de4c4a;
+    }
+
+    .add-icon {
+        width: 17px;
+        height: 17px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        margin-right: 0.7rem;
+
+        i {
+            font-size: 14px;
+            color: $primary-font-color;
+        }
+    }
+
+    &:hover .add-icon {
+        background: #de4c4a;
+    }
 }

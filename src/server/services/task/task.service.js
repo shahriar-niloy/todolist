@@ -29,7 +29,8 @@ async function createTask(data) {
         priority,
         is_completed,
         order, 
-        project_id 
+        project_id,
+        parent_task_id
     } = data;
 
     if (!name || !Number.isInteger(order) || !project_id) return Return.service(null, [{ message: 'Must provide required paramters.' }]);
@@ -45,7 +46,8 @@ async function createTask(data) {
         is_completed, 
         order, 
         priority,
-        project_id 
+        project_id,
+        parent_task_id
     });
     
     return Return.service(TaskViewModels.task(task));

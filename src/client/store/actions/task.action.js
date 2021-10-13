@@ -36,6 +36,23 @@ export function* createTask(data) {
     }
 }
 
+export function createSubTaskAction(data) {
+    return {
+        type: actionTypes.CREATE_SUBTASK,
+        payload:data
+    }
+}
+
+export function* createSubTask(data) {
+    try {
+        const task = yield axios.post('/api/tasks', data.payload);
+        yield put({ type: actionTypes.CREATE_SUBTASK_SUCCESS , payload: task });
+        yield put(getProjectAction(task.data.data.project_id));
+    } catch(err) {
+        console.log(err);
+    }
+}
+
 export function updateTaskAction(id, data) {
     return {
         type: actionTypes.UPDATE_TASK,
