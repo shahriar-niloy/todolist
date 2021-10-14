@@ -192,7 +192,7 @@ function TaskForm({
                 {(!isDetailView || overrideDetailView) && <div className="d-flex justify-content-end" >
                     <SubmitButton extendedClass="mt-3" label={isEditing ? 'Save' : 'Add task'} onClick={formikProps.handleSubmit} />
                 </div>}
-                <Tabs
+                {(isEditing || isDetailView) && <Tabs
                     id="controlled-tab-example"
                     activeKey={selectedTab}
                     onSelect={k => setSelectedTab(k)}
@@ -230,7 +230,7 @@ function TaskForm({
                     <Tab eventKey={TABS.COMMENT} title="Comments" tabClassName={`tab-button ${selectedTab === TABS.COMMENT ? 'selected' : ''}`}>
                         <div>Comments</div>
                     </Tab>
-                </Tabs>
+                </Tabs>}
             </Form>
         )}
     </Formik>;

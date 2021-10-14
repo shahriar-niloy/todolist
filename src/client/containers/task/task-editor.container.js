@@ -168,7 +168,7 @@ function TaskEditorContainer() {
             <TaskFormContainer 
                 projectID={project?.id}
                 taskID={taskID}
-                subtasks={taskToSubtask?.get(taskID)}
+                subtasks={taskID ? taskToSubtask?.get(taskID) : []}
                 isDetailView={openTaskFormInDetailView}
                 createAtOrder={taskList?.length || 0} 
                 onSubmitSuccess={() => { 
