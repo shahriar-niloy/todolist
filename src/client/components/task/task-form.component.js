@@ -134,7 +134,7 @@ function TaskForm({
                     <div className="col-12 title-container">
                         <div class="form-group">
                             {isDetailView && !overrideDetailView
-                                ? <span className="title" onClick={() => setOverrideDetailView(true)} >{formikProps.values.name}</span>
+                                ? <span className="title" onClick={() => !task?.is_completed && setOverrideDetailView(true)} >{formikProps.values.name}</span>
                                 : <Field type="name" name="name" className="form-control" id="name" placeholder="Enter task name"/>
                             }
                         </div>
@@ -143,8 +143,8 @@ function TaskForm({
                         <div class="form-group">
                             {isDetailView && !overrideDetailView
                                 ? formikProps.values.description 
-                                    ? <span onClick={() => setOverrideDetailView(true)} >{formikProps.values.description}</span>
-                                    : <span className="placeholder-text" >Description</span>
+                                    ? <span onClick={() => !task?.is_completed && setOverrideDetailView(true)} >{formikProps.values.description}</span>
+                                    : <span onClick={() => !task?.is_completed && setOverrideDetailView(true)} className="placeholder-text" >Description</span>
                                 : <Field as="textarea" rows="4" type="text" name="description" className="form-control" id="description" placeholder="Enter task description"/>
                             }
                         </div>
@@ -164,6 +164,7 @@ function TaskForm({
                             />} 
                         extendedClassName="task-scheduler-popup" 
                         placement="left" 
+                        disabled={task?.is_completed}
                     >
                         <ActionButton>
                             <div className="align-xy">
@@ -183,6 +184,7 @@ function TaskForm({
                                 {...props} 
                             />} 
                         extendedClassName="task-scheduler-popup" 
+                        disabled={task?.is_completed}
                     >
                         <PriorityLevelIcon className="task-form-action-icon" fontSize={16} level={formikProps.values.priority} />
                     </Popover>
@@ -217,7 +219,7 @@ function TaskForm({
                                     onCancel={() => setIsAddingSubtask(false)} 
                                 />
                             }
-                            {!isAddingSubtask && <div className="add-subtask" onClick={() => setIsAddingSubtask(true)} >
+                            {!isAddingSubtask && !task?.is_completed && <div className="add-subtask" onClick={() => setIsAddingSubtask(true)} >
                                 <span className="add-icon">
                                     <AddIcon onclick={() => console.log('Add subtask')} />
                                 </span>

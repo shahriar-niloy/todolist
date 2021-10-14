@@ -121,7 +121,7 @@ function TaskListItem ({ task, tasks, showCompletedTasks, onTaskDelete, onTaskEd
                         <div className="d-flex justify-content-between">
                             <h5 onClick={() => onTaskClick(task.id)}>{task.name}</h5>
                             <div className="right-actions">
-                                <EditIcon className="font-size-16 me-2 clickable active-on-hover" onClick={() => onTaskEdit(task.id)} />
+                                {!task.is_completed && <EditIcon className="font-size-16 me-2 clickable active-on-hover" onClick={() => onTaskEdit(task.id)} />}
                                 <DeleteIcon className="font-size-16 clickable active-on-hover" onClick={() => onTaskDelete(task.id)} />
                             </div>
                         </div>
