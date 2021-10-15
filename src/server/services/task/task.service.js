@@ -4,6 +4,7 @@ const ProjectModel = require(path.join(process.cwd(), 'src/server/models/project
 const { Return } = require(path.join(process.cwd(), 'src/server/schemas'));
 const { TaskViewModels } = require(path.join(process.cwd(), 'src/server/view-models'));
 const sequelize = require(path.join(process.cwd(), 'src/server/lib/sequelize'));
+const eventManager = require(path.join(process.cwd(), 'src/server/lib/events'));
 
 async function getTask(id) {
     if (!id) return Return.service(null, [{ message: 'Must provide required paramters.' }]);
@@ -104,8 +105,17 @@ async function bulkUpdateTasks(tasks) {
     
     if (!Array.isArray(tasks)) return Return.service(null, [{ message: 'Tasks must be of type array.' }]);
 
-    for (task of tasks) await TaskModel.update(task, { where: { id: task.id }, individualHooks: true });
-    
+    const eventName = `bulk_task_update_end_${Math.random()}`;
+
+    eventManager.addEvent(eventName);
+
+    for (const task of tasks) {
+        await TaskModel.update(task, { where: { id: task.id }, individualHooks: true, subscribeToEvent: eventName });
+    }
+
+    await eventManager.emit(eventName);
+    eventManager.removeEvent(eventName);
+
     const updatedTasks = await TaskModel.findAll({ 
         where: { id: tasks.map(task => task.id) },
         order: [['order', 'ASC']]

@@ -4,6 +4,7 @@ const { DataTypes, UUID, UUIDV4 } = require("sequelize");
 const sequelize = require(path.join(process.cwd(), 'src/server/lib/sequelize'));
 const config = require(path.join(process.cwd(), 'src/server/config/config'));
 const ProjectModel = require(path.join(process.cwd(), 'src/server/models/project.model'));
+const eventManager = require(path.join(process.cwd(), 'src/server/lib/events'));
 
 const Task = sequelize.define("task", {
     id: {
@@ -55,9 +56,11 @@ ProjectModel.hasMany(Task, { foreignKey: 'project_id' });
 Task.hasMany(Task, { as: 'subtasks', foreignKey: 'parent_task_id' });
 Task.belongsTo(Task, { as: 'parentTask', foreignKey: 'parent_task_id' });
 
-Task.beforeUpdate(async task => {
-    if (task.is_completed && (task.dataValues.is_completed !== task._previousDataValues.is_completed)) {
-        await Task.update(
+Task.beforeUpdate(async (task, options) => {
+    const { subscribeToEvent } = options;
+
+    const markChildTasksAsComplete = async () => {
+        return await Task.update(
             { is_completed: true }, 
             { 
                 where: { 
@@ -67,6 +70,29 @@ Task.beforeUpdate(async task => {
                 individualHooks: true
             }
         );
+    };
+
+    const markParentTasksAsIncomplete = async () => {
+        return await Task.update(
+            { is_completed: false }, 
+            { 
+                where: { 
+                    id: task.parent_task_id, 
+                    is_completed: true 
+                },
+                individualHooks: true
+            }
+        );
+    };
+
+    if (task.dataValues.is_completed !== task._previousDataValues.is_completed) {
+        if (task.is_completed && task.id) {
+            if (subscribeToEvent) eventManager.subscribe(subscribeToEvent, markChildTasksAsComplete);
+            else await markChildTasksAsComplete();
+        } else if (!task.is_completed && task.parent_task_id) {
+            if (subscribeToEvent) eventManager.subscribe(subscribeToEvent, markParentTasksAsIncomplete);
+            else await markParentTasksAsIncomplete();
+        }
     }
 });
 
