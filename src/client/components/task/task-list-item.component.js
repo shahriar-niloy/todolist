@@ -43,7 +43,9 @@ function TaskListItem ({ task, tasks, showCompletedTasks, isDropDisabled, onTask
     const [dropProps, drop] = useDrop(
         () => ({
             accept: dragItemTypes.TASK,
-            drop: source => !isDropDisabled && !task.is_completed && onDrop(source.id, task.id, openedDropHighlightDrawer),
+            drop: source => !isDropDisabled && !task.is_completed 
+                ? onDrop(source.id, task.id, openedDropHighlightDrawer)
+                : undefined,
             collect: monitor => { 
                 return ({ 
                     isOver: monitor.isOver(),
