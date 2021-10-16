@@ -193,7 +193,7 @@ function TaskEditorContainer() {
                 taskID={taskID}
                 subtasks={taskID ? taskToSubtask?.get(taskID) : []}
                 isDetailView={openTaskFormInDetailView}
-                createAtOrder={taskList?.length || 0} 
+                createAtOrder={taskList?.filter(task => !task.is_completed).length || 0} 
                 onSubmitSuccess={() => { 
                     setShowTaskForm(false); 
                     setTaskID(null); 
