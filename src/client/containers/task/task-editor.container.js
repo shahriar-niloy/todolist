@@ -31,13 +31,36 @@ function TaskEditorContainer() {
         subtaskToTask
     } = useSelector(state => state.task.list);
 
-    const reorderTasksOnComplete = (taskID, isCompleted) => {
-        const latestTaskList = [...taskList];
-        
-        const taskIndex = latestTaskList.findIndex(task => task.id === taskID);
-        latestTaskList[taskIndex].is_completed =  isCompleted;
+    function reorderTasks(tasksTree, taskID, isCompleted, taskFound=false) {
+        if (!tasksTree || !tasksTree.length) return [[], false];
+    
+        const taskIndex = tasksTree.findIndex(task => task.id === taskID);
+        let rearrangedTasks = tasksTree;
+        let taskFoundInCurrentList = taskIndex !== -1;
+        let tasksOfPreviousLevel = [];
+        let taskFoundInPreviousLevels = false;
 
-        const rearrangedTasks = [...latestTaskList.filter(task => !task.is_completed), ...latestTaskList.filter(task => task.is_completed)];
+        if (taskFoundInCurrentList) tasksTree[taskIndex].is_completed =  isCompleted;
+
+        for (let i = 0; i < rearrangedTasks.length; ++i) {
+            const [accumulatedTaskListSoFar, taskFoundInChild] = reorderTasks(rearrangedTasks[i].subtasks, taskID, isCompleted, taskFound || taskFoundInCurrentList);
+            
+            if (taskFoundInChild && !isCompleted) rearrangedTasks[i].is_completed = false;
+            
+            if (taskFoundInChild) taskFoundInPreviousLevels = true;
+        
+            tasksOfPreviousLevel = [...tasksOfPreviousLevel, ...accumulatedTaskListSoFar];
+        }
+    
+        if (taskFoundInCurrentList || !isCompleted || !taskFound) {
+            rearrangedTasks = [...rearrangedTasks.filter(task => !task.is_completed), ...rearrangedTasks.filter(task => task.is_completed)];
+        }
+
+        return [[...tasksOfPreviousLevel, ...rearrangedTasks], taskFoundInCurrentList || taskFoundInPreviousLevels];
+    }
+
+    const reorderTasksOnComplete = (taskID, isCompleted) => {
+        const [rearrangedTasks] = reorderTasks(taskTree, taskID, isCompleted);
 
         return rearrangedTasks.map((task, index) => {
             return { 
