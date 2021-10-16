@@ -10,7 +10,7 @@ import Checkbox from '../ui/icons/checkbox.component';
 import ArrowRightIcon from '../ui/icons/arrow-right.icon';
 import DROP_HIGHLIGHT_DRAWERS from '../../constants/taskitem-drop-highlight.constant';
 
-function TaskListItem ({ task, tasks, showCompletedTasks, onTaskDelete, onTaskEdit, onDrop, onTaskComplete, onTaskClick }) {
+function TaskListItem ({ task, tasks, showCompletedTasks, isDropDisabled, onTaskDelete, onTaskEdit, onDrop, onTaskComplete, onTaskClick }) {
     const [showSubtasks, setShowSubtasks] = useState(false);
     const containerRef = useRef();
     const [containerWidth, setContainerWidth] = useState();
@@ -43,7 +43,7 @@ function TaskListItem ({ task, tasks, showCompletedTasks, onTaskDelete, onTaskEd
     const [dropProps, drop] = useDrop(
         () => ({
             accept: dragItemTypes.TASK,
-            drop: source => onDrop(source.id, task.id, openedDropHighlightDrawer),
+            drop: source => !isDropDisabled && !task.is_completed && onDrop(source.id, task.id, openedDropHighlightDrawer),
             collect: monitor => { 
                 return ({ 
                     isOver: monitor.isOver(),
@@ -80,7 +80,7 @@ function TaskListItem ({ task, tasks, showCompletedTasks, onTaskDelete, onTaskEd
                 setDragItemContainerHeight(isOver ? item.previewHeight : null);
             }
         }),
-        [task, onDrop, containerRef.current, openedDropHighlightDrawer]
+        [task, onDrop, containerRef.current, openedDropHighlightDrawer, isDropDisabled]
     );
 
     useEffect(() => {
@@ -104,7 +104,7 @@ function TaskListItem ({ task, tasks, showCompletedTasks, onTaskDelete, onTaskEd
     return <div>
         <div ref={containerRef} >
             <div ref={drop} className={hasSubtasks ? "list-item-container-wide" : "list-item-container"}>
-                <div style={dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.TOP ? { height: dragItemContainerHeight + adjustSlideDownHeight } : { height: '0px' }} className={`drop-extendable ${dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.TOP  ? `drop-highlight${hasSubtasks ? '-wide' : ''}` : ''}`} ></div>
+                {!isDropDisabled && !task.is_completed && <div style={dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.TOP ? { height: dragItemContainerHeight + adjustSlideDownHeight } : { height: '0px' }} className={`drop-extendable ${dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.TOP  ? `drop-highlight${hasSubtasks ? '-wide' : ''}` : ''}`} ></div>}
                 <div className={`list-item ${task.is_completed ? 'completed' : ''}`} >
                     <div className="left-actions">
                         <GripIcon className={`me-2 active-on-hover ${task.is_completed ? 'click-disabled invisible' : ''}`} fontSize="16" innerRef={drag} /> 
@@ -128,8 +128,8 @@ function TaskListItem ({ task, tasks, showCompletedTasks, onTaskDelete, onTaskEd
                         <div className="description" onClick={() => onTaskClick(task.id)} >{task.description}</div>
                     </div>
                 </div>
-                {!showSubtasks && <div style={dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.BOTTOM ? { height: dragItemContainerHeight + adjustSlideDownHeight } : { height: '0px' }} className={`drop-extendable ${dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.BOTTOM  ? `drop-highlight${hasSubtasks ? '-wide' : ''}` : ''}`} ></div>}
-                {!showSubtasks && <div className="d-flex">
+                {!showSubtasks && !isDropDisabled && !task.is_completed && <div style={dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.BOTTOM ? { height: dragItemContainerHeight + adjustSlideDownHeight } : { height: '0px' }} className={`drop-extendable ${dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.BOTTOM  ? `drop-highlight${hasSubtasks ? '-wide' : ''}` : ''}`} ></div>}
+                {!showSubtasks && !isDropDisabled && !task.is_completed && <div className="d-flex">
                     <div className="subtask-drawer-pad"></div>
                     <div style={dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.SUBTASK ? { height: dragItemContainerHeight + adjustSlideDownHeight } : { height: '0px' }} className={`drop-extendable subtask-drawer ${dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.SUBTASK  ? `drop-highlight${hasSubtasks ? '-wide' : ''}` : ''}`} ></div>
                 </div>}
@@ -144,6 +144,7 @@ function TaskListItem ({ task, tasks, showCompletedTasks, onTaskDelete, onTaskEd
                         task={subtask}
                         tasks={tasks}
                         showCompletedTasks={showCompletedTasks}
+                        isDropDisabled={task.is_completed || isDropDisabled}
                         onTaskDelete={onTaskDelete}
                         onTaskEdit={onTaskEdit}
                         onTaskClick={onTaskClick}
@@ -154,6 +155,10 @@ function TaskListItem ({ task, tasks, showCompletedTasks, onTaskDelete, onTaskEd
             </div>
         }
     </div>
+}
+
+TaskListItem.defaultProps = {
+    isDropDisabled: false
 }
 
 TaskListItem.propTypes = {
