@@ -8,6 +8,7 @@ import { bulkUpdateTasksAction, deleteTaskAction, dropTask } from '../../store/a
 import ProjectMenuContainer from '../project/project-menu.container';
 import TaskFormContainer from './task-form.container';
 import DROP_HIGHLIGHT_DRAWERS from '../../constants/taskitem-drop-highlight.constant';
+import DeleteConfirmation from '../../components/confirmation/delete-confirmation.component';
 
 const taskFormModalStyle = {
     content: {
@@ -24,6 +25,7 @@ function TaskEditorContainer() {
     const [taskID, setTaskID] = useState(null);
     const [openTaskFormInDetailView, setOpenTaskFormInDetailView] = useState(false);
     const [showCompletedTasks, setShowCompletedTask] = useState(false);
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const { 
         flat: taskList, 
         tree: taskTree, 
@@ -77,8 +79,8 @@ function TaskEditorContainer() {
     }
 
     const handleTaskDelete = (id) => {
-        const response = confirm('Are you sure you want to delete the task?');
-        if (response) dispatch(deleteTaskAction(id, project?.id));
+        setShowDeleteConfirmation(true);
+        setTaskID(id);
     }
 
     const handleTaskEdit = (id) => {
@@ -206,6 +208,19 @@ function TaskEditorContainer() {
                 onNavigateToParentTask={handleNavigateToParentTask}
             />
         </Modal>
+        <DeleteConfirmation 
+            isOpen={showDeleteConfirmation}
+            onDelete={() => {
+                dispatch(deleteTaskAction(taskID, project?.id));
+                setShowDeleteConfirmation(false);
+            }}
+            onCancel={() => { 
+                setShowDeleteConfirmation(false);
+                setTaskID(null);
+            }}
+        >
+            Are you sure you want to delete the task?
+        </DeleteConfirmation>
     </>
 }
 

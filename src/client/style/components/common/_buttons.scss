@@ -19,3 +19,16 @@
     padding: 0.25rem 0.6rem !important;
     border-radius: 0.2rem !important;
 }
+
+.btn-delete {
+    background-color: #de4c4a !important;
+    color: #fff !important;
+    box-shadow: 1px 1px 2px #1d1d1d;
+    padding-right: 15px !important;
+    padding-left: 15px !important;
+}
+
+.btn-delete:hover {
+    background-color: #de4c4a !important;
+    color: #fff !important;
+}
