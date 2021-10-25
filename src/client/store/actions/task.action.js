@@ -94,14 +94,25 @@ export function dropTask(tasks) {
     }
 }
 
-export function bulkUpdateTasksAction(tasks) {
+export function bulkUpdateTasksAction(tasks, onSuccess, onError) {
     return {
         type: actionTypes.BULK_UPDATE_TASKS,
-        payload: { tasks }
+        payload: { tasks },
+        onSuccess,
+        onError
     }
 }
 
 export function* bulkUpdateTasks(data) {
-    const tasks = yield axios.put('/api/tasks', data.payload.tasks);
-    yield put({ type: actionTypes.BULK_UPDATE_TASKS_SUCCESS , payload: tasks });
+    const { onSuccess, onError } = data;
+
+    try {
+        const tasks = yield axios.put('/api/tasks', data.payload.tasks);
+        
+        onSuccess && onSuccess();
+
+        yield put({ type: actionTypes.BULK_UPDATE_TASKS_SUCCESS , payload: tasks });
+    } catch(err) {
+        onError && onError(err);
+    }
 }

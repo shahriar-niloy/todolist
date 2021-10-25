@@ -145,9 +145,9 @@ function TaskEditorContainer() {
         dispatch(bulkUpdateTasksAction(rearrangedTasksFlat));
     }, [taskList, taskToSubtask, subtaskToTask]);
 
-    const handleTaskComplete = (taskID, isCurrentlyComplete) => {
+    const handleTaskComplete = (taskID, isCurrentlyComplete, onSuccess, onError) => {
         const rearrangedTasks = reorderTasksOnComplete(taskID, !isCurrentlyComplete);
-        dispatch(bulkUpdateTasksAction(rearrangedTasks));
+        dispatch(bulkUpdateTasksAction(rearrangedTasks, onSuccess, onError));
     }
 
     const handleTaskClick = id => {

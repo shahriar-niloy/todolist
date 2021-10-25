@@ -39,6 +39,12 @@ function TaskFormContainer({
         dispatch(createSubTaskAction(values));
     }
 
+    const handleTaskComplete = (taskID, isCurrentlyComplete) => {
+        onTaskComplete(taskID, isCurrentlyComplete, () => {
+            dispatch(getTaskAction(taskID));
+        });
+    }
+
     useEffect(() => {
         if (taskID) dispatch(getTaskAction(taskID));
     }, [taskID]);
@@ -52,7 +58,7 @@ function TaskFormContainer({
         onTaskEdit={onTaskEdit}
         onTaskDelete={onTaskDelete}
         onDrop={onDrop}
-        onTaskComplete={onTaskComplete}
+        onTaskComplete={handleTaskComplete}
         onTaskClick={onTaskClick}
         onSubtaskAdd={handleSubtaskAdd}
         onNavigateToParentTask={onNavigateToParentTask}

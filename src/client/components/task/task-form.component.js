@@ -8,10 +8,12 @@ import CalendarIcon from '../ui/icons/calendar.icon';
 import Popover from '../lib/popover';
 import TaskScheduler from './task-schedule.component';
 import PrioritySelector from './priority-selector.component';
-import { Tabs, Tab } from 'react-bootstrap';
+import { Tabs, Tab, ToggleButton } from 'react-bootstrap';
 import TaskListManager from './task-list-manager.component';
 import AddIcon from '../ui/icons/add.icon';
 import BranchIcon from '../ui/icons/branch.icon';
+import SquareIcon from '../ui/icons/square.icon';
+import CheckSquareIcon from '../ui/icons/check-square.icon';
 
 const TABS = {
     COMMENT: 'COMMENT',
@@ -173,21 +175,27 @@ function TaskForm({
                             </div>
                         </ActionButton>
                     </Popover>
-                    <Popover 
-                        component={props => 
-                            <PrioritySelector
-                                priority={formikProps.values.priority} 
-                                onSelect={priority => { 
-                                    formikProps.setFieldValue('priority', priority);
-                                    setOverrideDetailView(true);
-                                }} 
-                                {...props} 
-                            />} 
-                        extendedClassName="task-scheduler-popup" 
-                        disabled={task?.is_completed}
-                    >
-                        <PriorityLevelIcon className="task-form-action-icon" fontSize={16} level={formikProps.values.priority} />
-                    </Popover>
+                    <div>
+                        {task?.is_completed 
+                            ? <CheckSquareIcon className="font-size-17 task-form-action-icon me-2" onClick={() => onTaskComplete(task?.id, true)} />
+                            : <SquareIcon className="font-size-17 task-form-action-icon me-2" onClick={() => onTaskComplete(task?.id, false)} /> 
+                        }
+                        <Popover 
+                            component={props => 
+                                <PrioritySelector
+                                    priority={formikProps.values.priority} 
+                                    onSelect={priority => { 
+                                        formikProps.setFieldValue('priority', priority);
+                                        setOverrideDetailView(true);
+                                    }} 
+                                    {...props} 
+                                />} 
+                            extendedClassName="task-scheduler-popup" 
+                            disabled={task?.is_completed}
+                        >
+                            <PriorityLevelIcon className="task-form-action-icon" fontSize={16} level={formikProps.values.priority} />
+                        </Popover>
+                    </div>
                 </div>
                 {(!isDetailView || overrideDetailView) && <div className="d-flex justify-content-end" >
                     <SubmitButton extendedClass="mt-3" label={isEditing ? 'Save' : 'Add task'} onClick={formikProps.handleSubmit} />
