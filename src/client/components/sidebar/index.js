@@ -1,22 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-
-function SidebarItem({ path, name, ContextMenuTrigger, contextID, triggerID, isSelected=false }) {
-    return <div className={`menuitem ${isSelected ? 'menuitem-selected' : ''}`}>
-        {
-            ContextMenuTrigger 
-                ? <ContextMenuTrigger id={contextID} triggerID={triggerID} collect={props => ({ triggerID: props.triggerID })} >
-                    <Link to={path} aria-current="page">
-                        <span>{name}</span>
-                    </Link>    
-                </ContextMenuTrigger>
-                : <Link to={path} aria-current="page">
-                    <span>{name}</span>
-                </Link>    
-        }
-    </div>
-}
+import CalendarTodayIcon from '../ui/icons/calendar-today.icon';
+import SidebarItem from './sidebar-item.component';
 
 function Sidebar ({ projects, onProjectAddClick, MenuItemContextMenuTrigger, menuItemContextMenuID, currentPathname }) {
     const isAProjectSelected = projects && projects.some(project => project.path === currentPathname);
@@ -26,6 +11,17 @@ function Sidebar ({ projects, onProjectAddClick, MenuItemContextMenuTrigger, men
         <div
             className="d-flex flex-column flex-shrink-0 p-3 text-white sidebar"
         >
+            <div className="mb-2">
+                <SidebarItem 
+                    path="/today"
+                    isSelected={currentPathname === "/today"}
+                >
+                    <div className="align-y">
+                        <CalendarTodayIcon className="me-2" fontSize="14" />
+                        <span>Today</span>
+                    </div>
+                </SidebarItem>
+            </div>
             <div className="nav nav-pills flex-column mb-auto expandable_menu_section">
                 <div className="d-flex align-items-center justify-content-between">
                     <div className="d-flex align-items-center">
@@ -59,15 +55,7 @@ Sidebar.propTypes = {
     projects: PropTypes.array.isRequired,
     onProjectAddClick: PropTypes.func.isRequired,
     MenuItemContextMenuTrigger: PropTypes.func,
-    menuItemContextMenuID: PropTypes.string
-}
-
-SidebarItem.propTypes = {
-    path: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    ContextMenuTrigger: PropTypes.func,
-    contextMenuID: PropTypes.string,
-    triggerID: PropTypes.string,
+    menuItemContextMenuID: PropTypes.string,
     currentPathname: PropTypes.string
 }
 
