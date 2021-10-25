@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-function SidebarItem({ path, name, ContextMenuTrigger, contextID, triggerID }) {
-    return <div className="menuitem">
+function SidebarItem({ path, name, ContextMenuTrigger, contextID, triggerID, isSelected=false }) {
+    return <div className={`menuitem ${isSelected ? 'menuitem-selected' : ''}`}>
         {
             ContextMenuTrigger 
                 ? <ContextMenuTrigger id={contextID} triggerID={triggerID} collect={props => ({ triggerID: props.triggerID })} >
@@ -18,8 +18,9 @@ function SidebarItem({ path, name, ContextMenuTrigger, contextID, triggerID }) {
     </div>
 }
 
-function Sidebar ({ projects, onProjectAddClick, MenuItemContextMenuTrigger, menuItemContextMenuID }) {
-    const [isProjectExpanded, setIsProjectExanded]= useState(false);
+function Sidebar ({ projects, onProjectAddClick, MenuItemContextMenuTrigger, menuItemContextMenuID, currentPathname }) {
+    const isAProjectSelected = projects && projects.some(project => project.path === currentPathname);
+    const [isProjectExpanded, setIsProjectExanded]= useState(isAProjectSelected);
 
     return (
         <div
@@ -33,7 +34,7 @@ function Sidebar ({ projects, onProjectAddClick, MenuItemContextMenuTrigger, men
                     </div>
                     <i class="fas fa-plus font-size-12 clickable" onClick={onProjectAddClick} />
                 </div>
-                <input class="hidden" id="expandable_menuitem" type="checkbox" onClick={() => setIsProjectExanded(!isProjectExpanded)} />
+                <input class="hidden" id="expandable_menuitem" type="checkbox" onClick={() => setIsProjectExanded(!isProjectExpanded)} checked={isProjectExpanded} />
                 <div className="expanded_section">
                     {projects &&
                         projects.length &&
@@ -45,6 +46,7 @@ function Sidebar ({ projects, onProjectAddClick, MenuItemContextMenuTrigger, men
                                 triggerID={i.id}
                                 ContextMenuTrigger={MenuItemContextMenuTrigger}
                                 contextID={menuItemContextMenuID}
+                                isSelected={currentPathname === i.path}
                             />
                         ))}
                 </div>
@@ -65,7 +67,8 @@ SidebarItem.propTypes = {
     name: PropTypes.string.isRequired,
     ContextMenuTrigger: PropTypes.func,
     contextMenuID: PropTypes.string,
-    triggerID: PropTypes.string
+    triggerID: PropTypes.string,
+    currentPathname: PropTypes.string
 }
 
 export default Sidebar;
