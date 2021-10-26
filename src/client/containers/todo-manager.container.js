@@ -37,8 +37,9 @@ function ToDoManager() {
                 }} 
             />
             <Switch>
-                <Route path="/projects/:id" exact ><BaseEditor><TaskEditorContainer /></BaseEditor></Route>
-                <Route path="" exact ><ManagerHome /></Route>
+                <Route path="/projects/:id"><BaseEditor><TaskEditorContainer /></BaseEditor></Route>
+                <Route path="/today"><BaseEditor>Today</BaseEditor></Route>
+                <Route path=""><ManagerHome /></Route>
             </Switch>
         </div>
         <Modal isOpen={showProjectForm} onRequestClose={handleClose} >

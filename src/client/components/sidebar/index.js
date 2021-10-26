@@ -9,9 +9,9 @@ function Sidebar ({ projects, onProjectAddClick, MenuItemContextMenuTrigger, men
 
     return (
         <div
-            className="d-flex flex-column flex-shrink-0 p-3 text-white sidebar"
+            className="d-flex flex-column flex-shrink-0 text-white sidebar"
         >
-            <div className="mb-2">
+            <div className="mb-3">
                 <SidebarItem 
                     path="/today"
                     isSelected={currentPathname === "/today"}
