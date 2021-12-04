@@ -1,10 +1,13 @@
 const path = require('path');
+const { where: Where, fn, col } = require('sequelize');
+
 const TaskModel = require(path.join(process.cwd(), 'src/server/models/task.model'));
 const ProjectModel = require(path.join(process.cwd(), 'src/server/models/project.model'));
 const { Return } = require(path.join(process.cwd(), 'src/server/schemas'));
 const { TaskViewModels } = require(path.join(process.cwd(), 'src/server/view-models'));
 const sequelize = require(path.join(process.cwd(), 'src/server/lib/sequelize'));
 const eventManager = require(path.join(process.cwd(), 'src/server/lib/events'));
+const UserModel = require(path.join(process.cwd(), 'src/server/models/user.model'));
 
 async function getTask(id) {
     if (!id) return Return.service(null, [{ message: 'Must provide required paramters.' }]);
@@ -20,6 +23,42 @@ async function getTask(id) {
     if (!task) return Return.service(null, [{ message: 'Task not found.' }]);
     
     return Return.service(task);
+}
+
+async function getTasks(user_id, conditions) {
+    if (!user_id) return Return.service(null, [{ message: 'Must provide required paramters.' }]);
+
+    let where = {};
+
+    if (conditions.scheduled_date) {
+        where.scheduled_at = Where(fn('DATE', col('task.scheduled_at')), fn('DATE', conditions.scheduled_date));
+        delete conditions.scheduled_date;
+    }
+
+    const user = await UserModel.findOne({ 
+        where: {
+            id: user_id
+        },
+        include: [{
+            model: ProjectModel,
+            attributes: ['id']
+        }],
+        attributes: ['id']
+    });
+
+    if (!user) return Return.service(null, [{ message: 'User not found.' }]);
+
+    const projectIDs = user.projects.map(project => project.id);
+
+    where = { 
+        ...where, 
+        ...conditions, 
+        project_id: projectIDs 
+    };
+
+    const tasks = await TaskModel.findAll({ where });
+
+    return Return.service(tasks);
 }
 
 async function createTask(data) {
@@ -177,3 +216,4 @@ exports.updateTask = updateTask;
 exports.deleteTask = deleteTask;
 exports.bulkUpdateTasks = bulkUpdateTasks;
 exports.getAllSubtasks = getAllSubtasks;
+exports.getTasks = getTasks;

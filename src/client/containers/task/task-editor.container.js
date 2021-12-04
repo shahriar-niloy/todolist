@@ -172,7 +172,7 @@ function TaskEditorContainer() {
 
     return <>
         <TaskEditor 
-            projectName={project?.name} 
+            title={project?.name} 
             tasks={[...(taskTree||[])]}
             showCompletedTasks={showCompletedTasks}
             onTaskDelete={handleTaskDelete} 
@@ -181,7 +181,7 @@ function TaskEditorContainer() {
             onDrop={handleTaskDrop}
             onTaskComplete={handleTaskComplete}
             onTaskClick={handleTaskClick}
-            ProjectMenu={props => <ProjectMenuContainer 
+            Menu={props => <ProjectMenuContainer 
                 projectID={projectID} 
                 showCompletedTasks={showCompletedTasks}
                 onShowCompletedTaskChange={show => setShowCompletedTask(show)}

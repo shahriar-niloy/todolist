@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import TaskForm from '../../components/task/task-form.component';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSubTaskAction, createTaskAction, getTaskAction, updateTaskAction } from '../../store/actions/task.action';
+import { convertDateToUTC } from '../../utility';
 
 function TaskFormContainer({ 
     subtasks, 
@@ -10,6 +11,7 @@ function TaskFormContainer({
     projectID, 
     taskID, 
     isDetailView, 
+    isEditDisabled,
     onTaskEdit, 
     onTaskDelete, 
     onDrop, 
@@ -54,6 +56,11 @@ function TaskFormContainer({
         subtasks={subtasks}
         isEditing={!!taskID} 
         isDetailView={isDetailView} 
+        isEditDisabled={isEditDisabled}
+        transformDate={date => { 
+            date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+            return convertDateToUTC(date)
+        }}
         onSubmit={handleSubmit} 
         onTaskEdit={onTaskEdit}
         onTaskDelete={onTaskDelete}
@@ -65,14 +72,19 @@ function TaskFormContainer({
     />
 }
 
+TaskFormContainer.defaultProps = {
+    isEditDisabled: false
+}
+
 TaskFormContainer.propTypes = {
-    onSubmitSuccess: PropTypes.func.isRequired,
     createAtOrder: PropTypes.number.isRequired,
     projectID: PropTypes.string.isRequired,
     taskID: PropTypes.string,
     isDetailView: PropTypes.bool,
+    isEditDisabled: PropTypes.bool,
     subtasks: PropTypes.array,
-    onTaskEdit: PropTypes.func.isRequired,
+    onSubmitSuccess: PropTypes.func,
+    onTaskEdit: PropTypes.func,
     onTaskDelete: PropTypes.func.isRequired,
     onDrop: PropTypes.func.isRequired,
     onTaskComplete: PropTypes.func.isRequired,

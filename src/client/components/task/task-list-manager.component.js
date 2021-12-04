@@ -7,6 +7,8 @@ import TaskListItem from './task-list-item.component';
 function TaskListManager({
     tasks,
     showCompletedTasks,
+    isDraggable,
+    isRightActionsEnabled,
     onTaskEdit,
     onTaskDelete,
     onDrop,
@@ -23,6 +25,8 @@ function TaskListManager({
                             tasks={tasks}
                             task={task}
                             showCompletedTasks={showCompletedTasks}
+                            isDraggable={isDraggable}
+                            isRightActionsEnabled={isRightActionsEnabled}
                             onTaskEdit={onTaskEdit}
                             onTaskDelete={onTaskDelete}
                             onDrop={onDrop}
@@ -39,6 +43,8 @@ function TaskListManager({
 
 TaskListManager.propTypes = {
     tasks: PropTypes.array,
+    isDraggable: PropTypes.bool,
+    isRightActionsEnabled: PropTypes.bool,
     showCompletedTasks: PropTypes.bool,
     onTaskEdit: PropTypes.func.isRequired,
     onTaskDelete: PropTypes.func.isRequired,

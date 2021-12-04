@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import BaseEditor from '../components/editor/base-editor.component';
 import Modal from '../components/modal';
 import Navbar from '../components/navbar';
@@ -9,6 +9,7 @@ import { getInitials } from '../utility';
 import ProjectFormContainer from './project/project-form.container';
 import Sidebar from './sidebar.container';
 import TaskEditorContainer from './task/task-editor.container';
+import TodayTaskEditor from './task/today-task-editor.container';
 
 function ToDoManager() {
     const [showProjectForm, setShowProjectForm] = useState(false);
@@ -38,7 +39,7 @@ function ToDoManager() {
             />
             <Switch>
                 <Route path="/projects/:id"><BaseEditor><TaskEditorContainer /></BaseEditor></Route>
-                <Route path="/today"><BaseEditor>Today</BaseEditor></Route>
+                <Route path="/today"><BaseEditor><TodayTaskEditor /></BaseEditor></Route>
                 <Route path=""><ManagerHome /></Route>
             </Switch>
         </div>

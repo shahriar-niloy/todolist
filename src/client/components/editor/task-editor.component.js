@@ -5,21 +5,36 @@ import OptionIcon from '../ui/icons/options.component';
 import Popover from '../lib/popover';
 import TaskListManager from '../task/task-list-manager.component';
 
-function TaskEditor({ projectName, tasks, showCompletedTasks, onTaskAddIconClick, onTaskDelete, onTaskEdit, onDrop, onTaskComplete, ProjectMenu, onTaskClick }) {
+function TaskEditor({ 
+    title, 
+    tasks, 
+    showCompletedTasks, 
+    Menu, 
+    isDraggable,
+    isRightActionsEnabled,
+    onTaskAddIconClick, 
+    onTaskDelete, 
+    onTaskEdit, 
+    onDrop, 
+    onTaskComplete, 
+    onTaskClick 
+}) {
     return <div className="task-editor">
         <div className="d-flex justify-content-between align-items-center">
-            <h4>{projectName}</h4>
+            <h4>{title}</h4>
             <div className="align-xy">
-                <i class="fal fa-plus font-size-21 clickable me-3" onClick={onTaskAddIconClick} ></i>
-                <Popover component={ProjectMenu} >
+                {onTaskAddIconClick && <i class="fal fa-plus font-size-21 clickable me-3" onClick={onTaskAddIconClick} ></i>}
+                {Menu && <Popover component={Menu} >
                     <OptionIcon />
-                </Popover>
+                </Popover>}
             </div>
         </div>
         <hr></hr>
         <TaskListManager 
             tasks={tasks}
             showCompletedTasks={showCompletedTasks}
+            isDraggable={isDraggable}
+            isRightActionsEnabled={isRightActionsEnabled}
             onTaskEdit={onTaskEdit}
             onTaskDelete={onTaskDelete}
             onDrop={onDrop}
@@ -30,19 +45,23 @@ function TaskEditor({ projectName, tasks, showCompletedTasks, onTaskAddIconClick
 }
 
 TaskEditor.defaultProps = {
-    tasks: []
+    tasks: [],
+    isDraggable: true,
+    isRightActionsEnabled: true
 }
 
 TaskEditor.propTypes = {
-    projectName: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
     tasks: PropTypes.array.isRequired,
     showCompletedTasks: PropTypes.bool,
-    onTaskAddIconClick: PropTypes.func.isRequired,
+    Menu: PropTypes.func,
+    isDraggable: PropTypes.bool,
+    isRightActionsEnabled: PropTypes.bool,
+    onTaskAddIconClick: PropTypes.func,
     onTaskDelete: PropTypes.func.isRequired,
-    onTaskEdit: PropTypes.func.isRequired,
+    onTaskEdit: PropTypes.func,
     onDrop: PropTypes.func.isRequired,
     onTaskComplete: PropTypes.func.isRequired,
-    ProjectMenu: PropTypes.func.isRequired,
     onTaskClick: PropTypes.func.isRequired
 }
 

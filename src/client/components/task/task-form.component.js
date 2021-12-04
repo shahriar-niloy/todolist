@@ -98,7 +98,9 @@ function TaskForm({
     isEditing, 
     subtasks, 
     task, 
-    isDetailView, 
+    isDetailView,
+    isEditDisabled,
+    transformDate, 
     onSubtaskAdd,
     onSubmit, 
     onTaskEdit, 
@@ -112,7 +114,11 @@ function TaskForm({
     const [overrideDetailView, setOverrideDetailView] = useState(false);
     const [isAddingSubtask, setIsAddingSubtask] = useState(false);
 
+    const isEditModeAllowed = !isEditDisabled && !task?.is_completed;
+    const isDetailViewEnabled = !isEditModeAllowed || (isDetailView && !overrideDetailView);
+
     const handleScheduledDateChange = (date, formikProps) => {
+        if (transformDate) date = transformDate(date);
         formikProps.setFieldValue('scheduled_at', date);
     };
 
@@ -127,7 +133,7 @@ function TaskForm({
         enableReinitialize
     >
         {formikProps => (
-            <Form className={`container p-3 form-primary ${isDetailView && !overrideDetailView ? 'task-form-detailview' : ''}`} onSubmit={formikProps.handleSubmit}>
+            <Form className={`container p-3 form-primary ${isDetailViewEnabled ? 'task-form-detailview' : ''}`} onSubmit={formikProps.handleSubmit}>
                 <div className="row justify-content-center">
                     {task && task.parent_task_id && task.parentTask && <div className="parent-task-navigator" onClick={() => onNavigateToParentTask(task.parent_task_id)} >
                         <BranchIcon className="" fontSize={13} />
@@ -135,18 +141,18 @@ function TaskForm({
                     </div>}
                     <div className="col-12 title-container">
                         <div class="form-group">
-                            {isDetailView && !overrideDetailView
-                                ? <span className="title" onClick={() => !task?.is_completed && setOverrideDetailView(true)} >{formikProps.values.name}</span>
+                            {isDetailViewEnabled
+                                ? <span className="title" onClick={() => isEditModeAllowed && setOverrideDetailView(true)} >{formikProps.values.name}</span>
                                 : <Field type="name" name="name" className="form-control" id="name" placeholder="Enter task name"/>
                             }
                         </div>
                     </div>
                     <div className="col-12 desc-container">
                         <div class="form-group">
-                            {isDetailView && !overrideDetailView
+                            {isDetailViewEnabled
                                 ? formikProps.values.description 
-                                    ? <span onClick={() => !task?.is_completed && setOverrideDetailView(true)} >{formikProps.values.description}</span>
-                                    : <span onClick={() => !task?.is_completed && setOverrideDetailView(true)} className="placeholder-text" >Description</span>
+                                    ? <span onClick={() => isEditModeAllowed && setOverrideDetailView(true)} >{formikProps.values.description}</span>
+                                    : <span onClick={() => isEditModeAllowed && setOverrideDetailView(true)} className="placeholder-text" >Description</span>
                                 : <Field as="textarea" rows="4" type="text" name="description" className="form-control" id="description" placeholder="Enter task description"/>
                             }
                         </div>
@@ -158,15 +164,16 @@ function TaskForm({
                         component={props => 
                             <TaskScheduler 
                                 date={formikProps.values.scheduled_at} 
+                                isDisabled={isDetailViewEnabled}
                                 onDateChange={date => {
                                     handleScheduledDateChange(date, formikProps);
-                                    setOverrideDetailView(true);
+                                    isEditModeAllowed && setOverrideDetailView(true);
                                 }} 
                                 {...props} 
                             />} 
                         extendedClassName="task-scheduler-popup" 
                         placement="left" 
-                        disabled={task?.is_completed}
+                        disabled={!isEditModeAllowed}
                     >
                         <ActionButton>
                             <div className="align-xy">
@@ -186,12 +193,12 @@ function TaskForm({
                                     priority={formikProps.values.priority} 
                                     onSelect={priority => { 
                                         formikProps.setFieldValue('priority', priority);
-                                        setOverrideDetailView(true);
+                                        isEditModeAllowed && setOverrideDetailView(true);
                                     }} 
                                     {...props} 
                                 />} 
                             extendedClassName="task-scheduler-popup" 
-                            disabled={task?.is_completed}
+                            disabled={!isEditModeAllowed}
                         >
                             <PriorityLevelIcon className="task-form-action-icon" fontSize={16} level={formikProps.values.priority} />
                         </Popover>
@@ -227,7 +234,7 @@ function TaskForm({
                                     onCancel={() => setIsAddingSubtask(false)} 
                                 />
                             }
-                            {!isAddingSubtask && !task?.is_completed && <div className="add-subtask" onClick={() => setIsAddingSubtask(true)} >
+                            {!isAddingSubtask && isEditModeAllowed && <div className="add-subtask" onClick={() => setIsAddingSubtask(true)} >
                                 <span className="add-icon">
                                     <AddIcon onclick={() => console.log('Add subtask')} />
                                 </span>
@@ -256,6 +263,7 @@ TaskForm.propTypes = {
     task: PropTypes.object,
     subtasks: PropTypes.array,
     isEditing: PropTypes.bool,
+    transformDate: PropTypes.func,
     onSubtaskAdd: PropTypes.func,
     onNavigateToParentTask: PropTypes.func
 }

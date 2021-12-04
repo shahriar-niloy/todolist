@@ -86,6 +86,16 @@ export default function taskReducer(state = initialState, action) {
                 list: { ...processTaskList(tasks) }
             };
         }
+        case actions.GET_TASKS_SUCCESS: {
+            const tasks = action.payload.data.data;
+
+            return { 
+                ...state, 
+                list: {
+                    flat: tasks
+                }
+            };
+        }
         default:
             break;
     }

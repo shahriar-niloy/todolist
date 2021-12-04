@@ -10,7 +10,19 @@ import Checkbox from '../ui/icons/checkbox.component';
 import ArrowRightIcon from '../ui/icons/arrow-right.icon';
 import DROP_HIGHLIGHT_DRAWERS from '../../constants/taskitem-drop-highlight.constant';
 
-function TaskListItem ({ task, tasks, showCompletedTasks, isDropDisabled, onTaskDelete, onTaskEdit, onDrop, onTaskComplete, onTaskClick }) {
+function TaskListItem ({ 
+    task, 
+    tasks, 
+    showCompletedTasks, 
+    isDraggable, 
+    isDropDisabled, 
+    isRightActionsEnabled,
+    onTaskDelete, 
+    onTaskEdit, 
+    onDrop, 
+    onTaskComplete, 
+    onTaskClick 
+}) {
     const [showSubtasks, setShowSubtasks] = useState(false);
     const containerRef = useRef();
     const [containerWidth, setContainerWidth] = useState();
@@ -109,7 +121,7 @@ function TaskListItem ({ task, tasks, showCompletedTasks, isDropDisabled, onTask
                 {!isDropDisabled && !task.is_completed && <div style={dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.TOP ? { height: dragItemContainerHeight + adjustSlideDownHeight } : { height: '0px' }} className={`drop-extendable ${dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.TOP  ? `drop-highlight${hasSubtasks ? '-wide' : ''}` : ''}`} ></div>}
                 <div className={`list-item ${task.is_completed ? 'completed' : ''}`} >
                     <div className="left-actions">
-                        <GripIcon className={`me-2 active-on-hover ${task.is_completed ? 'click-disabled invisible' : ''}`} fontSize="16" innerRef={drag} /> 
+                        <GripIcon className={`me-2 active-on-hover ${!isDraggable || task.is_completed ? 'click-disabled invisible' : ''}`} fontSize="16" innerRef={drag} />
                         { task.subtasks && task.subtasks.length > 0 && 
                             <ArrowRightIcon 
                                 className="me-2 active-on-hover" 
@@ -122,10 +134,10 @@ function TaskListItem ({ task, tasks, showCompletedTasks, isDropDisabled, onTask
                     <div className="flex-grow-1 task-title-desc">
                         <div className="d-flex justify-content-between">
                             <h5 onClick={() => onTaskClick(task.id)}>{task.name}</h5>
-                            <div className="right-actions">
+                            {isRightActionsEnabled && <div className="right-actions">
                                 {!task.is_completed && <EditIcon className="font-size-16 me-2 clickable active-on-hover" onClick={() => onTaskEdit(task.id)} />}
                                 <DeleteIcon className="font-size-16 clickable active-on-hover" onClick={() => onTaskDelete(task.id)} />
-                            </div>
+                            </div>}
                         </div>
                         <div className="description" onClick={() => onTaskClick(task.id)} >{task.description}</div>
                     </div>
@@ -167,6 +179,8 @@ TaskListItem.propTypes = {
     tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
     task: PropTypes.object.isRequired,
     showCompletedTasks: PropTypes.bool.isRequired,
+    isDraggable: PropTypes.bool,
+    isRightActionsEnabled: PropTypes.bool,
     onTaskDelete: PropTypes.func.isRequired,
     onTaskEdit: PropTypes.func.isRequired,
     onDrop: PropTypes.func.isRequired,

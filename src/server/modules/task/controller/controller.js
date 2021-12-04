@@ -129,9 +129,32 @@ async function getAllSubtasks(req, res) {
     res.json(successResponse);
 }
 
+async function getTasks(req, res) {
+    const successResponse = new Response.success();
+    const errorResponse = new Response.error();
+    const scheduled_date = req.query.scheduled_date;
+    const userID = req.user.id;
+
+    const where = {};
+
+    if (scheduled_date) where.scheduled_date = scheduled_date;
+
+    const [tasks, errors] = await TaskService.getTasks(userID, where);
+
+    if (errors) {
+        errors.forEach(e => errorResponse.addError(e.message, ''));
+        return res.status(400).json(errorResponse);
+    }
+
+    successResponse.data = tasks.map(task => TaskViewModels.task(task));
+
+    res.json(successResponse);
+}
+
 exports.getTask = getTask;
 exports.createTask = createTask;
 exports.updateTask = updateTask;
 exports.deleteTask = deleteTask;
 exports.bulkUpdateTasks = bulkUpdateTasks;
 exports.getAllSubtasks = getAllSubtasks;
+exports.getTasks = getTasks;
