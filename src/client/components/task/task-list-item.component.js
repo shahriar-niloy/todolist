@@ -160,6 +160,7 @@ function TaskListItem ({
                         showCompletedTasks={showCompletedTasks}
                         isDropDisabled={task.is_completed || isDropDisabled}
                         isDraggable={isDraggable}
+                        isRightActionsEnabled={isRightActionsEnabled}
                         onTaskDelete={onTaskDelete}
                         onTaskEdit={onTaskEdit}
                         onTaskClick={onTaskClick}
