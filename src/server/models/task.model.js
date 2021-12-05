@@ -51,8 +51,8 @@ const Task = sequelize.define("task", {
     updatedAt: 'updated_at'
 });
 
-Task.belongsTo(ProjectModel, { foreignKey: 'project_id' });
-ProjectModel.hasMany(Task, { foreignKey: 'project_id' });
+Task.belongsTo(ProjectModel, { foreignKey: 'project_id', onDelete: 'cascade', onUpdate: 'cascade' });
+ProjectModel.hasMany(Task, { foreignKey: 'project_id', onDelete: 'cascade', onUpdate: 'cascade' });
 Task.hasMany(Task, { as: 'subtasks', foreignKey: 'parent_task_id' });
 Task.belongsTo(Task, { as: 'parentTask', foreignKey: 'parent_task_id' });
 
