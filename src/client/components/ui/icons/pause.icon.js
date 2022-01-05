@@ -1,22 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function DeleteIcon({ className, fontSize, onClick }) {
+function PauseIcon({ className, fontSize, onClick }) {
     return <i 
-        class={`fas fa-trash clickable font-size-${fontSize} ${className || ''}`} 
+        class={`fad fa-pause-circle clickable font-size-${fontSize} ${className || ''}`} 
         onClick={onClick} 
     />
 }
 
-DeleteIcon.defaultProps = {
+PauseIcon.defaultProps = {
     fontSize: '18',
     onclick: () => null
 };
 
-DeleteIcon.proptType = {
+PauseIcon.proptType = {
     onClick: PropTypes.func,
     className: PropTypes.string,
     fontSize: PropTypes.string
 };
 
-export default DeleteIcon;
+export default PauseIcon;

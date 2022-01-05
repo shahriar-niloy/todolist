@@ -12,6 +12,7 @@ async function seedDatabase() {
         const UserModel = require(path.join(process.cwd(), 'src/server/models/user.model'));
         require(path.join(process.cwd(), 'src/server/models/project.model'));
         require(path.join(process.cwd(), 'src/server/models/task.model'));
+        require(path.join(process.cwd(), 'src/server/models/attachment.model'));
 
         await sequelize.sync();
 

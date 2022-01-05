@@ -2,8 +2,11 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import TaskForm from '../../components/task/task-form.component';
 import { useDispatch, useSelector } from 'react-redux';
-import { createSubTaskAction, createTaskAction, getTaskAction, updateTaskAction } from '../../store/actions/task.action';
+import { createSubTaskAction, createTaskAction, createTaskAttachmentAction, getTaskAction, getTaskAttachmentAction, updateTaskAction } from '../../store/actions/task.action';
 import { convertDateToUTC } from '../../utility';
+import { deleteAttachmentAction } from '../../store/actions/attachment.action';
+import { showToast } from '../../components/toast/toast.component';
+import ToastTypes from '../../constants/toast.types';
 
 function TaskFormContainer({ 
     subtasks, 
@@ -21,8 +24,8 @@ function TaskFormContainer({
     onNavigateToParentTask
 }) {
     const dispatch = useDispatch();
-    const task = useSelector(state => state.task.details);
-
+    const { details: task, attachments } = useSelector(state => state.task);
+    
     const handleSubmit = values => {
         values.project_id = projectID;
         
@@ -45,7 +48,23 @@ function TaskFormContainer({
         onTaskComplete(taskID, isCurrentlyComplete, () => {
             dispatch(getTaskAction(taskID));
         });
-    }
+    };
+
+    const handleSaveAttachment = data => {
+        dispatch(createTaskAttachmentAction(
+            data, 
+            () => dispatch(getTaskAttachmentAction(taskID)),
+            errors => showToast(ToastTypes.ERROR, errors.map(error => error.message))
+        ));
+    };
+
+    const handleDeleteAttachment = id => {
+        dispatch(deleteAttachmentAction(id));
+    };
+
+    const handleTabOpen = tabKey => {
+        if (tabKey === 'ATTACHMENT' && taskID) dispatch(getTaskAttachmentAction(taskID));
+    };
 
     useEffect(() => {
         if (taskID) dispatch(getTaskAction(taskID));
@@ -53,6 +72,7 @@ function TaskFormContainer({
 
     return <TaskForm 
         task={task} 
+        attachments={attachments}
         subtasks={subtasks}
         isEditing={!!taskID} 
         isDetailView={isDetailView} 
@@ -69,6 +89,9 @@ function TaskFormContainer({
         onTaskClick={onTaskClick}
         onSubtaskAdd={handleSubtaskAdd}
         onNavigateToParentTask={onNavigateToParentTask}
+        onSaveAttachment={handleSaveAttachment}
+        onDeleteAttachment={handleDeleteAttachment}
+        onTabOpen={handleTabOpen}
     />
 }
 

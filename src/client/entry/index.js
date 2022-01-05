@@ -8,12 +8,14 @@ import App from "./app.component";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Provider } from 'react-redux';
 import store from "../store/store";
+import ToastRoot from "../components/toast/toast.component";
 
 const appRouting = (
     <DndProvider backend={HTML5Backend} >
         <Provider store={store} >
             <Router>
                 <App />
+                <ToastRoot />
             </Router>
         </Provider>
     </DndProvider>

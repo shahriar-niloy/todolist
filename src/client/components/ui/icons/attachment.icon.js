@@ -1,22 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function DeleteIcon({ className, fontSize, onClick }) {
+function AttachmentIcon({ className, fontSize, onClick }) {
     return <i 
-        class={`fas fa-trash clickable font-size-${fontSize} ${className || ''}`} 
+        class={`fal fa-paperclip clickable font-size-${fontSize} ${className || ''}`} 
         onClick={onClick} 
     />
 }
 
-DeleteIcon.defaultProps = {
+AttachmentIcon.defaultProps = {
     fontSize: '18',
     onclick: () => null
 };
 
-DeleteIcon.proptType = {
+AttachmentIcon.proptType = {
     onClick: PropTypes.func,
     className: PropTypes.string,
     fontSize: PropTypes.string
 };
 
-export default DeleteIcon;
+export default AttachmentIcon;

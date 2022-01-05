@@ -1,0 +1,21 @@
+@keyframes fade_out {
+    0% {
+        opacity: 100%;
+    }
+    40% {
+        opacity: 0%;
+    }
+    80% {
+        opacity: 100%;
+    }
+    100% {
+        opacity: 100%;
+    }
+}
+
+.animate__blink {
+    -webkit-animation-name: fade_out;
+    animation-name: fade_out;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}

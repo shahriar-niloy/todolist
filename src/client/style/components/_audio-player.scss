@@ -1,0 +1,32 @@
+$seekbarHeight: 5px;
+$seekbarBorderRadius: 10px;
+
+.audio-player {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0px;
+
+    .duration {
+        font-size: 12px;
+        color: white;
+        user-select: none;
+    }
+}
+
+.audio-level {
+    height: 25px;
+    display: flex;
+    align-items: center;
+
+    .audio-level-bar {
+        background: #5f6061;
+        width: 3px;
+        border-radius: 3px;
+        margin-right: 1px;
+    }
+
+    .completed {
+        background: #e74d3291;
+    }
+}

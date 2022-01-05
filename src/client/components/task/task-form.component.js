@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import PropTypes from 'prop-types';
 import SubmitButton from '../ui/buttons/submit-button.component';
@@ -8,16 +8,18 @@ import CalendarIcon from '../ui/icons/calendar.icon';
 import Popover from '../lib/popover';
 import TaskScheduler from './task-schedule.component';
 import PrioritySelector from './priority-selector.component';
-import { Tabs, Tab, ToggleButton } from 'react-bootstrap';
+import { Tabs, Tab } from 'react-bootstrap';
 import TaskListManager from './task-list-manager.component';
 import AddIcon from '../ui/icons/add.icon';
 import BranchIcon from '../ui/icons/branch.icon';
 import SquareIcon from '../ui/icons/square.icon';
 import CheckSquareIcon from '../ui/icons/check-square.icon';
+import TaskAttachments from './task-attachment.component';
 
 const TABS = {
     COMMENT: 'COMMENT',
-    SUBTASK: 'SUBTASK'
+    SUBTASK: 'SUBTASK',
+    ATTACHMENT: 'ATTACHMENT'
 };
 
 function SubtaskForm({ parent_id, onCancel, onSubmit }) {
@@ -98,6 +100,7 @@ function TaskForm({
     isEditing, 
     subtasks, 
     task, 
+    attachments,
     isDetailView,
     isEditDisabled,
     transformDate, 
@@ -108,7 +111,10 @@ function TaskForm({
     onDrop, 
     onTaskComplete, 
     onTaskClick,
-    onNavigateToParentTask
+    onNavigateToParentTask,
+    onSaveAttachment,
+    onTabOpen,
+    onDeleteAttachment
 }) {
     const [selectedTab, setSelectedTab] = useState(TABS.SUBTASK);
     const [overrideDetailView, setOverrideDetailView] = useState(false);
@@ -210,7 +216,10 @@ function TaskForm({
                 {(isEditing || isDetailView) && <Tabs
                     id="controlled-tab-example"
                     activeKey={selectedTab}
-                    onSelect={k => setSelectedTab(k)}
+                    onSelect={k => {
+                        onTabOpen(k);
+                        setSelectedTab(k);
+                    }}
                     className="mb-3 task-form-tabs"
                 >
                     <Tab eventKey={TABS.SUBTASK} title="Subtasks" tabClassName={`tab-button ${selectedTab === TABS.SUBTASK ? 'selected' : ''}`}>
@@ -245,6 +254,16 @@ function TaskForm({
                     <Tab eventKey={TABS.COMMENT} title="Comments" tabClassName={`tab-button ${selectedTab === TABS.COMMENT ? 'selected' : ''}`}>
                         <div>Comments</div>
                     </Tab>
+                    <Tab eventKey={TABS.ATTACHMENT} title="Attachments" tabClassName={`tab-button ${selectedTab === TABS.ATTACHMENT ? 'selected' : ''}`} >
+                        {selectedTab === TABS.ATTACHMENT && 
+                            <TaskAttachments 
+                                attachments={attachments}
+                                task_id={task?.id}
+                                onSaveAttachment={onSaveAttachment}
+                                onDeleteAttachment={onDeleteAttachment}
+                            />
+                        }
+                    </Tab>
                 </Tabs>}
             </Form>
         )}
@@ -261,11 +280,15 @@ TaskForm.propTypes = {
     isDetailView: PropTypes.bool,
     onSubmit: PropTypes.func.isRequired,
     task: PropTypes.object,
+    attachments: PropTypes.array,
     subtasks: PropTypes.array,
     isEditing: PropTypes.bool,
     transformDate: PropTypes.func,
     onSubtaskAdd: PropTypes.func,
-    onNavigateToParentTask: PropTypes.func
+    onNavigateToParentTask: PropTypes.func,
+    onSaveAttachment: PropTypes.func,
+    onTabOpen: PropTypes.func,
+    onDeleteAttachment: PropTypes.func
 }
 
 export default TaskForm;

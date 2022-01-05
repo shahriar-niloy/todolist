@@ -1,7 +1,7 @@
 const path = require('path');
 
 const TaskService = require(path.join(process.cwd(), 'src/server/services/task'));
-const { TaskViewModels } = require(path.join(process.cwd(), 'src/server/view-models'));
+const { TaskViewModels, AttachmentViewModels } = require(path.join(process.cwd(), 'src/server/view-models'));
 const { Response } = require(path.join(process.cwd(), 'src/server/schemas'));
 
 async function getTask(req, res) {
@@ -151,6 +151,63 @@ async function getTasks(req, res) {
     res.json(successResponse);
 }
 
+async function createTaskAttachment(req, res) {
+    const successResponse = new Response.success();
+    const errorResponse = new Response.error();
+
+    const attachmentObject = {
+        ...req.body,
+        taskID: req.body.task_id,
+        data: req.file.buffer,
+        fileSize: req.file.size
+    };
+
+    const [attachment, errors] = await TaskService.createTaskAttachment(attachmentObject);
+
+    if (errors) {
+        errors.forEach(e => errorResponse.addError(e.message, ''));
+        return res.status(400).json(errorResponse);
+    }
+
+    successResponse.data = AttachmentViewModels.attachment(attachment);
+
+    res.json(successResponse);
+}
+
+async function getTaskAttachments (req, res) {
+    const successResponse = new Response.success();
+    const errorResponse = new Response.error();
+    const taskID = req.params.id;
+
+    const [attachments, errors] = await TaskService.getTaskAttachments(taskID);
+
+    if (errors) {
+        errors.forEach(e => errorResponse.addError(e.message, ''));
+        return res.status(400).json(errorResponse);
+    }
+
+    successResponse.data = attachments.map(attachment => AttachmentViewModels.attachment(attachment));
+
+    res.json(successResponse);
+}
+
+async function deleteTaskAttachment (req, res) {
+    const successResponse = new Response.success();
+    const errorResponse = new Response.error();
+    const attachmentID = req.params.id;
+
+    const [attachment, errors] = await TaskService.deleteTaskAttachment(attachmentID);
+
+    if (errors) {
+        errors.forEach(e => errorResponse.addError(e.message, ''));
+        return res.status(400).json(errorResponse);
+    }
+
+    successResponse.data = AttachmentViewModels.attachment(attachment);
+
+    res.json(successResponse);
+}
+
 exports.getTask = getTask;
 exports.createTask = createTask;
 exports.updateTask = updateTask;
@@ -158,3 +215,6 @@ exports.deleteTask = deleteTask;
 exports.bulkUpdateTasks = bulkUpdateTasks;
 exports.getAllSubtasks = getAllSubtasks;
 exports.getTasks = getTasks;
+exports.createTaskAttachment = createTaskAttachment;
+exports.getTaskAttachments = getTaskAttachments;
+exports.deleteTaskAttachment = deleteTaskAttachment;

@@ -1,22 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function DeleteIcon({ className, fontSize, onClick }) {
+function MicrophoneIcon({ className, fontSize, onClick }) {
     return <i 
-        class={`fas fa-trash clickable font-size-${fontSize} ${className || ''}`} 
+        class={`fad fa-microphone clickable font-size-${fontSize} ${className || ''}`} 
         onClick={onClick} 
     />
 }
 
-DeleteIcon.defaultProps = {
+MicrophoneIcon.defaultProps = {
     fontSize: '18',
     onclick: () => null
 };
 
-DeleteIcon.proptType = {
+MicrophoneIcon.proptType = {
     onClick: PropTypes.func,
     className: PropTypes.string,
     fontSize: PropTypes.string
 };
 
-export default DeleteIcon;
+export default MicrophoneIcon;

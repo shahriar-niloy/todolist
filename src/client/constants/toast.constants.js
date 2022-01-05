@@ -1,0 +1,3 @@
+export default {
+    AUTOCLOSE_TIME_IN_MILLISECONDS: 5000
+}

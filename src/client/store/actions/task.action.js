@@ -188,3 +188,58 @@ export function* toggleTaskCompleted(data) {
         console.log(err);
     }
 }
+
+export function* createTaskAttachment(data) {
+    const { onSuccess, onError } = data;
+    const { task_id } = data.payload;
+
+    try {
+        const formData = new FormData();
+
+        Object.keys(data.payload).forEach(key => {
+            formData.append(key, data.payload[key]);
+        });
+
+        yield axios.post(`/api/tasks/${task_id}/attachments`, formData);
+
+        onSuccess && onSuccess();
+    } catch(err) {
+        console.log(err);
+        onError && onError(err.response.data.errors);
+    }
+}
+
+export function createTaskAttachmentAction(data, onSuccess, onError) {
+    return {
+        type: actionTypes.CREATE_TASK_ATTACHMENT,
+        payload: data,
+        onSuccess,
+        onError
+    }
+}
+
+export function* getTaskAttachments(data) {
+    try {
+        const { onSuccess, taskID } = data;
+
+        let { data: attachments } = yield axios({ method: 'get', url: `/api/tasks/${taskID}/attachments` });
+
+        onSuccess && onSuccess();
+
+        attachments = attachments.data.map(attachment => {
+            attachment.data = attachment.data.data;
+            return attachment;
+        });
+
+        yield put({ type: actionTypes.GET_TASK_ATTACHMENTS_SUCCESS, payload: attachments });
+    } catch(err) {
+        console.log(err);
+    }
+}
+
+export function getTaskAttachmentAction(taskID) {
+    return {
+        type: actionTypes.GET_TASK_ATTACHMENTS,
+        taskID
+    }
+}
