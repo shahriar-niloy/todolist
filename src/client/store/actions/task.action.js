@@ -190,7 +190,7 @@ export function* toggleTaskCompleted(data) {
 }
 
 export function* createTaskAttachment(data) {
-    const { onSuccess, onError } = data;
+    const { onSuccess, onError, onProgress } = data;
     const { task_id } = data.payload;
 
     try {
@@ -200,7 +200,11 @@ export function* createTaskAttachment(data) {
             formData.append(key, data.payload[key]);
         });
 
-        yield axios.post(`/api/tasks/${task_id}/attachments`, formData);
+        yield axios.post(
+            `/api/tasks/${task_id}/attachments`, 
+            formData, 
+            { onUploadProgress: e => onProgress && onProgress(e.loaded, e.total) }
+        );
 
         onSuccess && onSuccess();
     } catch(err) {
@@ -209,12 +213,13 @@ export function* createTaskAttachment(data) {
     }
 }
 
-export function createTaskAttachmentAction(data, onSuccess, onError) {
+export function createTaskAttachmentAction(data, onSuccess, onError, onProgress) {
     return {
         type: actionTypes.CREATE_TASK_ATTACHMENT,
         payload: data,
         onSuccess,
-        onError
+        onError,
+        onProgress
     }
 }
 

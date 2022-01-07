@@ -52,11 +52,17 @@ function TaskFormContainer({
         });
     };
 
-    const handleSaveAttachment = data => {
+    const handleTaskProgress = (loaded, total, onProgress) => onProgress && onProgress(Math.round((loaded * 100) / total));
+
+    const handleSaveAttachment = (data, onSuccess, onProgress) => {
         dispatch(createTaskAttachmentAction(
             data, 
-            () => dispatch(getTaskAttachmentAction(taskID)),
-            errors => showToast(ToastTypes.ERROR, errors.map(error => error.message))
+            () => {
+                dispatch(getTaskAttachmentAction(taskID));
+                onSuccess && onSuccess();
+            },
+            errors => showToast(ToastTypes.ERROR, errors.map(error => error.message)),
+            (loaded, total) => handleTaskProgress(loaded, total, onProgress)
         ));
     };
 

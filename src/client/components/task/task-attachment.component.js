@@ -16,6 +16,7 @@ import NoTaskAttachment from './no-task-attachment.component';
 import DeleteConfirmation from '../confirmation/delete-confirmation.component';
 import FileIcon from '../ui/icons/file.icon';
 import ImageIcon from '../ui/icons/image.icon';
+import UploadProgressBar from '../ui/progressbar/upload-progessbar.component';
 
 const formatDateTime = date => moment(date).format('DD MMMM YYYY hh:mm A');
 
@@ -56,6 +57,14 @@ function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, o
     const [openedAudioBlob, setOpenedAudioBlob] = useState(false);
     const [attachmentIDToDelete, setAttachmentIDToDelete] = useState(null);
     const [file, setFile] = useState(null);
+    const [fileUploadProgress, setFileUploadProgress] = useState(0);
+    const [isFileUploadInProgress, setIsFileUploadInProgress] = useState(false);
+
+    const resetFileTo = (file) => {
+        setFile(file);
+        setIsFileUploadInProgress(false);
+        setFileUploadProgress(0);
+    }
 
     const {
         handleRecordingStart,
@@ -172,18 +181,27 @@ function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, o
                             <span className='me-2'>{formatBytes(file.size)}</span>
                             <span>{formatDateTime(file.lastModifiedDate)}</span>
                         </div>
+                        {
+                            isFileUploadInProgress && <UploadProgressBar classExtended="mt-2" progress={fileUploadProgress} />
+                        }
                     </div>
                     <div>
                         <span 
-                            className='button-small-default' 
+                            className={`button-small-default ${isFileUploadInProgress ? 'disabled' : ''}`} 
                             onClick={() => {
-                                onSaveAttachment({ 
-                                    data: file, 
-                                    task_id: task_id,
-                                    type: attachmentTypesConstants.FILE,
-                                    name: file.name
-                                });
-                                setFile(null);
+                                onSaveAttachment(
+                                    { 
+                                        data: file, 
+                                        task_id: task_id,
+                                        type: attachmentTypesConstants.FILE,
+                                        name: file.name
+                                    },
+                                    () => resetFileTo(null),
+                                    progress => {
+                                        setFileUploadProgress(progress);
+                                        setIsFileUploadInProgress(true);
+                                    }
+                                );
                             }}
                         >
                             Save
@@ -212,9 +230,7 @@ function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, o
                         type='file' 
                         name='file' 
                         id='upload-file' 
-                        onChange={e => {
-                            setFile(e.target.files[0]);
-                        }} 
+                        onChange={e => resetFileTo(e.target.files[0]) } 
                     />
                 </label>
                 <MicrophoneIcon 
