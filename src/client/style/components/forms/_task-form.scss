@@ -114,6 +114,16 @@
     }
 }
 
+@mixin attachment-title {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+@mixin attachment-metadata {
+    font-size: 12px;
+    color: $secondary-font-color;
+}
+
 .task-attachments {
     .attachment-types {
         border-top: 1px solid gray;
@@ -156,15 +166,29 @@
     }
 
     .recorded-audio-container {
-        padding: 13px 10px;
-        border: 1px solid #2e2e2e;
-        border-radius: 3px;
-        margin-bottom: 10px;
-        box-shadow: 0px 2px 2px 0px #1c1c1c;
+        @include container-default;
 
         .action-bar {
             display: flex;
             justify-content: space-between;
+        }
+    }
+
+    .unsaved-file-attachment {
+        @include container-default;
+        margin-bottom: 0px;
+        margin-top: 10px;
+        user-select: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .file-name {
+            @include attachment-title;
+        }
+
+        .file-metadata {
+            @include attachment-metadata;
         }
     }
 
@@ -184,13 +208,11 @@
     }
 
     .attachment-name {
-        font-weight: bold;
-        font-size: 14px;
+        @include attachment-title;
     }
 
     .attachment-metadata {
-        font-size: 12px;
-        color: $secondary-font-color;
+        @include attachment-metadata;
     }
 
     .attachment-info {
@@ -204,12 +226,7 @@
 
     .attachment-actions {
         span {
-            padding: 5px 12px;
-            border-radius: 3px;
-            cursor: pointer;
-            border: 1px solid #2e2e2e;
-            font-size: 11px;
-            font-weight: bold;
+            @include button-small-default;
         }
     }
 }

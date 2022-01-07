@@ -159,7 +159,8 @@ async function createTaskAttachment(req, res) {
         ...req.body,
         taskID: req.body.task_id,
         data: req.file.buffer,
-        fileSize: req.file.size
+        fileSize: req.file.size,
+        mimetype: req.body.mimetype || req.file.mimetype 
     };
 
     const [attachment, errors] = await TaskService.createTaskAttachment(attachmentObject);

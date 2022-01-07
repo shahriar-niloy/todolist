@@ -114,6 +114,7 @@ function TaskForm({
     onNavigateToParentTask,
     onSaveAttachment,
     onTabOpen,
+    onFileOpen,
     onDeleteAttachment
 }) {
     const [selectedTab, setSelectedTab] = useState(TABS.SUBTASK);
@@ -261,6 +262,7 @@ function TaskForm({
                                 task_id={task?.id}
                                 onSaveAttachment={onSaveAttachment}
                                 onDeleteAttachment={onDeleteAttachment}
+                                onFileOpen={onFileOpen}
                             />
                         }
                     </Tab>
@@ -288,7 +290,8 @@ TaskForm.propTypes = {
     onNavigateToParentTask: PropTypes.func,
     onSaveAttachment: PropTypes.func,
     onTabOpen: PropTypes.func,
-    onDeleteAttachment: PropTypes.func
+    onDeleteAttachment: PropTypes.func,
+    onFileOpen: PropTypes.func
 }
 
 export default TaskForm;

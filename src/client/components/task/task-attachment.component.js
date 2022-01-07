@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import MusicIcon from '../ui/icons/music.icon';
 import SaveIcon from '../ui/icons/save.icon';
 import DeleteIcon from '../ui/icons/delete.icon';
@@ -13,31 +14,48 @@ import useAudioRecorder from '../../hooks/audio-recorder.hooks';
 import { useAudioPlayer } from '../../hooks/audio-player.hooks';
 import NoTaskAttachment from './no-task-attachment.component';
 import DeleteConfirmation from '../confirmation/delete-confirmation.component';
+import FileIcon from '../ui/icons/file.icon';
+import ImageIcon from '../ui/icons/image.icon';
+
+const formatDateTime = date => moment(date).format('DD MMMM YYYY hh:mm A');
 
 function Attachment ({ name, type, size, createdAt, isPlaybackDisabled, onOpen, onDelete }) {
-    if (type === attachmentTypesConstants.AUDIO) {
-        return <div className='attachment'>
-            <MusicIcon className="attachment-icon me-3" fontSize={26} />
-            <div className='attachment-info'>
-                <div className='attachment-name'>{name}</div>
-                <div className='attachment-metadata'>
-                    <span className='me-2'>{formatBytes(size)}</span>
-                    <span>{convertTimeToWords(createdAt)}</span>
-                </div>
-            </div>
-            <div className='attachment-actions'>
-                <span onClick={onOpen} className={`me-1 ${isPlaybackDisabled ? 'disabled' : ''}`}>Play</span>
-                <span onClick={onDelete}>Delete</span>
+    const attachmentIcons = {
+        [attachmentTypesConstants.AUDIO]: <MusicIcon className="attachment-icon me-3" fontSize={26} />,
+        [attachmentTypesConstants.FILE]: <FileIcon className="attachment-icon me-3" fontSize={26} />,
+        [attachmentTypesConstants.IMAGE]: <ImageIcon className="attachment-icon me-3" fontSize={26} />
+    };
+
+    const openButtonLabelByType = {
+        [attachmentTypesConstants.AUDIO]: 'Play',
+        [attachmentTypesConstants.FILE]: 'Open',
+        [attachmentTypesConstants.IMAGE]: 'Open'
+    };
+
+    if (!Object.values(attachmentTypesConstants).includes(type)) return null;
+
+    return <div className='attachment'>
+        {attachmentIcons[type]}
+        <div className='attachment-info'>
+            <div className='attachment-name'>{name}</div>
+            <div className='attachment-metadata'>
+                <span className='me-2'>{formatBytes(size)}</span>
+                <span>{convertTimeToWords(createdAt)}</span>
             </div>
         </div>
-    }
+        <div>
+            <span onClick={onOpen} className={`button-small-default me-1 ${isPlaybackDisabled ? 'disabled' : ''}`}>{openButtonLabelByType[type]}</span>
+            <span onClick={onDelete} className='button-small-default'>Delete</span>
+        </div>
+    </div>
 }
 
-function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, task_id }) {
+function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, onFileOpen, task_id }) {
     const [playAudioAttachment, setPlayAudioAttachment] = useState(false);
     const [unsavedRecording, setUnsavedRecording] = useState(false);
     const [openedAudioBlob, setOpenedAudioBlob] = useState(false);
     const [attachmentIDToDelete, setAttachmentIDToDelete] = useState(null);
+    const [file, setFile] = useState(null);
 
     const {
         handleRecordingStart,
@@ -47,6 +65,23 @@ function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, t
         resetRecorder
     } = useAudioRecorder();
     const { play, pause, duration, currentTime, isPaused, setAudio } = useAudioPlayer();
+
+    const handleOpenAttachment = attachment => {
+        const { type, data, mimetype, name } = attachment;
+
+        if (type === attachmentTypesConstants.AUDIO) {
+            setPlayAudioAttachment(true);
+            
+            const attachmentAudioAsBlob = convertBufferToBlob(data, mimetype);
+            
+            setOpenedAudioBlob(attachmentAudioAsBlob);
+            const { play } = setAudio(attachmentAudioAsBlob);
+            
+            play();
+        }
+
+        if (type === attachmentTypesConstants.FILE) onFileOpen(data, name, mimetype);
+    };
 
     const hideAudioPlayer = () => {
         setAudio(null);
@@ -77,15 +112,10 @@ function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, t
                                     type={attachment.type} 
                                     name={attachment.name} 
                                     size={attachment.file_size}
+                                    data={attachment.data}
                                     createdAt={attachment.created_at}
                                     isPlaybackDisabled={unsavedRecording || isAudioRecording}
-                                    onOpen={() => {
-                                        setPlayAudioAttachment(true);
-                                        const attachmentAudioAsBlob = convertBufferToBlob(attachment.data);
-                                        setOpenedAudioBlob(attachmentAudioAsBlob);
-                                        const { play } = setAudio(attachmentAudioAsBlob);
-                                        play();
-                                    }}
+                                    onOpen={() => handleOpenAttachment(attachment)}
                                     onDelete={() => setAttachmentIDToDelete(attachment.id)}
                                 />)
                     : <NoTaskAttachment />
@@ -121,17 +151,46 @@ function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, t
                     <SaveIcon 
                         fontSize={18} 
                         onClick={() => {
-                            onSaveAttachment({ 
-                                data: recordedAudioBlob, 
-                                task_id: task_id,
-                                type: attachmentTypesConstants.AUDIO,
-                                name: `Audio_${Date.now()}`
-                            });
+                            onSaveAttachment(
+                                { 
+                                    data: recordedAudioBlob, 
+                                    task_id: task_id,
+                                    type: attachmentTypesConstants.AUDIO,
+                                    name: `Audio_${Date.now()}`
+                                }
+                            );
                             hideUnsavedAudioPlayer();
                         }}
                     />
                 </div>
             </div>}
+            {
+                file && <div className='unsaved-file-attachment'>
+                    <div>
+                        <div className='file-name' >{file.name}</div>
+                        <div className='file-metadata'>
+                            <span className='me-2'>{formatBytes(file.size)}</span>
+                            <span>{formatDateTime(file.lastModifiedDate)}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <span 
+                            className='button-small-default' 
+                            onClick={() => {
+                                onSaveAttachment({ 
+                                    data: file, 
+                                    task_id: task_id,
+                                    type: attachmentTypesConstants.FILE,
+                                    name: file.name
+                                });
+                                setFile(null);
+                            }}
+                        >
+                            Save
+                        </span>
+                    </div>
+                </div>
+            }
             <div className={`container-default tray transition-in ${isAudioRecording ? "tray-opened" : "tray-closed"}`}>
                 <MicrophoneSlashIcon 
                     className="animate__blink"
@@ -146,7 +205,18 @@ function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, t
                 </div>
             </div>
             <div className="attachment-types">
-                <AttachmentIcon className="" />
+                <label for="upload-file">
+                    <AttachmentIcon className="" />
+                    <input 
+                        style={{ opacity: 0, position: 'absolute', zIndex: -1 }} 
+                        type='file' 
+                        name='file' 
+                        id='upload-file' 
+                        onChange={e => {
+                            setFile(e.target.files[0]);
+                        }} 
+                    />
+                </label>
                 <MicrophoneIcon 
                     className={isAudioRecording ? "active" : ""} 
                     onClick={() => {
@@ -179,7 +249,8 @@ TaskAttachments.propTypes = {
     task_id: PropTypes.string,
     attachments: PropTypes.array,
     onDeleteAttachment: PropTypes.func,
-    onSaveAttachment: PropTypes.func
+    onSaveAttachment: PropTypes.func,
+    onFileOpen: PropTypes.func
 }
 
 export default TaskAttachments;

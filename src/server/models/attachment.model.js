@@ -25,6 +25,9 @@ const AttachmentModel = sequelize.define("attachment", {
         type: DataTypes.ENUM(ENUM_ATTACHMENT_TYPES),
         allowNull: false
     },
+    mimetype: {
+        type: DataTypes.STRING(100)
+    },
     task_id: {
         type: UUID,
         allowNull: false

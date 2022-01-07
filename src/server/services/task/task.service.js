@@ -217,7 +217,7 @@ async function getAllSubtasks(taskID) {
 async function createTaskAttachment(attachment) {
     if (!attachment) return Return.service(null, [{ message: 'Must provide required paramters.' }]);
 
-    const { name, type, taskID, data, fileSize } = attachment;
+    const { name, type, taskID, data, fileSize, mimetype } = attachment;
 
     if (!name || !type || !taskID || !data | !fileSize) return Return.service(null, [{ message: 'Must provide required paramters.' }]);
 
@@ -234,7 +234,8 @@ async function createTaskAttachment(attachment) {
         type,
         task_id: task.id,
         data,
-        file_size: fileSize
+        file_size: fileSize,
+        mimetype
     });
 
     return Return.service(createdAttachment);

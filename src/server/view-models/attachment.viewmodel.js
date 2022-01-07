@@ -10,6 +10,7 @@ function attachment(_attachment) {
     viewModel.data = _attachment.data;
     viewModel.task_id = _attachment.task_id; 
     viewModel.created_at = _attachment.created_at; 
+    viewModel.mimetype = _attachment.mimetype; 
 
     return viewModel;
 }

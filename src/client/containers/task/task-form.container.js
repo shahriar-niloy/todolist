@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import fileDownload from 'js-file-download';
 import TaskForm from '../../components/task/task-form.component';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSubTaskAction, createTaskAction, createTaskAttachmentAction, getTaskAction, getTaskAttachmentAction, updateTaskAction } from '../../store/actions/task.action';
@@ -7,6 +8,7 @@ import { convertDateToUTC } from '../../utility';
 import { deleteAttachmentAction } from '../../store/actions/attachment.action';
 import { showToast } from '../../components/toast/toast.component';
 import ToastTypes from '../../constants/toast.types';
+import { convertBufferToBlob } from '../../utility';
 
 function TaskFormContainer({ 
     subtasks, 
@@ -66,6 +68,10 @@ function TaskFormContainer({
         if (tabKey === 'ATTACHMENT' && taskID) dispatch(getTaskAttachmentAction(taskID));
     };
 
+    const handleFileOpen = (data, fileName, mimetype) => {
+        fileDownload(convertBufferToBlob(data, mimetype), fileName);
+    };
+
     useEffect(() => {
         if (taskID) dispatch(getTaskAction(taskID));
     }, [taskID]);
@@ -92,6 +98,7 @@ function TaskFormContainer({
         onSaveAttachment={handleSaveAttachment}
         onDeleteAttachment={handleDeleteAttachment}
         onTabOpen={handleTabOpen}
+        onFileOpen={handleFileOpen}
     />
 }
 
