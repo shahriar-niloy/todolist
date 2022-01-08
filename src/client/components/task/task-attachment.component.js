@@ -276,13 +276,13 @@ function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, o
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <span 
-                            className={`button-small-default ${isUploadInProgress ? 'disabled' : ''}`} 
-                            onClick={handleSaveImage}
-                        >
-                            Save
-                        </span>
+                    <div className='image-actions-container'>
+                        <div className='image-actions-align-vertical'>
+                            <i className='fad fa-image-polaroid image-upload-icon' aria-hidden="true" />
+                            <div className='image-actions-text'>
+                                <span className='image-action' onClick={handleSaveImage}>Save</span> or <label for="upload-image" className='image-action'>choose</label> another image.
+                            </div>
+                        </div>
                     </div>
                 </div>
             }
