@@ -17,10 +17,11 @@ import DeleteConfirmation from '../confirmation/delete-confirmation.component';
 import FileIcon from '../ui/icons/file.icon';
 import ImageIcon from '../ui/icons/image.icon';
 import UploadProgressBar from '../ui/progressbar/upload-progessbar.component';
+import ImagePreview from '../misc/image-preview.component';
 
 const formatDateTime = date => moment(date).format('DD MMMM YYYY hh:mm A');
 
-function Attachment ({ name, type, size, createdAt, isPlaybackDisabled, onOpen, onDelete }) {
+function Attachment ({ name, type, size, createdAt, isOpenDisabled, onOpen, onDelete }) {
     const attachmentIcons = {
         [attachmentTypesConstants.AUDIO]: <MusicIcon className="attachment-icon me-3" fontSize={26} />,
         [attachmentTypesConstants.FILE]: <FileIcon className="attachment-icon me-3" fontSize={26} />,
@@ -45,7 +46,7 @@ function Attachment ({ name, type, size, createdAt, isPlaybackDisabled, onOpen, 
             </div>
         </div>
         <div>
-            <span onClick={onOpen} className={`button-small-default me-1 ${isPlaybackDisabled ? 'disabled' : ''}`}>{openButtonLabelByType[type]}</span>
+            <span onClick={onOpen} className={`button-small-default me-1 ${isOpenDisabled ? 'disabled' : ''}`}>{openButtonLabelByType[type]}</span>
             <span onClick={onDelete} className='button-small-default'>Delete</span>
         </div>
     </div>
@@ -57,14 +58,11 @@ function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, o
     const [openedAudioBlob, setOpenedAudioBlob] = useState(false);
     const [attachmentIDToDelete, setAttachmentIDToDelete] = useState(null);
     const [file, setFile] = useState(null);
-    const [fileUploadProgress, setFileUploadProgress] = useState(0);
-    const [isFileUploadInProgress, setIsFileUploadInProgress] = useState(false);
-
-    const resetFileTo = (file) => {
-        setFile(file);
-        setIsFileUploadInProgress(false);
-        setFileUploadProgress(0);
-    }
+    const [image, setImage] = useState(null);
+    const [hasUnsavedImage, setHasUnsavedImage] = useState(null);
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const [isUploadInProgress, setIsUploadInProgress] = useState(false);
+    const [showExpandedImagePreview, setShowExpandedImagePreview] = useState(false);
 
     const {
         handleRecordingStart,
@@ -74,6 +72,19 @@ function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, o
         resetRecorder
     } = useAudioRecorder();
     const { play, pause, duration, currentTime, isPaused, setAudio } = useAudioPlayer();
+
+    const resetFileTo = (file) => {
+        setFile(file);
+        setIsUploadInProgress(false);
+        setUploadProgress(0);
+    };
+
+    const resetImageTo = (image, isUnsavedImage=false) => {
+        setImage(image);
+        setIsUploadInProgress(false);
+        setUploadProgress(0);
+        setHasUnsavedImage(isUnsavedImage);
+    };
 
     const handleOpenAttachment = attachment => {
         const { type, data, mimetype, name } = attachment;
@@ -90,6 +101,12 @@ function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, o
         }
 
         if (type === attachmentTypesConstants.FILE) onFileOpen(data, name, mimetype);
+
+        if (type === attachmentTypesConstants.IMAGE) {
+            setImage(convertBufferToBlob(data, mimetype));
+            setShowExpandedImagePreview(true);
+            setHasUnsavedImage(false);
+        }
     };
 
     const hideAudioPlayer = () => {
@@ -103,6 +120,8 @@ function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, o
         setUnsavedRecording(false);
         resetRecorder();
     }
+
+    const isAttachmentOpenDisabled = () => unsavedRecording || isAudioRecording || hasUnsavedImage;
 
     useEffect(() => {
         if (recordedAudioBlob) setAudio(recordedAudioBlob);
@@ -123,7 +142,7 @@ function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, o
                                     size={attachment.file_size}
                                     data={attachment.data}
                                     createdAt={attachment.created_at}
-                                    isPlaybackDisabled={unsavedRecording || isAudioRecording}
+                                    isOpenDisabled={isAttachmentOpenDisabled()}
                                     onOpen={() => handleOpenAttachment(attachment)}
                                     onDelete={() => setAttachmentIDToDelete(attachment.id)}
                                 />)
@@ -182,12 +201,12 @@ function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, o
                             <span>{formatDateTime(file.lastModifiedDate)}</span>
                         </div>
                         {
-                            isFileUploadInProgress && <UploadProgressBar classExtended="mt-2" progress={fileUploadProgress} />
+                            isUploadInProgress && <UploadProgressBar classExtended="mt-2" progress={uploadProgress} />
                         }
                     </div>
                     <div>
                         <span 
-                            className={`button-small-default ${isFileUploadInProgress ? 'disabled' : ''}`} 
+                            className={`button-small-default ${isUploadInProgress ? 'disabled' : ''}`} 
                             onClick={() => {
                                 onSaveAttachment(
                                     { 
@@ -198,8 +217,60 @@ function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, o
                                     },
                                     () => resetFileTo(null),
                                     progress => {
-                                        setFileUploadProgress(progress);
-                                        setIsFileUploadInProgress(true);
+                                        setUploadProgress(progress);
+                                        setIsUploadInProgress(true);
+                                    }
+                                );
+                            }}
+                        >
+                            Save
+                        </span>
+                    </div>
+                </div>
+            }
+            {
+                hasUnsavedImage && image && <div className='unsaved-image-attachment'>
+                    <div className='image-preview-container'>
+                        {
+                            (() => {
+                                const imageSrc = URL.createObjectURL(image);
+                                return <div className="image-preview">
+                                    <img 
+                                        className="" 
+                                        src={imageSrc} 
+                                        onClick={() => setShowExpandedImagePreview(true)}
+                                        onLoad={() => URL.revokeObjectURL(imageSrc)} 
+                                    />
+                                    <UploadProgressBar 
+                                        className="image-upload-progress-bar" 
+                                        progress={uploadProgress} 
+                                    />
+                                </div>
+                            })()
+                        }
+                        <div className='image-info-container'>
+                            <div className='image-name text-truncate' >{image.name}</div>
+                            <div className='image-metadata'>
+                                <span className='me-2'>{formatBytes(image.size)}</span>
+                                <span>{formatDateTime(image.lastModifiedDate)}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <span 
+                            className={`button-small-default ${isUploadInProgress ? 'disabled' : ''}`} 
+                            onClick={() => {
+                                onSaveAttachment(
+                                    { 
+                                        data: image, 
+                                        task_id: task_id,
+                                        type: attachmentTypesConstants.IMAGE,
+                                        name: image.name
+                                    },
+                                    () => resetImageTo(null, false),
+                                    progress => {
+                                        setUploadProgress(progress);
+                                        setIsUploadInProgress(true);
                                     }
                                 );
                             }}
@@ -241,8 +312,24 @@ function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, o
                         hideUnsavedAudioPlayer();
                     }}
                 /> 
+                <label for="upload-image">
+                    <ImageIcon />
+                    <input 
+                        style={{ opacity: 0, position: 'absolute', zIndex: -1 }} 
+                        type='file' 
+                        name='image' 
+                        id='upload-image' 
+                        accept='image/*'
+                        onChange={e => resetImageTo(e.target.files[0], true) } 
+                    />
+                </label>
             </div>
         </div>
+        <ImagePreview 
+            isOpen={showExpandedImagePreview} 
+            image={image}
+            onClose={() => setShowExpandedImagePreview(false)} 
+        />
         <DeleteConfirmation 
             isOpen={!!attachmentIDToDelete}
             onDelete={() => {

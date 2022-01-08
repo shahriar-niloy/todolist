@@ -1,3 +1,5 @@
+$imageAattachmentPreviewSize: 200px;
+
 .task-form {
     &-action-icon {
         padding: 0.25rem;
@@ -189,6 +191,51 @@
 
         .file-metadata {
             @include attachment-metadata;
+        }
+    }
+
+    .unsaved-image-attachment {
+        @include container-default;
+        margin-bottom: 0px;
+        margin-top: 10px;
+        user-select: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .image-preview-container {
+            width: $imageAattachmentPreviewSize;
+            box-shadow: 0px 2px 2px 0px #1c1c1c;
+            border-radius: 3px;
+        }
+
+        .image-preview {
+            width: inherit;
+            height: $imageAattachmentPreviewSize;
+            margin-bottom: 5px;
+            position: relative;
+            overflow: auto;
+            border-radius: 3px;
+
+            img {
+                object-fit: cover;
+                height: inherit;
+                width: inherit;
+                cursor: pointer;
+            }
+        }
+
+        .image-info-container {
+            width: inherit;
+            padding: 5px 10px;
+
+            .image-name {
+                @include attachment-title;
+            }
+
+            .image-metadata {
+                @include attachment-metadata;
+            }
         }
     }
 

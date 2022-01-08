@@ -12,3 +12,19 @@ $progressBarBorderRadius: 10px;
         background: #dcdcdc;
     }
 }
+
+.image-upload-progress-bar {
+    height: 2px;
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    border-radius: 0px 0px 3px 3px;
+    overflow: auto;
+    background: #dcdcdc59;
+    box-shadow: 0px 0px 4px 1px #dcdcdc59;
+
+    .progress {
+        height: inherit;
+        background: #dcdcdc;
+    }
+}
