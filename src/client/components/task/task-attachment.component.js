@@ -109,6 +109,50 @@ function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, o
         }
     };
 
+    const handleSaveImage = () => {
+        onSaveAttachment(
+            { 
+                data: image, 
+                task_id: task_id,
+                type: attachmentTypesConstants.IMAGE,
+                name: image.name
+            },
+            () => resetImageTo(null, false),
+            progress => {
+                setUploadProgress(progress);
+                setIsUploadInProgress(true);
+            }
+        );
+    };
+
+    const handleRecordingSave = () => {
+        onSaveAttachment(
+            { 
+                data: recordedAudioBlob, 
+                task_id: task_id,
+                type: attachmentTypesConstants.AUDIO,
+                name: `Audio_${Date.now()}`
+            }
+        );
+        hideUnsavedAudioPlayer();
+    };
+
+    const handleFileSave = () => {
+        onSaveAttachment(
+            { 
+                data: file, 
+                task_id: task_id,
+                type: attachmentTypesConstants.FILE,
+                name: file.name
+            },
+            () => resetFileTo(null),
+            progress => {
+                setUploadProgress(progress);
+                setIsUploadInProgress(true);
+            }
+        );
+    };
+
     const hideAudioPlayer = () => {
         setAudio(null);
         setOpenedAudioBlob(null);
@@ -178,17 +222,7 @@ function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, o
                     />
                     <SaveIcon 
                         fontSize={18} 
-                        onClick={() => {
-                            onSaveAttachment(
-                                { 
-                                    data: recordedAudioBlob, 
-                                    task_id: task_id,
-                                    type: attachmentTypesConstants.AUDIO,
-                                    name: `Audio_${Date.now()}`
-                                }
-                            );
-                            hideUnsavedAudioPlayer();
-                        }}
+                        onClick={handleRecordingSave}
                     />
                 </div>
             </div>}
@@ -207,21 +241,7 @@ function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, o
                     <div>
                         <span 
                             className={`button-small-default ${isUploadInProgress ? 'disabled' : ''}`} 
-                            onClick={() => {
-                                onSaveAttachment(
-                                    { 
-                                        data: file, 
-                                        task_id: task_id,
-                                        type: attachmentTypesConstants.FILE,
-                                        name: file.name
-                                    },
-                                    () => resetFileTo(null),
-                                    progress => {
-                                        setUploadProgress(progress);
-                                        setIsUploadInProgress(true);
-                                    }
-                                );
-                            }}
+                            onClick={handleFileSave}
                         >
                             Save
                         </span>
@@ -259,21 +279,7 @@ function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, o
                     <div>
                         <span 
                             className={`button-small-default ${isUploadInProgress ? 'disabled' : ''}`} 
-                            onClick={() => {
-                                onSaveAttachment(
-                                    { 
-                                        data: image, 
-                                        task_id: task_id,
-                                        type: attachmentTypesConstants.IMAGE,
-                                        name: image.name
-                                    },
-                                    () => resetImageTo(null, false),
-                                    progress => {
-                                        setUploadProgress(progress);
-                                        setIsUploadInProgress(true);
-                                    }
-                                );
-                            }}
+                            onClick={handleSaveImage}
                         >
                             Save
                         </span>
