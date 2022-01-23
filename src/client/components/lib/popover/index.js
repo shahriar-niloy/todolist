@@ -2,13 +2,13 @@ import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Overlay, Popover as ReactPopover, PopoverBody } from 'react-bootstrap';
 
-function Popover({ children, component: Component, placement, className, extendedClassName, disabled }) {
+function Popover({ isOpen, children, component: Component, placement, className, extendedClassName, disabled }) {
     const [show, setShow] = useState(false);
     const ref = useRef(null);
 
     return <>
         <span ref={ref} onClick={() => setShow(!show)} className={disabled ? 'click-disabled' : ''}>{children}</span>
-        <Overlay target={ref.current} show={show} placement={placement} rootClose={true} onHide={() => setShow(false)} >
+        <Overlay target={ref.current} show={isOpen || show} placement={placement} rootClose={true} onHide={() => setShow(false)} >
             {
                 props => <ReactPopover 
                         {...props}
@@ -28,11 +28,13 @@ Popover.defaultProps = {
     placement: 'bottom',
     className: 'popover-default',
     extendedClassName: '',
-    disabled: false
+    disabled: false,
+    isOpen: false
 }
 
 Popover.propTypes = {
-    placement: PropTypes.string
+    placement: PropTypes.string,
+    isOpen: PropTypes.bool
 }
 
 export default Popover;

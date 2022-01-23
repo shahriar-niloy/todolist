@@ -13,7 +13,9 @@ function project(project) {
                 first_name: u.first_name,
                 last_name: u.last_name,
                 email: u.email,
-                is_owner: u?.user_profile?.is_owner || false
+                is_owner: u.is_owner,
+                can_read: u.can_read,
+                can_write: u.can_write
             }));
         }
 

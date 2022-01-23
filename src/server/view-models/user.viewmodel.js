@@ -9,7 +9,11 @@ function profile(user) {
                     {
                         projects: user.projects.map(up => ({
                             id: up.id, 
-                            name: up.name
+                            name: up.name,
+                            is_owner: up.user_project.is_owner,
+                            is_shared: !up.user_project.is_owner,
+                            can_write: up.user_project.can_write,
+                            can_read: up.user_project.can_read
                         }))  
                     }
                 :   {}
@@ -20,7 +24,12 @@ function profile(user) {
 function projects(user) {
     let viewModel = [];
 
-    if (user && user.projects) viewModel = user.projects.map(up => ({ id: up.id, name: up.name }));
+    if (user && user.projects) viewModel = user.projects.map(up => ({ 
+        id: up.id, 
+        name: up.name,
+        is_owner: up.user_project.is_owner,
+        is_shared: !up.user_project.is_owner
+    }));
 
     return viewModel;
 }

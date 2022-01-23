@@ -21,7 +21,7 @@ import ImagePreview from '../misc/image-preview.component';
 
 const formatDateTime = date => moment(date).format('DD MMMM YYYY hh:mm A');
 
-function Attachment ({ name, type, size, createdAt, isOpenDisabled, onOpen, onDelete }) {
+function Attachment ({ name, type, size, createdAt, isOpenDisabled, isDeleteDisabled=false, onOpen, onDelete }) {
     const attachmentIcons = {
         [attachmentTypesConstants.AUDIO]: <MusicIcon className="attachment-icon me-3" fontSize={26} />,
         [attachmentTypesConstants.FILE]: <FileIcon className="attachment-icon me-3" fontSize={26} />,
@@ -47,12 +47,12 @@ function Attachment ({ name, type, size, createdAt, isOpenDisabled, onOpen, onDe
         </div>
         <div>
             <span onClick={onOpen} className={`button-small-default me-1 ${isOpenDisabled ? 'disabled' : ''}`}>{openButtonLabelByType[type]}</span>
-            <span onClick={onDelete} className='button-small-default'>Delete</span>
+            <span onClick={onDelete} className={`button-small-default ${isDeleteDisabled ? 'disabled' : ''}`}>Delete</span>
         </div>
     </div>
 }
 
-function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, onFileOpen, task_id }) {
+function TaskAttachments ({ attachments, readOnly, onSaveAttachment, onDeleteAttachment, onFileOpen, task_id }) {
     const [playAudioAttachment, setPlayAudioAttachment] = useState(false);
     const [unsavedRecording, setUnsavedRecording] = useState(false);
     const [openedAudioBlob, setOpenedAudioBlob] = useState(false);
@@ -187,6 +187,7 @@ function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, o
                                     data={attachment.data}
                                     createdAt={attachment.created_at}
                                     isOpenDisabled={isAttachmentOpenDisabled()}
+                                    isDeleteDisabled={readOnly}
                                     onOpen={() => handleOpenAttachment(attachment)}
                                     onDelete={() => setAttachmentIDToDelete(attachment.id)}
                                 />)
@@ -300,7 +301,7 @@ function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, o
                 </div>
             </div>
             <div className="attachment-types">
-                <label for="upload-file">
+                <label for="upload-file" className={readOnly ? 'disabled' : ''} >
                     <AttachmentIcon className="" />
                     <input 
                         style={{ opacity: 0, position: 'absolute', zIndex: -1 }} 
@@ -311,14 +312,14 @@ function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, o
                     />
                 </label>
                 <MicrophoneIcon 
-                    className={isAudioRecording ? "active" : ""} 
+                    className={`${isAudioRecording ? "active" : ""} ${readOnly ? 'disabled' : ''}`}
                     onClick={() => {
                         handleRecordingStart();
                         hideAudioPlayer();
                         hideUnsavedAudioPlayer();
                     }}
                 /> 
-                <label for="upload-image">
+                <label for="upload-image" className={readOnly ? 'disabled' : ''} >
                     <ImageIcon />
                     <input 
                         style={{ opacity: 0, position: 'absolute', zIndex: -1 }} 
@@ -352,11 +353,13 @@ function TaskAttachments ({ attachments, onSaveAttachment, onDeleteAttachment, o
 
 TaskAttachments.defaultProps = {
     attachments: [],
+    readOnly: false
 }
 
 TaskAttachments.propTypes = {
     task_id: PropTypes.string,
     attachments: PropTypes.array,
+    readOnly: PropTypes.bool,
     onDeleteAttachment: PropTypes.func,
     onSaveAttachment: PropTypes.func,
     onFileOpen: PropTypes.func

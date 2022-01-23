@@ -17,6 +17,7 @@ function TaskListItem ({
     isDraggable, 
     isDropDisabled, 
     isRightActionsEnabled,
+    isCompleteDisabled,
     onTaskDelete, 
     onTaskEdit, 
     onDrop, 
@@ -130,7 +131,11 @@ function TaskListItem ({
                             /> 
                         }
                     </div>
-                    <Checkbox checked={task.is_completed} onClick={() => onTaskComplete(task.id, task.is_completed)} />
+                    <Checkbox 
+                        checked={task.is_completed} 
+                        disabled={isCompleteDisabled}
+                        onClick={() => onTaskComplete(task.id, task.is_completed)} 
+                    />
                     <div className="flex-grow-1 task-title-desc">
                         <div className="d-flex justify-content-between">
                             <h5 onClick={() => onTaskClick(task.id)}>{task.name}</h5>
@@ -161,6 +166,7 @@ function TaskListItem ({
                         isDropDisabled={task.is_completed || isDropDisabled}
                         isDraggable={isDraggable}
                         isRightActionsEnabled={isRightActionsEnabled}
+                        isCompleteDisabled={isCompleteDisabled}
                         onTaskDelete={onTaskDelete}
                         onTaskEdit={onTaskEdit}
                         onTaskClick={onTaskClick}
@@ -174,7 +180,8 @@ function TaskListItem ({
 }
 
 TaskListItem.defaultProps = {
-    isDropDisabled: false
+    isDropDisabled: false,
+    isCompleteDisabled: false
 }
 
 TaskListItem.propTypes = {
@@ -183,6 +190,7 @@ TaskListItem.propTypes = {
     showCompletedTasks: PropTypes.bool.isRequired,
     isDraggable: PropTypes.bool,
     isRightActionsEnabled: PropTypes.bool,
+    isCompleteDisabled: PropTypes.bool,
     onTaskDelete: PropTypes.func.isRequired,
     onTaskEdit: PropTypes.func.isRequired,
     onDrop: PropTypes.func.isRequired,

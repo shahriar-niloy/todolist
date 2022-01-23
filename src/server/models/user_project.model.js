@@ -13,6 +13,21 @@ const User_Project = sequelize.define('user_project', {
         },
         is_owner: {
             type: DataTypes.BOOLEAN,
+            defaultValue: false,
+            set (value) {
+                if (value) {
+                    this.setDataValue('can_read', true);
+                    this.setDataValue('can_write', true);
+                }
+                this.setDataValue('is_owner', value);
+            }
+        },
+        can_read: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
+        },
+        can_write: {
+            type: DataTypes.BOOLEAN,
             defaultValue: false
         }
     }, 

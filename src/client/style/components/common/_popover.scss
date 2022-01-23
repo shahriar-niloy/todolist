@@ -26,3 +26,33 @@
         background-color: $default-hover-color !important;
     }
 }
+
+.popover-autosuggest {
+    min-width: 300px;
+    background-color: #1f1f1f !important;
+    transition: opacity 0.05s linear !important;
+    border: 1px solid #2e2e2e !important;
+
+    .popover-body {
+        color: rgba(255, 255, 255, 0.87) !important;
+        padding: 10px 0px !important;
+
+        .suggestion {
+            padding: 10px 15px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .suggestion:hover {
+            background: #404040;
+        }
+
+        .suggestion-header {
+            font-weight: bold;
+        }
+
+        .suggestion-info {
+            font-weight: normal;
+        }
+    }
+}

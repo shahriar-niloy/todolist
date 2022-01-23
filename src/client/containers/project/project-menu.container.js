@@ -10,7 +10,7 @@ import TrashIcon from '../../components/ui/icons/trash.icon';
 import { deleteProjectAction } from '../../store/actions/project.action';
 import HideIcon from '../../components/ui/icons/hide.icon';
 
-function ProjectMenuContainer({ projectID, hidePopover, showCompletedTasks=false, onShowCompletedTaskChange }) {
+function ProjectMenuContainer({ projectID, onlyReadOnlyActions, hidePopover, showCompletedTasks=false, onShowCompletedTaskChange }) {
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -27,8 +27,9 @@ function ProjectMenuContainer({ projectID, hidePopover, showCompletedTasks=false
         hidePopover();
     }
 
-    const menuitems = [
+    let menuitems = [
         {
+            id: 'toggle_show_hide_completed_task',
             label: showCompletedTasks
                 ? "Hide completed tasks"
                 : "Show completed tasks",
@@ -38,25 +39,36 @@ function ProjectMenuContainer({ projectID, hidePopover, showCompletedTasks=false
                 : <CheckCircleIcon className="me-2" />,
         },
         {
+            id: 'archive',
             label: "Archive project",
             onClick: () => console.log("Archive"),
             icon: <ArchiveIcon className="me-2" />,
         },
         {
+            id: 'delete',
             label: "Delete project",
             onClick: handleDeleteProject,
             icon: <TrashIcon className="me-2" />,
         },
     ];
 
+    if (onlyReadOnlyActions) {
+        menuitems = menuitems.filter(item => ['toggle_show_hide_completed_task'].includes(item.id));
+    }
+
     return <ProjectMenu menuitems={menuitems} />
 }
 
+ProjectMenuContainer.defaultProps = {
+    onlyReadOnlyActions: false
+};
+
 ProjectMenuContainer.propTypes = {
     projectID: PropTypes.string.isRequired,
+    onlyReadOnlyActions: PropTypes.bool,
     hidePopover: PropTypes.func.isRequired,
     showCompletedTasks: PropTypes.bool,
     onShowCompletedTaskChange: PropTypes.func
-}
+};
 
 export default ProjectMenuContainer;

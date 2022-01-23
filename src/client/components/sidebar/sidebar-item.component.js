@@ -2,11 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-function SidebarItem({ path, name, ContextMenuTrigger, contextID, triggerID, isSelected=false, children }) {
+function SidebarItem({ path, name, ContextMenuTrigger, contextID, triggerID, isSelected=false, children, data }) {
     return <div className={`menuitem ${isSelected ? 'menuitem-selected' : ''}`}>
         {
             ContextMenuTrigger 
-                ? <ContextMenuTrigger id={contextID} triggerID={triggerID} collect={props => ({ triggerID: props.triggerID })} >
+                ? <ContextMenuTrigger id={contextID} triggerID={triggerID} collect={props => ({ triggerID: props.triggerID, triggerData: data })} >
                     <Link to={path} aria-current="page">
                         {children ? children : <span>{name}</span>}
                     </Link>    
@@ -23,7 +23,8 @@ SidebarItem.propTypes = {
     name: PropTypes.string.isRequired,
     ContextMenuTrigger: PropTypes.func,
     contextMenuID: PropTypes.string,
-    triggerID: PropTypes.string
+    triggerID: PropTypes.string,
+    data: PropTypes.object
 }
 
 export default SidebarItem;

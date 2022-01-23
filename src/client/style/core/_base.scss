@@ -4,6 +4,10 @@
     }
 }
 
+.todolist-secondary-font-color {
+    color: $secondary-font-color;
+}
+
 .container-default {
     @include container-default;
 }

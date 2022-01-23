@@ -1,6 +1,7 @@
 const path = require('path');
 
 const TaskService = require(path.join(process.cwd(), 'src/server/services/task'));
+const ProjectService = require(path.join(process.cwd(), 'src/server/services/project'));
 const { TaskViewModels, AttachmentViewModels } = require(path.join(process.cwd(), 'src/server/view-models'));
 const { Response } = require(path.join(process.cwd(), 'src/server/schemas'));
 
@@ -37,6 +38,18 @@ async function createTask(req, res) {
         parent_task_id
     } = req.body;
 
+    const [hasPermissionToCreateTask, permissionErr] = await ProjectService.hasPermission(project_id, req.user.id, 'TASK', 'CREATE');
+
+    if (permissionErr) {
+        permissionErr.forEach(e => errorResponse.addError(e.message, ''));
+        return res.status(400).json(errorResponse);
+    }
+
+    if (!hasPermissionToCreateTask) {
+        errorResponse.addError('The user does not have the permission to create a task in the project.', '');
+        return res.status(403).json(errorResponse);
+    }
+
     const [task, errors] = await TaskService.createTask({ name, description, scheduled_at, is_completed, order, project_id, priority, parent_task_id });
 
     if (errors) {
@@ -65,6 +78,18 @@ async function updateTask(req, res) {
         project_id 
     } = req.body;
 
+    const [hasPermissionToUpdateTask, permissionErr] = await ProjectService.hasPermission(project_id, req.user.id, 'TASK', 'UPDATE');
+
+    if (permissionErr) {
+        permissionErr.forEach(e => errorResponse.addError(e.message, ''));
+        return res.status(400).json(errorResponse);
+    }
+
+    if (!hasPermissionToUpdateTask) {
+        errorResponse.addError('The user does not have the permission to update the tasks of the project.', '');
+        return res.status(403).json(errorResponse);
+    }
+
     const [task, errors] = await TaskService.updateTask({ id, name, description, scheduled_at, is_completed, order, project_id, priority });
 
     if (errors) {
@@ -83,7 +108,26 @@ async function deleteTask(req, res) {
 
     const { id } = req.params;
 
-    const [task, errors] = await TaskService.deleteTask(id);
+    const [task, taskErr] = await TaskService.getTask(id);
+
+    if (taskErr) {
+        taskErr.forEach(e => errorResponse.addError(e.message, ''));
+        return res.status(400).json(errorResponse);
+    }
+
+    const [hasPermissionToDeleteTask, permissionErr] = await ProjectService.hasPermission(task.project_id, req.user.id, 'TASK', 'DELETE');
+
+    if (permissionErr) {
+        permissionErr.forEach(e => errorResponse.addError(e.message, ''));
+        return res.status(400).json(errorResponse);
+    }
+
+    if (!hasPermissionToDeleteTask) {
+        errorResponse.addError('The user does not have the permission to delete the tasks of the project.', '');
+        return res.status(403).json(errorResponse);
+    }
+
+    const [, errors] = await TaskService.deleteTask(id);
 
     if (errors) {
         errors.forEach(e => errorResponse.addError(e.message, ''));
@@ -99,6 +143,32 @@ async function bulkUpdateTasks(req, res) {
     const successResponse = new Response.success();
     const errorResponse = new Response.error();
     const tasks = req.body;
+    const userID = req.user.id;
+
+    const [tasksDetail, tasksError] = await TaskService.getTasks(userID, { id: tasks.map(task => task.id) });
+
+    if (tasksError) {
+        tasksError.forEach(e => errorResponse.addError(e.message, ''));
+        return res.status(400).json(errorResponse);
+    }
+
+    const projectIDs = [...(new Set(tasksDetail.map(task => task.project_id)))];
+
+    await Promise.all(projectIDs.map(async id => {
+        const [hasPermissionToUpdateTask, permissionErr] = await ProjectService.hasPermission(id, userID, 'TASK', 'UPDATE');
+
+        if (permissionErr) {
+            permissionErr.forEach(e => errorResponse.addError(e.message, ''));
+        }
+
+        if (!hasPermissionToUpdateTask) {
+            errorResponse.addError('The user does not have the permission to update the tasks of the project.', '');
+        }
+    }));
+
+    if (errorResponse.errors.length) {
+        return res.status(400).json(errorResponse);
+    }
 
     const [updatedTasks, errors] = await TaskService.bulkUpdateTasks(tasks);
 
@@ -162,6 +232,20 @@ async function createTaskAttachment(req, res) {
         fileSize: req.file.size,
         mimetype: req.body.mimetype || req.file.mimetype 
     };
+
+    const [task, taskErr] = await TaskService.getTask(req.body.task_id);
+
+    if (taskErr) {
+        taskErr.forEach(e => errorResponse.addError(e.message, ''));
+        return res.status(400).json(errorResponse);   
+    }
+
+    const [hasPermissionToCreateAttachment, err] = await ProjectService.hasPermission(task.project_id, req.user.id, 'ATTACHMENT', 'UPDATE');
+
+    if (!hasPermissionToCreateAttachment) {
+        errorResponse.addError('User does not have the permission to create an attachment in this task.', '');
+        return res.status(403).send(errorResponse);
+    }
 
     const [attachment, errors] = await TaskService.createTaskAttachment(attachmentObject);
 

@@ -21,6 +21,7 @@ function TaskEditorContainer() {
     const params = useParams();
     const projectID = params.id;
     const project = useSelector(state => state.project.details);
+    const loggedInUser = useSelector(state => state.user.profile);
     const [showTaskForm, setShowTaskForm] = useState(false);
     const [taskID, setTaskID] = useState(null);
     const [openTaskFormInDetailView, setOpenTaskFormInDetailView] = useState(false);
@@ -32,6 +33,8 @@ function TaskEditorContainer() {
         taskToSubtask, 
         subtaskToTask
     } = useSelector(state => state.task.list);
+
+    const isReadOnly = !(project?.users && loggedInUser && project.users.find(user => user.id === loggedInUser.id)?.can_write);
 
     function reorderTasks(tasksTree, taskID, isCompleted, taskFound=false) {
         if (!tasksTree || !tasksTree.length) return [[], false];
@@ -175,6 +178,7 @@ function TaskEditorContainer() {
             title={project?.name} 
             tasks={[...(taskTree||[])]}
             showCompletedTasks={showCompletedTasks}
+            readOnly={isReadOnly}
             onTaskDelete={handleTaskDelete} 
             onTaskAddIconClick={handleTaskAddIconClick} 
             onTaskEdit={handleTaskEdit}
@@ -183,6 +187,8 @@ function TaskEditorContainer() {
             onTaskClick={handleTaskClick}
             Menu={props => <ProjectMenuContainer 
                 projectID={projectID} 
+                project={project}
+                onlyReadOnlyActions={isReadOnly}
                 showCompletedTasks={showCompletedTasks}
                 onShowCompletedTaskChange={show => setShowCompletedTask(show)}
                 {...props} 
@@ -194,7 +200,10 @@ function TaskEditorContainer() {
                 projectID={project?.id}
                 taskID={taskID}
                 subtasks={taskID ? taskToSubtask?.get(taskID) : []}
+                isEditDisabled={isReadOnly}
                 isDetailView={openTaskFormInDetailView}
+                isCompleteDisabled={isReadOnly}
+                isAttachmentReadOnly={isReadOnly}
                 createAtOrder={taskList?.filter(task => !task.is_completed).length || 0} 
                 onSubmitSuccess={() => { 
                     setShowTaskForm(false); 

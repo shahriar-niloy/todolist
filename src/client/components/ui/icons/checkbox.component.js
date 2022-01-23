@@ -1,18 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Checkbox({ label, name, checked, onClick }) {
-    return <label class="checkbox-wrapper">
+function Checkbox({ label, name, checked, onClick, disabled }) {
+    return <label className={`checkbox-wrapper ${disabled ? 'disabled' : ''}`}>
         {label}
         <input type="checkbox" name={name} checked={checked} onClick={onClick} />
-        <span className="checkmark"></span>
+        <span className={`checkmark ${disabled ? 'checkmark-disabled' : ''}`}></span>
     </label>
 };
 
 Checkbox.defaultProps = {
     onclick: () => null,
     label: '',
-    name: ''
+    name: '',
+    disabled: false
 }
 
 Checkbox.proptType = {

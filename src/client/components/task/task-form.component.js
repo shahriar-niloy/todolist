@@ -103,6 +103,8 @@ function TaskForm({
     attachments,
     isDetailView,
     isEditDisabled,
+    isCompleteDisabled,
+    isAttachmentReadOnly,
     transformDate, 
     onSubtaskAdd,
     onSubmit, 
@@ -191,8 +193,8 @@ function TaskForm({
                     </Popover>
                     <div>
                         {task?.is_completed 
-                            ? <CheckSquareIcon className="font-size-17 task-form-action-icon me-2" onClick={() => onTaskComplete(task?.id, true)} />
-                            : <SquareIcon className="font-size-17 task-form-action-icon me-2" onClick={() => onTaskComplete(task?.id, false)} /> 
+                            ? <CheckSquareIcon className={`font-size-17 task-form-action-icon me-2 ${isCompleteDisabled ? 'click-disabled' : ''}`} onClick={() => onTaskComplete(task?.id, true)} />
+                            : <SquareIcon className={`font-size-17 task-form-action-icon me-2 ${isCompleteDisabled ? 'click-disabled' : ''}`} onClick={() => onTaskComplete(task?.id, false)} /> 
                         }
                         <Popover 
                             component={props => 
@@ -228,6 +230,7 @@ function TaskForm({
                             <TaskListManager 
                                 tasks={subtasks}
                                 showCompletedTasks={false}
+                                isCompleteDisabled={isCompleteDisabled}
                                 onTaskEdit={onTaskEdit}
                                 onTaskDelete={onTaskDelete}
                                 onDrop={onDrop}
@@ -260,6 +263,7 @@ function TaskForm({
                             <TaskAttachments 
                                 attachments={attachments}
                                 task_id={task?.id}
+                                readOnly={isAttachmentReadOnly}
                                 onSaveAttachment={onSaveAttachment}
                                 onDeleteAttachment={onDeleteAttachment}
                                 onFileOpen={onFileOpen}
@@ -275,7 +279,8 @@ function TaskForm({
 TaskForm.defaultProps = {
     task: {},
     isDetailView: false,
-    isEditing: false
+    isEditing: false,
+    isAttachmentReadOnly: false
 }
 
 TaskForm.propTypes = {
@@ -285,6 +290,7 @@ TaskForm.propTypes = {
     attachments: PropTypes.array,
     subtasks: PropTypes.array,
     isEditing: PropTypes.bool,
+    isAttachmentReadOnly: PropTypes.bool,
     transformDate: PropTypes.func,
     onSubtaskAdd: PropTypes.func,
     onNavigateToParentTask: PropTypes.func,

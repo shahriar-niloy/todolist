@@ -10,6 +10,7 @@ function TaskEditor({
     tasks, 
     showCompletedTasks, 
     Menu, 
+    readOnly,
     isDraggable,
     isRightActionsEnabled,
     onTaskAddIconClick, 
@@ -23,7 +24,7 @@ function TaskEditor({
         <div className="d-flex justify-content-between align-items-center">
             <h4>{title}</h4>
             <div className="align-xy">
-                {onTaskAddIconClick && <i class="fal fa-plus font-size-21 clickable me-3" onClick={onTaskAddIconClick} ></i>}
+                {!readOnly && onTaskAddIconClick && <i class="fal fa-plus font-size-21 clickable me-3" onClick={onTaskAddIconClick} ></i>}
                 {Menu && <Popover component={Menu} >
                     <OptionIcon />
                 </Popover>}
@@ -33,8 +34,9 @@ function TaskEditor({
         <TaskListManager 
             tasks={tasks}
             showCompletedTasks={showCompletedTasks}
-            isDraggable={isDraggable}
-            isRightActionsEnabled={isRightActionsEnabled}
+            isDraggable={!readOnly && isDraggable}
+            isRightActionsEnabled={!readOnly && isRightActionsEnabled}
+            isCompleteDisabled={readOnly}
             onTaskEdit={onTaskEdit}
             onTaskDelete={onTaskDelete}
             onDrop={onDrop}
@@ -47,13 +49,15 @@ function TaskEditor({
 TaskEditor.defaultProps = {
     tasks: [],
     isDraggable: true,
-    isRightActionsEnabled: true
+    isRightActionsEnabled: true,
+    readOnly: false
 }
 
 TaskEditor.propTypes = {
     title: PropTypes.string.isRequired,
     tasks: PropTypes.array.isRequired,
     showCompletedTasks: PropTypes.bool,
+    readOnly: PropTypes.bool,
     Menu: PropTypes.func,
     isDraggable: PropTypes.bool,
     isRightActionsEnabled: PropTypes.bool,

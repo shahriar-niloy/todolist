@@ -17,6 +17,8 @@ function TaskFormContainer({
     taskID, 
     isDetailView, 
     isEditDisabled,
+    isCompleteDisabled,
+    isAttachmentReadOnly,
     onTaskEdit, 
     onTaskDelete, 
     onDrop, 
@@ -89,6 +91,8 @@ function TaskFormContainer({
         isEditing={!!taskID} 
         isDetailView={isDetailView} 
         isEditDisabled={isEditDisabled}
+        isCompleteDisabled={isCompleteDisabled}
+        isAttachmentReadOnly={isAttachmentReadOnly}
         transformDate={date => { 
             date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
             return convertDateToUTC(date)
@@ -118,6 +122,8 @@ TaskFormContainer.propTypes = {
     taskID: PropTypes.string,
     isDetailView: PropTypes.bool,
     isEditDisabled: PropTypes.bool,
+    isCompleteDisabled: PropTypes.bool,
+    isAttachmentReadOnly: PropTypes.bool,
     subtasks: PropTypes.array,
     onSubmitSuccess: PropTypes.func,
     onTaskEdit: PropTypes.func,

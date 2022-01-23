@@ -6,6 +6,8 @@ const AUTHENTICATION_MIDDLEWARE = require(path.join(process.cwd(), 'src/server/m
 module.exports = function(app) {
     app.get('/api/me', AUTHENTICATION_MIDDLEWARE, controller.getMyProfile);
 
+    app.get('/api/users/search', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.searchUsers));
+
     app.get('/api/users/:id/projects', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.getUserProjects))
         .post('/api/users/:id/projects', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.addProject));
 }

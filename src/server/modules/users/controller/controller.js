@@ -85,7 +85,27 @@ async function getUserProjects(req, res) {
     res.json(successResponse);
 }
 
+async function searchUsers(req, res) {
+    const successResponse = new Response.success();
+    const errorResponse = new Response.error();
+
+    const query = req.query.query;
+    const notInProject = req.query.not_in_project;
+
+    if (!query) {
+        errorResponse.addError('Invalid query parameters.', '');
+        return res.status(400).json(errorResponse);
+    }
+
+    const users = await UserService.searchUsers(query, notInProject);
+
+    successResponse.data = users.map(user => UserViewModels.profile(user));
+
+    res.json(successResponse);
+}
+
 exports.getProfile = getProfile;
 exports.addProject = addProject;
 exports.getUserProjects = getUserProjects;
 exports.getMyProfile = getMyProfile;
+exports.searchUsers = searchUsers;

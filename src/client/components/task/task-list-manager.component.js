@@ -9,6 +9,7 @@ function TaskListManager({
     showCompletedTasks,
     isDraggable,
     isRightActionsEnabled,
+    isCompleteDisabled,
     onTaskEdit,
     onTaskDelete,
     onDrop,
@@ -27,6 +28,7 @@ function TaskListManager({
                             showCompletedTasks={showCompletedTasks}
                             isDraggable={isDraggable}
                             isRightActionsEnabled={isRightActionsEnabled}
+                            isCompleteDisabled={isCompleteDisabled}
                             onTaskEdit={onTaskEdit}
                             onTaskDelete={onTaskDelete}
                             onDrop={onDrop}
@@ -41,16 +43,21 @@ function TaskListManager({
     );
 }
 
+TaskListManager.defaultProps = {
+    isCompleteDisabled: false
+};
+
 TaskListManager.propTypes = {
     tasks: PropTypes.array,
     isDraggable: PropTypes.bool,
     isRightActionsEnabled: PropTypes.bool,
     showCompletedTasks: PropTypes.bool,
+    isCompleteDisabled: PropTypes.bool,
     onTaskEdit: PropTypes.func.isRequired,
     onTaskDelete: PropTypes.func.isRequired,
     onDrop: PropTypes.func.isRequired,
     onTaskComplete: PropTypes.func.isRequired,
     onTaskClick: PropTypes.func.isRequired
-}
+};
 
 export default TaskListManager;

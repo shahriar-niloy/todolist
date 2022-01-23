@@ -2,9 +2,9 @@ import React from "react";
 import { ContextMenu, MenuItem } from "react-contextmenu";
 import PropTypes from 'prop-types';
 
-function AppContextMenu({ onClick, contextID, menuItems }) {
+function AppContextMenu({ onClick, contextID, menuItems, onShow }) {
     return (
-        <ContextMenu id={contextID} className="context-menu">
+        <ContextMenu id={contextID} className="context-menu" onShow={onShow}>
             {menuItems.map(i => (
                 <MenuItem
                     key={i.id}
@@ -27,7 +27,8 @@ AppContextMenu.defaultProps = {
 AppContextMenu.propTypes = {
     menuItems: PropTypes.arrayOf(PropTypes.object).isRequired,
     onClick: PropTypes.func.isRequired,
-    contextID: PropTypes.string.isRequired
+    contextID: PropTypes.string.isRequired,
+    onShow: PropTypes.func.isRequired
 }
 
 export default AppContextMenu;
