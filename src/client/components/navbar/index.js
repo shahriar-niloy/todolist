@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import UserMenuContainer from '../../containers/app/user-menu.container';
+import NotificationDropDownContainer from '../../containers/notification/notification-dropdown.container';
 import Popover from '../lib/popover';
+import NotificationIcon from '../ui/icons/notification.icon';
 
-export default function Navbar({ onInitialsClick, initials }) {
+export default function Navbar({ unseenNotificationCount, initials, notifications=[], onShowNotifications }) {    
+    const [isNotificationDropDownOpen, setIsNotificationDropdownOpen] = useState(false);
+    
+    const handleShowNotifications = () => {
+        onShowNotifications(notifications.map(n => n.id));
+    };
+
     return (
         <nav class="navbar navbar-expand-lg dashboard_navbar">
             <div class="container-fluid">
@@ -33,6 +41,26 @@ export default function Navbar({ onInitialsClick, initials }) {
                         </button>
                     </form>
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li className="nav-item me-2">
+                            <Popover 
+                                isOpen={isNotificationDropDownOpen}
+                                component={NotificationDropDownContainer}
+                                onShow={handleShowNotifications}
+                            >
+                                <a
+                                    className="nav-link active align-xy notification-indicator"
+                                    aria-current="page"
+                                    href="#"
+                                >
+                                    <NotificationIcon fontSize={20} />
+                                    {
+                                        unseenNotificationCount && <div className='notification-indicator-badge'>
+                                            {unseenNotificationCount}
+                                        </div>
+                                    }
+                                </a>
+                            </Popover>
+                        </li>
                         <li className="nav-item">
                             <Popover component={UserMenuContainer} >
                                 <a

@@ -16,6 +16,7 @@ export function* getMyProfile() {
         console.log(err);
     }
 }
+
 export function debouncedSearchUsersAction(query, notInProject) {
     return {
         type: actionTypes.DEBOUNCE_SEARCH_USERS,
@@ -51,5 +52,45 @@ export function* searchUsers(data) {
 export function clearSearchUsersResultAction() {
     return {
         type: actionTypes.CLEAR_SEARCH_USERS_RESULT
+    }
+}
+
+export function getMyNotificationsAction(page, shouldAppend) {
+    return {
+        type: actionTypes.GET_MY_NOTIFICATIONS,
+        payload: { page, shouldAppend }
+    }
+}
+
+export function* getMyNotifications(data) {
+    try {
+        const page = data.payload.page;
+        const shouldAppend = data.payload.shouldAppend || false;
+        const query = new URLSearchParams();
+        page && query.append('page', page);
+
+        yield put({ type: actionTypes.GET_MY_NOTIFICATIONS_PENDING });
+
+        const { data: notifications } = yield axios.get(`/api/me/notifications?${query}`);
+
+        yield put({ type: actionTypes.GET_MY_NOTIFICATIONS_SUCCESS , payload: { notifications, shouldAppend } });
+    } catch(err) {
+        console.log(err);
+    }
+}
+
+export function markMyNotificationsAsReadAction(notificationIDs) {
+    return {
+        type: actionTypes.MARK_MY_NOTIFICATIONS_AS_READ,
+        payload: { notificationIDs }
+    }
+}
+
+export function* markMyNotificationsAsRead(data) {
+    try {
+        yield axios.put('/api/me/notifications/mark-as-read', { notification_ids: data.payload.notificationIDs });
+        yield put(getMyNotificationsAction());
+    } catch(err) {
+        console.log(err);
     }
 }

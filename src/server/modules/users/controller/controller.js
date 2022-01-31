@@ -1,6 +1,8 @@
 const path = require('path');
+const { RECENT_NOTIFICATIONS_LIMIT } = require(path.join(process.cwd(), 'src/server/constants/app.constants'));
 
 const UserService = require(path.join(process.cwd(), 'src/server/services/user'));
+const NotificationService = require(path.join(process.cwd(), 'src/server/services/notification'));
 const { UserViewModels } = require(path.join(process.cwd(), 'src/server/view-models'));
 const { Response } = require(path.join(process.cwd(), 'src/server/schemas'));
 
@@ -21,7 +23,7 @@ async function getMyProfile(req, res) {
         const successResponse = new Response.success();
         const errorResponse = new Response.error();
 
-        const user = await UserService.getUser(req.user.id);
+        const [user] = await UserService.getUser(req.user.id);
 
         if (!user) {
             errorResponse.addError('User does not exists.', '');
@@ -48,7 +50,7 @@ async function addProject(req, res) {
         return res.status(400).json(errorResponse);
     }
 
-    const user = await UserService.getUser(user_id);
+    const [user] = await UserService.getUser(user_id);
 
     if (!user) {
         errorResponse.addError('User not found.', '');
@@ -73,7 +75,7 @@ async function getUserProjects(req, res) {
         return res.status(400).json(errorResponse);
     }
 
-    const user = await UserService.getUser(id);
+    const [user] = await UserService.getUser(id);
 
     if (!user) {
         errorResponse.addError('User not found.', '');
@@ -104,8 +106,47 @@ async function searchUsers(req, res) {
     res.json(successResponse);
 }
 
+async function getMyNotifications(req, res) {
+    const successResponse = new Response.success();
+    const errorResponse = new Response.error();
+    
+    const userID = req.user.id;
+    const page = req.query.page ? +req.query.page : 1;
+    const limit = req.query.limit ? +req.query.limit : 10;
+
+    const [{ notifications, total, hasMore }, err] = await NotificationService.getNotifications(userID, false, page, RECENT_NOTIFICATIONS_LIMIT);
+
+    if (err) {
+        err.forEach(e => errorResponse.addError(e.message, ''));
+        return res.status(400).json(errorResponse);
+    }
+
+    successResponse.data = notifications.map(notification => UserViewModels.notification(notification));
+    successResponse.metadata = { total, page, limit, hasMore };
+
+    res.json(successResponse);
+}
+
+async function markMyNotificationsAsRead(req, res) {
+    const errorResponse = new Response.error();
+    
+    const userID = req.user.id;
+    const notificationIDs = req.body.notification_ids;
+
+    const [, err] = await NotificationService.markUserNotificationsAsRead(userID, notificationIDs);
+
+    if (err) {
+        err.forEach(e => errorResponse.addError(e.message, ''));
+        return res.status(400).json(errorResponse);
+    }
+
+    res.sendStatus(200);
+}
+
 exports.getProfile = getProfile;
 exports.addProject = addProject;
 exports.getUserProjects = getUserProjects;
 exports.getMyProfile = getMyProfile;
 exports.searchUsers = searchUsers;
+exports.getMyNotifications = getMyNotifications;
+exports.markMyNotificationsAsRead = markMyNotificationsAsRead;

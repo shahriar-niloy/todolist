@@ -1,0 +1,36 @@
+.notification-dropdown {
+    .notification-header {
+        user-select: none;
+        display: flex;
+        justify-content: space-between;
+
+        &-title {
+            font-size: 14px;
+        }
+
+        &-action {
+            font-size: 11px;
+            color: $secondary-font-color;
+            cursor: pointer;
+        }
+    }
+
+    .notification-list {
+        overflow: auto;
+        max-height: calc(100vh - 200px);
+    }
+
+    .notification-text {
+        margin-bottom: 0.25rem !important;
+        font-size: 13px;
+    }
+
+    .notification-metadata {
+        color: $secondary-font-color;
+        font-size: 11px;
+    }
+
+    .notification-none {
+        font-size: 13px;
+    }
+}

@@ -13,8 +13,11 @@ app.use(cookieParser());
 app.use(express.static("public"));
 app.use(express.static("dist"));
 
-app.listen(config.PORT, () => {
+const server = app.listen(config.PORT, () => {
     console.info(`Server listening on ${config.PORT}`);
 });
 
-module.exports = app; 
+module.exports = {
+    app,
+    server
+}; 

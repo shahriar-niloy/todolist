@@ -19,18 +19,18 @@ function Events() {
             const eventQueue = this.events.get(eventName);
             eventQueue.push(action);
             
-            const eventToken = {
+            const subscriptionToken = {
                 eventName,
                 index: eventQueue.length - 1
             };
 
-            return eventToken;
+            return subscriptionToken;
         }
         return null;
     }
 
-    this.unsubscribe = function(eventToken) {
-        const { eventName, index } = eventToken;
+    this.unsubscribe = function(subscriptionToken) {
+        const { eventName, index } = subscriptionToken;
         
         if (!eventName || !Number.isInteger(index) || !this.events.has(eventName)) return;
 

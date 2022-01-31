@@ -3,14 +3,13 @@ import { useSelector } from 'react-redux';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import BaseEditor from '../components/editor/base-editor.component';
 import Modal from '../components/modal';
-import Navbar from '../components/navbar';
 import ManagerHome from '../components/states/manager-home.component';
-import { getInitials } from '../utility';
 import ProjectFormContainer from './project/project-form.container';
 import ProjectShareFormContainer from './project/project-share-form.container';
 import Sidebar from './sidebar.container';
 import TaskEditorContainer from './task/task-editor.container';
 import TodayTaskEditor from './task/today-task-editor.container';
+import NavbarContainer from './navbar.container';
 
 function ToDoManager() {
     const [showProjectForm, setShowProjectForm] = useState(false);
@@ -19,11 +18,6 @@ function ToDoManager() {
     const currentUser = useSelector(state => state.user.profile);
     const history = useHistory();
 
-    const initials = getInitials(currentUser 
-        ? `${currentUser?.first_name} ${currentUser?.last_name}` 
-        : ''
-    );
-
     const handleClose = () => { 
         setShowProjectForm(false); 
         setShowProjectShareForm(false); 
@@ -31,7 +25,7 @@ function ToDoManager() {
     };
 
     return <div className="todo-body">
-        <Navbar initials={initials} />
+        <NavbarContainer />
         <div className="todo-main">
             <Sidebar 
                 projects={currentUser?.projects || []}

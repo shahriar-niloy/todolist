@@ -1,0 +1,4 @@
+module.exports = {
+    TASK_COMPLETED: 'TASK_COMPLETED',
+    PROJECT_SHARED: 'PROJECT_SHARED'
+}

@@ -2,8 +2,10 @@ const path = require('path');
 
 const TaskService = require(path.join(process.cwd(), 'src/server/services/task'));
 const ProjectService = require(path.join(process.cwd(), 'src/server/services/project'));
+const NotificationService = require(path.join(process.cwd(), 'src/server/services/notification'));
 const { TaskViewModels, AttachmentViewModels } = require(path.join(process.cwd(), 'src/server/view-models'));
 const { Response } = require(path.join(process.cwd(), 'src/server/schemas'));
+const logger = require(path.join(process.cwd(), 'src/server/lib/logger'));
 
 async function getTask(req, res) {
     const successResponse = new Response.success();
@@ -90,14 +92,26 @@ async function updateTask(req, res) {
         return res.status(403).json(errorResponse);
     }
 
-    const [task, errors] = await TaskService.updateTask({ id, name, description, scheduled_at, is_completed, order, project_id, priority });
+    const [task, taskErrors] = await TaskService.getTask(id);
+
+    if (taskErrors) {
+        taskErrors.forEach(e => errorResponse.addError(e.message, ''));
+        return res.status(400).json(errorResponse);
+    }
+
+    const [updatedTask, errors] = await TaskService.updateTask({ id, name, description, scheduled_at, is_completed, order, project_id, priority });
+
+    if (task.is_completed === false && is_completed === true) {
+        const [, notificationErr] = await NotificationService.createTaskCompletedNotification(updatedTask.id, req.user.id);
+        if (notificationErr) console.error(notificationErr);
+    }
 
     if (errors) {
         errors.forEach(e => errorResponse.addError(e.message, ''));
         return res.status(400).json(errorResponse);
     }
 
-    successResponse.data = TaskViewModels.task(task);
+    successResponse.data = TaskViewModels.task(updatedTask);
 
     res.json(successResponse);
 }
@@ -170,13 +184,27 @@ async function bulkUpdateTasks(req, res) {
         return res.status(400).json(errorResponse);
     }
 
+    const markedAsCompleteTasks = tasksDetail.filter(
+        task => task.is_completed === false && 
+        tasks.find(t => t.id === task.id)?.is_completed === true 
+    );
+
     const [updatedTasks, errors] = await TaskService.bulkUpdateTasks(tasks);
 
     if (errors) {
         errors.forEach(e => errorResponse.addError(e.message, ''));
         return res.status(400).json(errorResponse);
     }
-    
+
+    if (markedAsCompleteTasks.length) {
+        await Promise.all(
+            markedAsCompleteTasks.map(async task => {
+                const [, notificationErr] = await NotificationService.createTaskCompletedNotification(task.id, req.user.id);
+                if (notificationErr) logger.error(notificationErr);
+            })
+        );
+    }
+
     successResponse.data = updatedTasks.map(task => TaskViewModels.task(task))
     
     res.json(successResponse);

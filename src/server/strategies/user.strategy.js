@@ -4,7 +4,7 @@ var JwtStrategy = require('passport-jwt').Strategy;
 
 const config = require(path.join(process.cwd(), 'src/server/config/config'));
 const UserModel = require(path.join(process.cwd(), 'src/server/models/user.model'));
-const { AUTHENTICATION_COOKIE_NAME } = require(path.join(process.cwd(), 'src/server/config/app.constants'));
+const { AUTHENTICATION_COOKIE_NAME } = require(path.join(process.cwd(), 'src/server/constants/app.constants'));
 
 var opts = {};
 

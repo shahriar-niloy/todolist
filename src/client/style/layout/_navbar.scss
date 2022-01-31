@@ -19,3 +19,27 @@
     width: 35px;
     height: 35px;
 }
+
+.notification-indicator {
+    position: relative;
+
+    &:hover {
+        background: #424242;
+        border-radius: 3px;
+    }
+
+    &-badge {
+        font-weight: bold;
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        min-width: 15px;
+        min-height: 15px;
+        line-height: 6px;
+        padding: 5px;
+        color: #fff;
+        background-color: #bf1f1f;
+        font-size: 10px;
+        border-radius: 20px;
+    }
+}

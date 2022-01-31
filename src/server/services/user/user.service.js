@@ -3,6 +3,7 @@ const { Op, fn } = require('sequelize');
 const UserModel = require(path.join(process.cwd(), 'src/server/models/user.model'));
 const ProjectModel = require(path.join(process.cwd(), 'src/server/models/project.model'));
 const { escapeWildcards } = require(path.join(process.cwd(), 'src/server/utility/misc'));
+const { Return } = require(path.join(process.cwd(), 'src/server/schemas'));
 
 async function getUsers() {
     const users = await UserModel.findAll();
@@ -10,11 +11,13 @@ async function getUsers() {
 }
 
 async function getUser(id) {
-    if (!id) return null;
+    if (!id) return Return.service(null, [{ message: 'Must provide required parameters.' }]);
 
     const user = await UserModel.findOne({ where: { id }, include: ProjectModel });
 
-    return user; 
+    if (!user) return Return.service(null, [{ message: 'User does not exist.' }]);
+
+    return Return.service(user);
 }
 
 async function searchUsers(query, notInProject) {

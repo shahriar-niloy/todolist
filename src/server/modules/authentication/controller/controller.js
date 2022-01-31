@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const AuthenticationService = require(path.join(process.cwd(), 'src/server/services/authentication'));
 const config = require(path.join(process.cwd(), 'src/server/config/config'));
-const { AUTHENTICATION_COOKIE_NAME, AUTHENTICATION_EXPIRY_TIMESTRING } = require(path.join(process.cwd(), 'src/server/config/app.constants'));
+const { AUTHENTICATION_COOKIE_NAME, AUTHENTICATION_EXPIRY_TIMESTRING } = require(path.join(process.cwd(), 'src/server/constants/app.constants'));
 const { UserViewModels } = require(path.join(process.cwd(), 'src/server/view-models'));
 
 async function login(req, res) {

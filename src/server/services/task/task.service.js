@@ -1,8 +1,7 @@
 const path = require('path');
-const { Buffer } = require('buffer');
 const { where: Where, fn, col } = require('sequelize');
 const AttachmentModel = require('../../models/attachment.model');
-const { MAX_ATTACHMENT_SIZE_IN_BYTES } = require('../../config/app.constants');
+const { MAX_ATTACHMENT_SIZE_IN_BYTES } = require(path.join(process.cwd(), 'src/server/constants/app.constants'));
 
 const TaskModel = require(path.join(process.cwd(), 'src/server/models/task.model'));
 const ProjectModel = require(path.join(process.cwd(), 'src/server/models/project.model'));
@@ -143,6 +142,16 @@ async function deleteTask(id) {
     return Return.service(TaskViewModels.task(task));
 }
 
+async function getBulkTasks(taskIDs) {
+    if (!taskIDs) return Return.service(null, [{ message: 'Must provide required paramters.' }]);
+    
+    if (!Array.isArray(taskIDs)) return Return.service(null, [{ message: 'Must provide array of task id.' }]);
+
+    const tasks = await TaskModel.findAll({ where: { id: taskIDs }});
+
+    return Return.service(tasks);
+}
+
 async function bulkUpdateTasks(tasks) {
     if (!tasks) return Return.service(null, [{ message: 'Must provide required paramters.' }]);
     
@@ -273,3 +282,4 @@ exports.getTasks = getTasks;
 exports.createTaskAttachment = createTaskAttachment;
 exports.getTaskAttachments = getTaskAttachments;
 exports.deleteTaskAttachment = deleteTaskAttachment;
+exports.getBulkTasks = getBulkTasks;

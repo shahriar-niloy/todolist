@@ -34,5 +34,19 @@ function projects(user) {
     return viewModel;
 }
 
+function notification(notification) {
+    let viewModel = {};
+
+    if (!notification) return viewModel;
+
+    viewModel.id = notification.id;
+    viewModel.type = notification.type;
+    viewModel.data = notification.data;
+    viewModel.created_at = notification.created_at;
+
+    return viewModel;
+}
+
 exports.profile = profile;
 exports.projects = projects;
+exports.notification = notification;

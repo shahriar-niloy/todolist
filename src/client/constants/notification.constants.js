@@ -1,0 +1,6 @@
+export const Types = {
+    TASK_COMPLETED: 'TASK_COMPLETED',
+    PROJECT_SHARED: 'PROJECT_SHARED'
+}
+
+export const NOTIFICATION_SEEN_STATUS_LOCALE_STORAGE_KEY = 'notificationSeenStatus';

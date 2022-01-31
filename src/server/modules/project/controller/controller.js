@@ -2,6 +2,7 @@ const path = require('path');
 
 const UserService = require(path.join(process.cwd(), 'src/server/services/user'));
 const ProjectService = require(path.join(process.cwd(), 'src/server/services/project'));
+const NotificationService = require(path.join(process.cwd(), 'src/server/services/notification'));
 const { ProjectViewModels } = require(path.join(process.cwd(), 'src/server/view-models'));
 const { Response } = require(path.join(process.cwd(), 'src/server/schemas'));
 
@@ -39,7 +40,7 @@ async function createProject(req, res) {
         return res.status(400).json(errorResponse);
     }
 
-    const user = await UserService.getUser(user_id);
+    const [user] = await UserService.getUser(user_id);
 
     if (!user) {
         errorResponse.addError('User does not exist.', '');
@@ -148,6 +149,7 @@ async function shareProject(req, res) {
     }
 
     await ProjectService.shareProject(id, userID, hasReadAccess, hasWriteAccess);
+    await NotificationService.createProjectSharedNotification(id, userID, requestingUserID);
 
     res.sendStatus(200);
 }
