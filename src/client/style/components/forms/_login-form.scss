@@ -1,6 +1,6 @@
 .login-form-container {
     padding: 15px;
-    background: #232429;
+    background: $secondary-bg;
     border-radius: 3px;
     border: 1px solid #2f3036;
     box-shadow: 0px 0px 5px #141414;
@@ -9,8 +9,8 @@
     font-size: 13px;
 
     input {
-        border: 1px solid #323238;
-        background: #232429;
+        border: 1px solid #3e3e47;
+        background: $secondary-bg;
         border-radius: 3px;
         padding: 5px 7px;
         margin-top: 3px;
@@ -19,6 +19,7 @@
 
     input:focus-visible {
         outline: 1px solid #7c7c82 !important;
+        box-shadow: 0px 0px 5px #7c7c828c;
     }
 
     .login-submit {
