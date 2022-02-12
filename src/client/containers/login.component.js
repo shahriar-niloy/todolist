@@ -11,7 +11,7 @@ export default function Login() {
 
     const handleSubmit = (values) => login(values.email, values.password);
 
-    return <div>
+    return <div className='login-container align-xy'>
         {
             isLoggedIn
                 ? <Redirect to={redirectToPath} />
