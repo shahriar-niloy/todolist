@@ -1,6 +1,7 @@
 import axios from "axios";
 import { put } from "redux-saga/effects";
 import actionTypes from "../../constants/action.types"
+import { buildCommentHierarchy } from "../../services/comment.service";
 import { reorderTasksOnComplete } from "../../services/task.service";
 import { convertDateToUTC, processTaskList } from "../../utility";
 import { getProjectAction } from "./project.action";
@@ -246,5 +247,24 @@ export function getTaskAttachmentAction(taskID) {
     return {
         type: actionTypes.GET_TASK_ATTACHMENTS,
         taskID
+    }
+}
+
+export function* getTaskComments(data) {
+    try {
+        let { data: comments } = yield axios({ method: 'get', url: `/api/tasks/${data.payload.taskID}/comments` });
+        
+        comments = buildCommentHierarchy(comments.data);
+
+        yield put({ type: actionTypes.GET_TASK_COMMENTS_SUCCESS, payload: comments });
+    } catch(err) {
+        console.log(err);
+    }
+}
+
+export function getTaskCommentsAction(taskID) {
+    return {
+        type: actionTypes.GET_TASK_COMMENTS,
+        payload: { taskID }
     }
 }

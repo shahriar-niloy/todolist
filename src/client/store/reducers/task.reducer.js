@@ -56,6 +56,12 @@ export default function taskReducer(state = initialState, action) {
                 attachments: action.payload
             };
         }
+        case actions.GET_TASK_COMMENTS_SUCCESS: {
+            return { 
+                ...state, 
+                comments: action.payload
+            };
+        }
         default:
             break;
     }

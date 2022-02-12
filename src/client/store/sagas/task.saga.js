@@ -1,6 +1,6 @@
 import { takeEvery, takeLatest } from 'redux-saga/effects';
 import actionTypes from '../../constants/action.types';
-import { createTask, updateTask, deleteTask, getTask, bulkUpdateTasks, createSubTask, getTasks, toggleTaskCompleted, createTaskAttachment, getTaskAttachments } from '../actions/task.action';
+import { createTask, updateTask, deleteTask, getTask, bulkUpdateTasks, createSubTask, getTasks, toggleTaskCompleted, createTaskAttachment, getTaskAttachments, getTaskComments } from '../actions/task.action';
 
 function* taskWatcher() {
     yield takeEvery(actionTypes.GET_TASK, getTask);
@@ -13,6 +13,7 @@ function* taskWatcher() {
     yield takeLatest(actionTypes.GET_TASKS, getTasks);
     yield takeEvery(actionTypes.CREATE_TASK_ATTACHMENT, createTaskAttachment);
     yield takeEvery(actionTypes.GET_TASK_ATTACHMENTS, getTaskAttachments);
+    yield takeEvery(actionTypes.GET_TASK_COMMENTS, getTaskComments);
 }
 
 export default taskWatcher;

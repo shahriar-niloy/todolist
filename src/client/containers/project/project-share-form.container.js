@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { clearSearchUsersResultAction, debouncedSearchUsers, debouncedSearchUsersAction, searchUsersAction } from '../../store/actions/user.actions';
+import { clearSearchUsersResultAction, debouncedSearchUsersAction } from '../../store/actions/user.actions';
 import ProjectShareForm from '../../components/project/project-share-form.component';
 import { getProjectUsersAction, revokeProjectUserAccessAction, shareProjectAction } from '../../store/actions/project.action';
 

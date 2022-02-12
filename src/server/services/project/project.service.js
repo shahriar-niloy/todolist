@@ -17,6 +17,8 @@ async function getProject(id) {
         order: [[TaskModel, 'order', 'ASC']] 
     });
 
+    if (!project) return Return.service(null, [{ message: 'Project not found.' }]);
+
     let projectUsers = await project.getUsers({ attributes: ['id', 'first_name', 'last_name', 'email'] });
     
     projectUsers = projectUsers.map(user => {
@@ -177,6 +179,10 @@ async function hasPermission (projectID, userID, objectName, operationName) {
         ATTACHMENT: {
             UPDATE: generateAccessEvaluator(['can_write']),
             DELETE: generateAccessEvaluator(['can_write'])
+        },
+        COMMENT: {
+            CREATE: generateAccessEvaluator(['can_read']),
+            DELETE: generateAccessEvaluator(['can_read'])
         }
     };
 

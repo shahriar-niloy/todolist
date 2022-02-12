@@ -5,6 +5,7 @@ const { MAX_ATTACHMENT_SIZE_IN_BYTES } = require(path.join(process.cwd(), 'src/s
 
 const TaskModel = require(path.join(process.cwd(), 'src/server/models/task.model'));
 const ProjectModel = require(path.join(process.cwd(), 'src/server/models/project.model'));
+const UserProjectModel = require(path.join(process.cwd(), 'src/server/models/user_project.model'));
 const { Return } = require(path.join(process.cwd(), 'src/server/schemas'));
 const { TaskViewModels } = require(path.join(process.cwd(), 'src/server/view-models'));
 const sequelize = require(path.join(process.cwd(), 'src/server/lib/sequelize'));
@@ -272,6 +273,18 @@ async function deleteTaskAttachment(attachmentID) {
     return Return.service(attachment);
 }
 
+async function hasAccessToTask(task_id, user_id) {
+    if (!task_id || !user_id) return Return.service(null, [{ message: 'Must provide required paramters.' }]);
+
+    const task = await TaskModel.findOne({ where: { id: task_id }});
+
+    if (!task) return Return.service(null, [{ message: 'Task not found.' }]);
+
+    const userProject = await UserProjectModel.findOne({ where: { project_id: task.project_id, user_id } });
+
+    return Return.service(!!userProject);
+}
+
 exports.getTask = getTask;
 exports.createTask = createTask;
 exports.updateTask = updateTask;
@@ -283,3 +296,4 @@ exports.createTaskAttachment = createTaskAttachment;
 exports.getTaskAttachments = getTaskAttachments;
 exports.deleteTaskAttachment = deleteTaskAttachment;
 exports.getBulkTasks = getBulkTasks;
+exports.hasAccessToTask = hasAccessToTask;

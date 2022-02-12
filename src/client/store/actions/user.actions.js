@@ -17,22 +17,15 @@ export function* getMyProfile() {
     }
 }
 
-export function debouncedSearchUsersAction(query, notInProject) {
+export function debouncedSearchUsersAction(query, notInProject, onSuccess) {
     return {
         type: actionTypes.DEBOUNCE_SEARCH_USERS,
-        payload: { query, notInProject }
+        payload: { query, notInProject, onSuccess }
     }
 }
 
 export function* debouncedSearchUsers(data) {
     yield put({ type: actionTypes.SEARCH_USERS, payload: data.payload });
-}
-
-export function searchUsersAction(query, notInProject) {
-    return {
-        type: actionTypes.SEARCH_USERS,
-        payload: { query, notInProject }
-    }
 }
 
 export function* searchUsers(data) {
@@ -41,8 +34,13 @@ export function* searchUsers(data) {
     queryParams.append('query', data.payload.query);
     queryParams.append('not_in_project', data.payload.notInProject);
 
+    const { onSuccess } = data.payload;
+
     try {
         const { data: users } = yield axios.get(`/api/users/search?${queryParams}`);
+
+        onSuccess && onSuccess(users);
+
         yield put({ type: actionTypes.SEARCH_USERS_SUCCESS , payload: users });
     } catch(err) {
         console.log(err);

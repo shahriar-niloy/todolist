@@ -14,6 +14,8 @@ module.exports = function(app) {
     
     app.get('/api/tasks/:id/subtasks', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.getAllSubtasks));
 
+    app.get('/api/tasks/:id/comments', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.getTaskComments));
+
     app.get('/api/tasks/:id/attachments', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.getTaskAttachments))
         .post('/api/tasks/:id/attachments', AUTHENTICATION_MIDDLEWARE, processMultipartForm.single('data'), controllerFunctionWrapper(controller.createTaskAttachment));
 

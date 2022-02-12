@@ -15,6 +15,7 @@ import BranchIcon from '../ui/icons/branch.icon';
 import SquareIcon from '../ui/icons/square.icon';
 import CheckSquareIcon from '../ui/icons/check-square.icon';
 import TaskAttachments from './task-attachment.component';
+import TaskComments from './task-comment.component';
 
 const TABS = {
     COMMENT: 'COMMENT',
@@ -101,6 +102,8 @@ function TaskForm({
     subtasks, 
     task, 
     attachments,
+    comments,
+    currentUserID,
     isDetailView,
     isEditDisabled,
     isCompleteDisabled,
@@ -117,7 +120,10 @@ function TaskForm({
     onSaveAttachment,
     onTabOpen,
     onFileOpen,
-    onDeleteAttachment
+    onDeleteAttachment,
+    onMentionSuggestion,
+    onCommentSubmit,
+    onCommentDelete
 }) {
     const [selectedTab, setSelectedTab] = useState(TABS.SUBTASK);
     const [overrideDetailView, setOverrideDetailView] = useState(false);
@@ -256,7 +262,13 @@ function TaskForm({
                         </div>
                     </Tab>
                     <Tab eventKey={TABS.COMMENT} title="Comments" tabClassName={`tab-button ${selectedTab === TABS.COMMENT ? 'selected' : ''}`}>
-                        <div>Comments</div>
+                        <TaskComments 
+                            comments={comments}
+                            currentUserID={currentUserID}
+                            onMentionSuggestion={onMentionSuggestion}
+                            onCommentSubmit={onCommentSubmit}
+                            onCommentDelete={onCommentDelete}
+                        />
                     </Tab>
                     <Tab eventKey={TABS.ATTACHMENT} title="Attachments" tabClassName={`tab-button ${selectedTab === TABS.ATTACHMENT ? 'selected' : ''}`} >
                         {selectedTab === TABS.ATTACHMENT && 
@@ -288,6 +300,8 @@ TaskForm.propTypes = {
     onSubmit: PropTypes.func.isRequired,
     task: PropTypes.object,
     attachments: PropTypes.array,
+    attachments: PropTypes.array,
+    currentUserID: PropTypes.string,
     subtasks: PropTypes.array,
     isEditing: PropTypes.bool,
     isAttachmentReadOnly: PropTypes.bool,
@@ -297,7 +311,10 @@ TaskForm.propTypes = {
     onSaveAttachment: PropTypes.func,
     onTabOpen: PropTypes.func,
     onDeleteAttachment: PropTypes.func,
-    onFileOpen: PropTypes.func
+    onFileOpen: PropTypes.func,
+    onMentionSuggestion: PropTypes.func.isRequired,
+    onCommentSubmit: PropTypes.func.isRequired,
+    onCommentDelete: PropTypes.func.isRequired
 }
 
 export default TaskForm;

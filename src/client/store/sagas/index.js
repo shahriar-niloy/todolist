@@ -4,6 +4,7 @@ import userSaga from './user.saga';
 import projectSaga from './project.saga';
 import taskWatcher from './task.saga';
 import attachmentWatcher from './attachment.saga';
+import commentWatcher from './comment.saga';
 
 export default function* rootSaga() {
     yield all([
@@ -11,6 +12,7 @@ export default function* rootSaga() {
         userSaga(),
         projectSaga(),
         taskWatcher(),
-        attachmentWatcher()
+        attachmentWatcher(),
+        commentWatcher()
     ]);
 }

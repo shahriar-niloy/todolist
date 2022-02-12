@@ -1,9 +1,10 @@
 const path = require('path');
 
 const TaskService = require(path.join(process.cwd(), 'src/server/services/task'));
+const CommentService = require(path.join(process.cwd(), 'src/server/services/comment'));
 const ProjectService = require(path.join(process.cwd(), 'src/server/services/project'));
 const NotificationService = require(path.join(process.cwd(), 'src/server/services/notification'));
-const { TaskViewModels, AttachmentViewModels } = require(path.join(process.cwd(), 'src/server/view-models'));
+const { TaskViewModels, AttachmentViewModels, CommentViewModels } = require(path.join(process.cwd(), 'src/server/view-models'));
 const { Response } = require(path.join(process.cwd(), 'src/server/schemas'));
 const logger = require(path.join(process.cwd(), 'src/server/lib/logger'));
 
@@ -321,6 +322,32 @@ async function deleteTaskAttachment (req, res) {
     res.json(successResponse);
 }
 
+async function getTaskComments (req, res) {
+    const successResponse = new Response.success();
+    const errorResponse = new Response.error();
+    const taskID = req.params.id;
+
+    const [hasAccess, accessErr] = await TaskService.hasAccessToTask(taskID, req.user.id);
+
+    if (accessErr) {
+        accessErr.forEach(e => errorResponse.addError(e.message, ''));
+        return res.status(400).json(errorResponse);
+    }
+
+    if (!hasAccess) return res.status(403).send('User does not have access to the task.');
+
+    const [comments, errors] = await CommentService.getCommentsByTask(taskID);
+
+    if (errors) {
+        errors.forEach(e => errorResponse.addError(e.message, ''));
+        return res.status(400).json(errorResponse);
+    }
+
+    successResponse.data = comments.map(comment => CommentViewModels.comment(comment));
+
+    res.json(successResponse);
+}
+
 exports.getTask = getTask;
 exports.createTask = createTask;
 exports.updateTask = updateTask;
@@ -331,3 +358,4 @@ exports.getTasks = getTasks;
 exports.createTaskAttachment = createTaskAttachment;
 exports.getTaskAttachments = getTaskAttachments;
 exports.deleteTaskAttachment = deleteTaskAttachment;
+exports.getTaskComments = getTaskComments;

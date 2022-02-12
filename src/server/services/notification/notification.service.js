@@ -4,6 +4,7 @@ const NotificationModel = require(path.join(process.cwd(), 'src/server/models/no
 const TaskService = require(path.join(process.cwd(), 'src/server/services/task'));
 const ProjectService = require(path.join(process.cwd(), 'src/server/services/project'));
 const UserService = require(path.join(process.cwd(), 'src/server/services/user'));
+const CommentService = require(path.join(process.cwd(), 'src/server/services/comment'));
 const { Return } = require(path.join(process.cwd(), 'src/server/schemas'));
 const notificationConstants = require(path.join(process.cwd(), 'src/server/constants/notification.constants'));
 const eventDataSchema = require(path.join(process.cwd(), 'src/server/schemas/eventdata.schema'));
@@ -11,7 +12,7 @@ const eventDataSchema = require(path.join(process.cwd(), 'src/server/schemas/eve
 const eventManager = require(path.join(process.cwd(), 'src/server/lib/events'));
 const eventConstants = require(path.join(process.cwd(), 'src/server/constants/event.constants'));
 
-const { TASK_COMPLETED, PROJECT_SHARED } = notificationConstants;
+const { TASK_COMPLETED, PROJECT_SHARED, COMMENT_MENTION } = notificationConstants;
 
 async function createNotification(type, data, userIDs) {
     if (!type || !data || !userIDs) return Return.service(null, [{ message: 'Must provide required parameters.' }]);
@@ -95,6 +96,44 @@ async function createProjectSharedNotification(projectID, sharedToUserID, shared
     return Return.service(notification);
 }
 
+async function createCommentMentionNotification(commentID, mentionedUsers, mentioningUserID) {
+    if (!commentID || !mentionedUsers || !mentioningUserID) return Return.service(null, [{ message: 'Must provide required parameters.' }]);
+
+    const [comment, commentErr] = await CommentService.getComment(commentID);
+    if (commentErr) return [null, commentErr];
+
+    const [task, taskErr] = await TaskService.getTask(comment.task_id);
+    if (taskErr) return [null, taskErr];
+
+    const [mentioningUser, mentioningUserErr] = await UserService.getUser(mentioningUserID);
+    if (mentioningUserErr) return [null, mentioningUserErr];
+
+    const [notification, notificationErr] = await createNotification(
+        COMMENT_MENTION, 
+        { 
+            commentID,
+            taskID: task.id,
+            projectID: task.project_id,
+            mentioningUserID, 
+            mentioningUserName: `${mentioningUser.first_name } ${mentioningUser.last_name }` 
+        }, 
+        mentionedUsers
+    );
+    if (notificationErr) return [null, notificationErr];
+
+    const eventData = eventDataSchema.notification(
+        notification.id,
+        notification.type,
+        notification.created_at,
+        notification.data, 
+        mentionedUsers
+    );
+
+    eventManager.emit(eventConstants.ON_NOTIFY, eventData);
+    
+    return Return.service(notification);
+}
+
 async function getNotifications(userID, isRead, page, limit) {
     if (!userID) return Return.service(null, [{ message: 'Must provide required parameters.' }]);
 
@@ -143,7 +182,8 @@ async function markUserNotificationsAsRead(userID, notificationIDs) {
     return Return.service(res);
 }
 
-exports.createTaskCompletedNotification = createTaskCompletedNotification;
 exports.getNotifications = getNotifications;
 exports.markUserNotificationsAsRead = markUserNotificationsAsRead;
 exports.createProjectSharedNotification = createProjectSharedNotification;
+exports.createTaskCompletedNotification = createTaskCompletedNotification;
+exports.createCommentMentionNotification = createCommentMentionNotification;

@@ -14,6 +14,7 @@ async function seedDatabase() {
         require(path.join(process.cwd(), 'src/server/models/task.model'));
         require(path.join(process.cwd(), 'src/server/models/attachment.model'));
         require(path.join(process.cwd(), 'src/server/models/notification.model'));
+        require(path.join(process.cwd(), 'src/server/models/comment.model'));
 
         await sequelize.sync();
 

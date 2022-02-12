@@ -39,6 +39,10 @@ function NotificationDropDownContainer({ hidePopover }) {
             history.push('/projects/' + projectID);
         }
 
+        if (notification.type === Types.COMMENT_MENTION) {
+            history.push('/projects/' + projectID);
+        }
+
         hidePopover();
     }
 

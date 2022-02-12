@@ -4,5 +4,6 @@ module.exports = [
     'src/server/modules/authentication/authentication.routes',
     'src/server/modules/project/project.routes',
     'src/server/modules/task/task.routes',
-    'src/server/modules/attachment/attachment.routes'
+    'src/server/modules/attachment/attachment.routes',
+    'src/server/modules/comment/comment.routes'
 ]

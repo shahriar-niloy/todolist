@@ -335,3 +335,18 @@ $imageAattachmentPreviewSize: 200px;
         border-radius: 10px;
     }
 }
+
+.task-comment-input {
+    border: 1px solid #444444;
+    padding: 8px;
+    border-radius: 3px;
+
+    .btn-comment-submit {
+        color: $primary-font-color;
+        font-weight: 400 !important;
+        border: 1px solid #999999a6 !important;
+        font-size: 0.7rem !important;
+        padding: 0.15rem 0.5rem !important;
+        border-radius: 0.2rem !important;
+    }
+}
