@@ -140,3 +140,23 @@ export function* updateMyPassword(data) {
         console.log(err);
     }
 }
+
+export function createUserAction(data, onSuccess) {
+    return {
+        type: actionTypes.CREATE_USER,
+        payload: data,
+        onSuccess
+    }
+}
+
+export function* createUser(data) {
+    try {
+        const profile = yield axios.post('/api/users', data.payload);
+        
+        data.onSuccess && data.onSuccess(profile);
+
+        yield put({ type: actionTypes.CREATE_USER_SUCCESS , payload: profile });
+    } catch(err) {
+        console.log(err);
+    }
+}

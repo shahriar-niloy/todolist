@@ -15,6 +15,8 @@ module.exports = function(app) {
     app.get('/api/me', AUTHENTICATION_MIDDLEWARE, controller.getMyProfile)
         .put('/api/me', AUTHENTICATION_MIDDLEWARE, controller.updateMyProfile);
 
+    app.post('/api/users', controllerFunctionWrapper(controller.signup));
+
     app.get('/api/users/search', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.searchUsers));
 
     app.get('/api/users/:id/projects', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.getUserProjects))

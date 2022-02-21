@@ -1,5 +1,6 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
+import { Link } from 'react-router-dom';
 
 export default function Login({ onSubmit }) {
     return <div className='login-form-container'>
@@ -36,5 +37,8 @@ export default function Login({ onSubmit }) {
                 </Form>
             )}
         </Formik>
+        <div className='login-footer'>
+            Don't have an account? <Link to='/sign-up' className='ms-1'>Sign Up</Link>
+        </div>
     </div>;
 }

@@ -1,5 +1,5 @@
 const path = require('path');
-const { Op, fn } = require('sequelize');
+const { Op, fn, where, col } = require('sequelize');
 const UserModel = require(path.join(process.cwd(), 'src/server/models/user.model'));
 const ProjectModel = require(path.join(process.cwd(), 'src/server/models/project.model'));
 const { escapeWildcards } = require(path.join(process.cwd(), 'src/server/utility/misc'));
@@ -16,6 +16,37 @@ async function getUser(id) {
     const user = await UserModel.findOne({ where: { id }, include: ProjectModel });
 
     if (!user) return Return.service(null, [{ message: 'User does not exist.' }]);
+
+    return Return.service(user);
+}
+
+async function getUserByEmail(email) {
+    if (!email) return Return.service(null, [{ message: 'Must provide required parameters.' }]);
+
+    const user = await UserModel.findOne({ 
+        where: { email: where(fn('lower', col('email')), fn('lower', email)) }
+    });
+
+    if (!user) return Return.service(null, [{ message: 'User with the email does not exist.' }]);
+
+    return Return.service(user);
+}
+
+async function createUser(data) {
+    if (!data) return Return.service(null, [{ message: 'Must provide required parameters.' }]);
+
+    const { firstName, lastName, email, password } = data;
+
+    if (!firstName || !lastName || !email || !password) return Return.service(null, [{ message: 'Must provide required parameters.' }]);
+
+    const user = await UserModel.create({
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        password
+    });
+
+    if (!user) return Return.service(null, [{ message: 'Could not create user.' }]);
 
     return Return.service(user);
 }
@@ -91,3 +122,5 @@ exports.getUser = getUser;
 exports.searchUsers = searchUsers;
 exports.updateUser = updateUser;
 exports.updateUserPassword = updateUserPassword;
+exports.getUserByEmail = getUserByEmail;
+exports.createUser = createUser;

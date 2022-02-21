@@ -1,4 +1,4 @@
-.login-form-container {
+.signup-form {
     padding: 15px;
     background: $secondary-bg;
     border-radius: 3px;
@@ -22,7 +22,7 @@
         box-shadow: 0px 0px 5px #7c7c828c;
     }
 
-    .login-submit {
+    .signup-submit {
         width: 100%;
         border: none;
         padding: 5px 7px;
@@ -32,7 +32,7 @@
         font-weight: 400;
     }
 
-    .login-footer {
+    .signup-footer {
         display: flex;
         justify-content: center;
         color: $secondary-font-color;

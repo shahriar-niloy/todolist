@@ -241,6 +241,50 @@ async function updateMyPassword(req, res) {
     }
 }
 
+async function signup(req, res) {
+    try {
+        const successResponse = new Response.success();
+        const errorResponse = new Response.error();
+        const { 
+            first_name, 
+            last_name,
+            email,
+            password, 
+            confirm_password 
+        } = req.body;
+
+        if (password !== confirm_password) {
+            errorResponse.addError('Password and Confirm Password do not match.', '');
+            return res.status(400).json(errorResponse);
+        }
+
+        const [userWithSameEmail, userErr] = await UserService.getUserByEmail(email);
+
+        if (userWithSameEmail) {
+            errorResponse.addError('User with same email exists.', '');
+            return res.status(400).json(errorResponse);
+        }
+
+        const [user, err] = await UserService.createUser({
+            firstName: first_name,
+            lastName: last_name,
+            email,
+            password
+        });
+
+        if (err) {
+            err.forEach(err => errorResponse.addError(err, ''));
+            return res.status(400).json(errorResponse);
+        }
+
+        successResponse.data = UserViewModels.profile(user);
+
+        res.json(successResponse);
+    } catch(err) {
+        console.error(err);
+    }
+}
+
 exports.getProfile = getProfile;
 exports.addProject = addProject;
 exports.getUserProjects = getUserProjects;
@@ -251,3 +295,4 @@ exports.markMyNotificationsAsRead = markMyNotificationsAsRead;
 exports.updateMyProfile = updateMyProfile;
 exports.updateMyEmail = updateMyEmail;
 exports.updateMyPassword = updateMyPassword;
+exports.signup = signup;
