@@ -58,6 +58,36 @@ async function searchUsers(query, notInProject) {
     return users;
 }
 
+async function updateUser(id, data) {
+    if (!id) return Return.service(null, [{ message: 'Must provide required parameters.' }]);
+
+    const user = await UserModel.findOne({ where: { id } });
+
+    if (!user) return Return.service(null, [{ message: 'User does not exist.' }]);
+
+    await user.update({ 
+        first_name: data.firstName, 
+        last_name: data.lastName,
+        email: data.email
+    });
+
+    return Return.service(user);
+}
+
+async function updateUserPassword(id, newPassword) {
+    if (!id || !newPassword) return Return.service(null, [{ message: 'Must provide required parameters.' }]);
+
+    const user = await UserModel.findOne({ where: { id } });
+
+    if (!user) return Return.service(null, [{ message: 'User does not exist.' }]);
+
+    await user.update({ password: newPassword });
+
+    return Return.service(user);
+}
+
 exports.getUsers = getUsers;
 exports.getUser = getUser;
 exports.searchUsers = searchUsers;
+exports.updateUser = updateUser;
+exports.updateUserPassword = updateUserPassword;

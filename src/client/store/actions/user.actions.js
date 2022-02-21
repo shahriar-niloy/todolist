@@ -92,3 +92,51 @@ export function* markMyNotificationsAsRead(data) {
         console.log(err);
     }
 }
+
+export function updateMyProfileAction(data) {
+    return {
+        type: actionTypes.UPDATE_MY_PROFILE,
+        payload: data
+    }
+}
+
+export function* updateMyProfile(data) {
+    try {
+        const myProfile = yield axios.put('/api/me', data.payload);
+        yield put({ type: actionTypes.UPDATE_MY_PROFILE_SUCCESS , payload: myProfile });
+    } catch(err) {
+        console.log(err);
+    }
+}
+
+export function updateMyEmailAction(data) {
+    return {
+        type: actionTypes.UPDATE_MY_EMAIL,
+        payload: data
+    }
+}
+
+export function* updateMyEmail(data) {
+    try {
+        const profile = yield axios.put('/api/me/email', data.payload);
+        yield put({ type: actionTypes.UPDATE_MY_EMAIL_SUCCESS , payload: profile });
+    } catch(err) {
+        console.log(err);
+    }
+}
+
+export function updateMyPasswordAction(data) {
+    return {
+        type: actionTypes.UPDATE_MY_PASSWORD,
+        payload: data
+    }
+}
+
+export function* updateMyPassword(data) {
+    try {
+        const profile = yield axios.put('/api/me/password', data.payload);
+        yield put({ type: actionTypes.UPDATE_MY_EMAIL_SUCCESS , payload: profile });
+    } catch(err) {
+        console.log(err);
+    }
+}

@@ -8,7 +8,12 @@ module.exports = function(app) {
 
     app.put('/api/me/notifications/mark-as-read', AUTHENTICATION_MIDDLEWARE, controller.markMyNotificationsAsRead);
 
-    app.get('/api/me', AUTHENTICATION_MIDDLEWARE, controller.getMyProfile);
+    app.put('/api/me/email', AUTHENTICATION_MIDDLEWARE, controller.updateMyEmail);
+
+    app.put('/api/me/password', AUTHENTICATION_MIDDLEWARE, controller.updateMyPassword);
+
+    app.get('/api/me', AUTHENTICATION_MIDDLEWARE, controller.getMyProfile)
+        .put('/api/me', AUTHENTICATION_MIDDLEWARE, controller.updateMyProfile);
 
     app.get('/api/users/search', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.searchUsers));
 

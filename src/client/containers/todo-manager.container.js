@@ -10,6 +10,7 @@ import Sidebar from './sidebar.container';
 import TaskEditorContainer from './task/task-editor.container';
 import TodayTaskEditor from './task/today-task-editor.container';
 import NavbarContainer from './navbar.container';
+import SettingsContainer from './app/settings/settings.container';
 
 function ToDoManager() {
     const [showProjectForm, setShowProjectForm] = useState(false);
@@ -43,6 +44,7 @@ function ToDoManager() {
             <Switch>
                 <Route path="/projects/:id"><BaseEditor><TaskEditorContainer /></BaseEditor></Route>
                 <Route path="/today"><BaseEditor><TodayTaskEditor /></BaseEditor></Route>
+                <Route path="/settings"><BaseEditor><SettingsContainer /></BaseEditor></Route>
                 <Route path=""><ManagerHome /></Route>
             </Switch>
         </div>

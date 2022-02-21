@@ -1,11 +1,13 @@
 import React from 'react';
 import ReactModal from 'react-modal';
 
-function Modal({ children, ...rest }) {
+function Modal({ children, extendedClass='', ...rest }) {
+    const className = "modal-body " + extendedClass;
+
     return <ReactModal 
         ariaHideApp={false}
         overlayClassName="modal-overlay"
-        className="modal-body"
+        className={className}
         {...rest}
     >
         {children}

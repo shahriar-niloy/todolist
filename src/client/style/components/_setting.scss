@@ -1,0 +1,15 @@
+.setting-container {
+    min-width: 450px;
+    min-height: 400px;
+
+    input {
+        outline: 1px solid #3a3a3a;
+        border-radius: 5px;
+    }
+
+    input:focus-visible,
+    input:focus {
+        outline: 1px solid #686868;
+        border-radius: 5px;
+    }
+}
