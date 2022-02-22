@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import EmailForm from '../../../components/app/settings/email-form.component';
 import { updateMyEmailAction } from '../../../store/actions/user.actions';
+import { UserSchema } from '../../../../common';
 
 function EmailFormContainer() {
     const profile = useSelector(state => state.user.profile);
@@ -20,7 +21,12 @@ function EmailFormContainer() {
         dispatch(updateMyEmailAction(values));
     };
 
-    return <EmailForm initialValues={initialValues} onClickBack={handleClickback} onSubmit={handleSubmit} />
+    return <EmailForm 
+        schema={UserSchema.EmailChangeFormSchema}
+        initialValues={initialValues} 
+        onClickBack={handleClickback} 
+        onSubmit={handleSubmit} 
+    />
 }
 
 export default EmailFormContainer;

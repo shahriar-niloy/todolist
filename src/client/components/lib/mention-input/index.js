@@ -3,7 +3,7 @@ import { MentionsInput, Mention } from 'react-mentions'
 import PropTypes from 'prop-types';
 import defaultStyle from './default-style';
 
-function MentionInput({ value, trigger, dataProvider, className, placeholder, onChange }) {
+function MentionInput({ value, trigger, dataProvider, className, placeholder, onChange, onBlur }) {
     const handleInputChange = (e, htmlNode, plainText, mentions) => {
         onChange(e.target.value, mentions);
     };
@@ -14,6 +14,7 @@ function MentionInput({ value, trigger, dataProvider, className, placeholder, on
         style={defaultStyle}
         placeholder={placeholder}
         onChange={handleInputChange} 
+        onBlur={onBlur}
     >
         <Mention
             trigger={trigger}

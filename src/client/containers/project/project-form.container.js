@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import ProjectForm from '../../components/project/project-form.component';
 import { createProjectAction, updateProjectAction } from '../../store/actions/project.action';
 import { getProjectAction } from '../../store/actions/project.action';
+import { ProjectSchema } from '../../../common';
 
 function ProjectFormContainer({ onClose, projectID }) {
     const dispatch = useDispatch();
@@ -29,6 +30,7 @@ function ProjectFormContainer({ onClose, projectID }) {
     }, [projectID]);
 
     return <ProjectForm 
+        schema={ProjectSchema.ProjectFormSchema}
         initialValues={projectID && project ? { name: project?.name } : { name: '' }}
         isEditing={!!projectID}
         onSubmit={projectID ? updateProject : createProject} 

@@ -12,6 +12,19 @@ function ProjectShareForm({
     onUserAccessChange
 }) {
     const [searchQuery, setSearchQuery] = useState('');
+    const [isTouched, setIsTouched] = useState(false);
+
+    const getSearchQueryError = (searchQuery) => {
+        console.log(searchQuery);
+        if (!searchQuery) return 'This field must not be empty';
+        if (searchQuery.length > 30) return 'This field must at most 30 characters long';
+        return '';
+    }
+
+    const renderSearchQueryError = () => {
+        const errorMessage = getSearchQueryError(searchQuery);
+        return isTouched && errorMessage && <div className='validation-error'>{errorMessage}</div>
+    }
 
     return <div className="container p-3 user-select-none" >
         <div className="row justify-content-center form-primary">
@@ -59,9 +72,12 @@ function ProjectShareForm({
                         onChange={e => {
                             const value = e.target.value;
                             setSearchQuery(value);
-                            onSearchQueryChange(value);
+                            setIsTouched(true);
+                            !getSearchQueryError(value) && onSearchQueryChange(value);
                         }}
+                        onBlur={() => setIsTouched(true)}
                     />
+                    {renderSearchQueryError()}
                 </div>
                 <Popover 
                     className='popover-autosuggest'

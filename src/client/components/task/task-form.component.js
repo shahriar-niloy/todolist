@@ -16,6 +16,7 @@ import SquareIcon from '../ui/icons/square.icon';
 import CheckSquareIcon from '../ui/icons/check-square.icon';
 import TaskAttachments from './task-attachment.component';
 import TaskComments from './task-comment.component';
+import ValidationError from '../misc/validation-error.component';
 
 const TABS = {
     COMMENT: 'COMMENT',
@@ -98,6 +99,7 @@ function SubtaskForm({ parent_id, onCancel, onSubmit }) {
 }
 
 function TaskForm({ 
+    schema,
     isEditing, 
     subtasks, 
     task, 
@@ -144,6 +146,7 @@ function TaskForm({
             scheduled_at: isEditing && task ? task.scheduled_at : '',
             priority: isEditing && task ? task.priority : 'NONE'
         }}
+        validationSchema={schema}
         onSubmit={values => onSubmit(values)}
         enableReinitialize
     >
@@ -158,7 +161,10 @@ function TaskForm({
                         <div class="form-group">
                             {isDetailViewEnabled
                                 ? <span className="title" onClick={() => isEditModeAllowed && setOverrideDetailView(true)} >{formikProps.values.name}</span>
-                                : <Field type="name" name="name" className="form-control" id="name" placeholder="Enter task name"/>
+                                : <div>
+                                    <Field type="name" name="name" className="form-control" id="name" placeholder="Enter task name"/>
+                                    <ValidationError name='name' />
+                                </div>
                             }
                         </div>
                     </div>
@@ -168,12 +174,15 @@ function TaskForm({
                                 ? formikProps.values.description 
                                     ? <span onClick={() => isEditModeAllowed && setOverrideDetailView(true)} >{formikProps.values.description}</span>
                                     : <span onClick={() => isEditModeAllowed && setOverrideDetailView(true)} className="placeholder-text" >Description</span>
-                                : <Field as="textarea" rows="4" type="text" name="description" className="form-control" id="description" placeholder="Enter task description"/>
+                                : <div>
+                                    <Field as="textarea" rows="4" type="text" name="description" className="form-control" id="description" placeholder="Enter task description"/>
+                                    <ValidationError name='description' />
+                                </div>
                             }
                         </div>
                     </div>
                 </div>
-                {formikProps.errors.name && <div id="feedback">{formikProps.errors.name}</div>}
+
                 <div className="d-flex justify-content-between task-form-actions align-xy">
                     <Popover 
                         component={props => 

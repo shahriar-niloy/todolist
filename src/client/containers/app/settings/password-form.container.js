@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import PasswordForm from '../../../components/app/settings/password-form.component';
 import { updateMyPasswordAction } from '../../../store/actions/user.actions';
+import { UserSchema } from '../../../../common';
 
 function PasswordFormContainer() {
     const history = useHistory();
@@ -21,7 +22,12 @@ function PasswordFormContainer() {
     };
 
     return <div>
-        <PasswordForm initialValues={initialValues} onClickBack={handleClickback} onSubmit={handleSubmit} />
+        <PasswordForm 
+            schema={UserSchema.PasswordChangeFormSchema}
+            initialValues={initialValues} 
+            onClickBack={handleClickback} 
+            onSubmit={handleSubmit} 
+        />
     </div>
 }
 

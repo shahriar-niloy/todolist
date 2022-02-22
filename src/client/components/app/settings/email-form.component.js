@@ -3,10 +3,12 @@ import { Formik, Form, Field } from 'formik';
 import PropTypes from 'prop-types';
 import BackIcon from '../../ui/icons/back.icon';
 import SubmitButton from '../../ui/buttons/submit-button.component';
+import ValidationError from '../../misc/validation-error.component';
 
-function EmailForm({ initialValues, onClickBack, onSubmit }) {
+function EmailForm({ schema, initialValues, onClickBack, onSubmit }) {
     return <Formik
         initialValues={initialValues}
+        validationSchema={schema}
         onSubmit={values => onSubmit(values)}
         enableReinitialize
     >
@@ -22,14 +24,14 @@ function EmailForm({ initialValues, onClickBack, onSubmit }) {
                         <div class="form-group mb-3">
                             <label className='fw-bold mb-1'>Email</label>
                             <Field type="email" name="email" className="form-control" id="email" placeholder="Enter email" autoComplete="off" />
+                            <ValidationError name='email' />
                         </div>
-                        {props.errors.email && <div id="feedback">{props.errors.email}</div>}
-
+                        
                         <div class="form-group mb-3">
                             <label className='fw-bold mb-1'>Password</label>
                             <Field type="password" name="password" className="form-control" id="password" placeholder="Enter new password" autoComplete="off" />
+                            <ValidationError name='password' />
                         </div>
-                        {props.errors.password && <div id="feedback">{props.errors.password}</div>}
 
                         <div className="d-flex justify-content-end" >
                             <SubmitButton extendedClass="mt-3" label='Save' onClick={props.handleSubmit} />

@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import SignUp from '../../../components/app/signup/signup-form.component';
 import { createUserAction } from '../../../store/actions/user.actions';
+import { AppSchema } from '../../../../common';
 
 function SignUpContainer() {
     const dispatch = useDispatch();
@@ -13,7 +14,7 @@ function SignUpContainer() {
     };
 
     return <div className='signup-container'>
-        <SignUp onSubmit={handleSubmit} />
+        <SignUp schema={AppSchema.SignupSchema} onSubmit={handleSubmit} />
     </div>;
 }
 

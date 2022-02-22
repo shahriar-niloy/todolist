@@ -1,0 +1,70 @@
+import * as yup from 'yup';
+import { ValidationConstants, ValidationMessages } from '../constants';
+
+const { 
+    FIELD_MISSING_ERROR, 
+    MIN_PASSWORD_LENGTH_ERROR, 
+    MAX_PASSWORD_LENGTH_ERROR, 
+    INVALID_EMAIL_ERROR,
+    MIN_PROJECT_NAME_LENGTH_ERROR,
+    MAX_PROJECT_NAME_LENGTH_ERROR,
+    MIN_TASK_NAME_LENGTH_ERROR,
+    MAX_TASK_NAME_LENGTH_ERROR,
+    MIN_TASK_DESCRIPTION_LENGTH_ERROR,
+    MAX_TASK_DESCRIPTION_LENGTH_ERROR,
+    MIN_COMMENT_LENGTH_ERROR,
+    MAX_COMMENT_LENGTH_ERROR
+} = ValidationMessages;
+
+const { 
+    MIN_PASSWORD_LENGTH, 
+    MAX_PASSWORD_LENGTH, 
+    MIN_PROJECT_NAME_LENGTH,
+    MAX_PROJECT_NAME_LENGTH,
+    MIN_TASK_NAME_LENGTH,
+    MAX_TASK_NAME_LENGTH,
+    MIN_TASK_DESCRIPTION_LENGTH,
+    MAX_TASK_DESCRIPTION_LENGTH,
+    MIN_COMMENT_LENGTH,
+    MAX_COMMENT_LENGTH
+} = ValidationConstants;
+
+export default {
+    FIRST_NAME: yup
+        .string()
+        .trim()
+        .required(FIELD_MISSING_ERROR),
+    LAST_NAME: yup
+        .string()
+        .trim()
+        .required(FIELD_MISSING_ERROR),
+    EMAIL: yup
+        .string()
+        .email(INVALID_EMAIL_ERROR)
+        .trim()
+        .required(FIELD_MISSING_ERROR),
+    PASSWORD: yup
+        .string()
+        .trim()
+        .min(MIN_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH_ERROR)
+        .max(MAX_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH_ERROR)
+        .required(FIELD_MISSING_ERROR),
+    PROJECT_NAME: yup
+        .string()
+        .min(MIN_PROJECT_NAME_LENGTH, MIN_PROJECT_NAME_LENGTH_ERROR)
+        .max(MAX_PROJECT_NAME_LENGTH, MAX_PROJECT_NAME_LENGTH_ERROR)
+        .required(FIELD_MISSING_ERROR),
+    TASK_NAME: yup
+        .string()
+        .min(MIN_TASK_NAME_LENGTH, MIN_TASK_NAME_LENGTH_ERROR)
+        .max(MAX_TASK_NAME_LENGTH, MAX_TASK_NAME_LENGTH_ERROR)
+        .required(FIELD_MISSING_ERROR),
+    TASK_DESCRIPTION: yup
+        .string()
+        .min(MIN_TASK_DESCRIPTION_LENGTH, MIN_TASK_DESCRIPTION_LENGTH_ERROR)
+        .max(MAX_TASK_DESCRIPTION_LENGTH, MAX_TASK_DESCRIPTION_LENGTH_ERROR),
+    COMMENT: yup
+        .string()
+        .min(MIN_COMMENT_LENGTH, MIN_COMMENT_LENGTH_ERROR)
+        .max(MAX_COMMENT_LENGTH, MAX_COMMENT_LENGTH_ERROR)
+}

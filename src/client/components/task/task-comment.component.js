@@ -4,24 +4,27 @@ import MentionInput from '../lib/mention-input';
 import parse from 'html-react-parser';
 import SubmitButton from '../ui/buttons/submit-button.component';
 import { convertTimeToWords, getInitials } from '../../utility';
+import useMentionInput from '../../hooks/useMentionInput.hook';
+import { CommentSchema } from '../../../common';
 
 function Comment({ comment, isReply, showDelete, onDelete, onReply, onMentionSuggestion }) {
     const [isReplying, setIsReplying] = useState(false);
-    const [commentText, setCommentText] = useState('');
-    const [commentMentions, setCommentMentions] = useState([]);
-
-    const hasReply = comment.replies?.length > 0;
-
+    const {
+        value,
+        mentions,
+        mentionInputError,
+        mentionInputTouched,
+        handleMentionInputChange,
+        handleMentionInputSubmit,
+        handleMentionInputBlur
+    } = useMentionInput(CommentSchema.CommentFormSchema);
+    
     const handleCommentSubmitSuccess = () => {
-        setCommentText('');
-        setCommentMentions([]);
+        handleMentionInputSubmit();
         setIsReplying(false);
     };
 
-    const handleCommentInputChange = (value, mentions) => {
-        setCommentText(value);
-        setCommentMentions(mentions);
-    };
+    const hasReply = comment.replies?.length > 0;
 
     return <>
         <div className={`comment ${!isReply && 'parent-comment'}`}>
@@ -59,45 +62,49 @@ function Comment({ comment, isReply, showDelete, onDelete, onReply, onMentionSug
         </div>}
         {isReplying && <div className='ms-4 mt-2 mb-3 me-2'>
             <TaskCommentInput 
-                commentText={commentText}
-                mentions={commentMentions}
+                commentText={value}
+                mentions={mentions}
+                commentError={mentionInputError}
                 parentID={comment.id}
-                onCommentInputChange={handleCommentInputChange}
+                onCommentInputChange={handleMentionInputChange}
                 onCommentSubmit={onReply}
                 onMentionSuggestion={onMentionSuggestion}
                 onCommentSubmitSuccess={handleCommentSubmitSuccess}
-            />    
+                onBlur={handleMentionInputBlur}
+            />
+            {
+                mentionInputTouched && mentionInputError && 
+                    <span className='validation-error'>{mentionInputError}</span>
+            }  
         </div>}
     </>
 }
 
-function TaskCommentInput({ commentText, parentID, mentions, onCommentInputChange, onMentionSuggestion, onCommentSubmit, onCommentSubmitSuccess }) {
+function TaskCommentInput({ commentText, commentError, parentID, mentions, onCommentInputChange, onMentionSuggestion, onCommentSubmit, onCommentSubmitSuccess, onBlur }) {
     return <div className='mt-3 task-comment-input'>
         <MentionInput 
             value={commentText} 
             dataProvider={onMentionSuggestion} 
-            onChange={onCommentInputChange} 
             placeholder='Write a comment...'
+            onChange={onCommentInputChange} 
+            onBlur={onBlur}
         />
         <div className='d-flex justify-content-end mt-3'>
-            <SubmitButton className="btn btn-comment-submit" label='Submit' onClick={() => onCommentSubmit(commentText, parentID, mentions, onCommentSubmitSuccess)} />
+            <SubmitButton disabled={commentError} className="btn btn-comment-submit" label='Submit' onClick={() => onCommentSubmit(commentText, parentID, mentions, onCommentSubmitSuccess)} />
         </div>
     </div>
 }
 
 function TaskComments({ comments, currentUserID, onMentionSuggestion, onCommentSubmit, onCommentDelete }) {
-    const [commentText, setCommentText] = useState('');
-    const [commentMentions, setCommentMentions] = useState([]);
-
-    const handleCommentInputChange = (value, mentions) => {
-        setCommentText(value);
-        setCommentMentions(mentions);
-    };
-
-    const handleCommentSubmitSuccess = () => {
-        setCommentText('');
-        setCommentMentions([]);
-    };
+    const {
+        value,
+        mentions,
+        mentionInputError,
+        mentionInputTouched,
+        handleMentionInputChange,
+        handleMentionInputSubmit,
+        handleMentionInputBlur
+    } = useMentionInput(CommentSchema.CommentFormSchema);
 
     return <>
         <div className='comment-section'>
@@ -114,13 +121,19 @@ function TaskComments({ comments, currentUserID, onMentionSuggestion, onCommentS
             }
         </div>
         <TaskCommentInput 
-            commentText={commentText}
-            mentions={commentMentions}
-            onCommentInputChange={handleCommentInputChange}
+            commentText={value}
+            mentions={mentions}
+            commentError={mentionInputError}
+            onBlur={handleMentionInputBlur}
+            onCommentInputChange={handleMentionInputChange}
             onCommentSubmit={onCommentSubmit}
             onMentionSuggestion={onMentionSuggestion}
-            onCommentSubmitSuccess={handleCommentSubmitSuccess}
+            onCommentSubmitSuccess={handleMentionInputSubmit}
         />
+        {
+            mentionInputTouched && mentionInputError && 
+                <span className='validation-error'>{mentionInputError}</span>
+        }
     </>
 }
 

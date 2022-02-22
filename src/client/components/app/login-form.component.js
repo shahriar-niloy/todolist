@@ -1,14 +1,16 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import { Link } from 'react-router-dom';
+import ValidationError from '../misc/validation-error.component';
 
-export default function Login({ onSubmit }) {
+export default function Login({ schema, onSubmit }) {
     return <div className='login-form-container'>
         <Formik
             initialValues={{ 
                 email: '',
                 password: ''
             }}
+            validationSchema={schema}
             onSubmit={(values, actions) => {
                 onSubmit(values);
             }}
@@ -24,10 +26,12 @@ export default function Login({ onSubmit }) {
                             <div class="d-flex flex-column">
                                 <label for="email" className='font-size-13 fw-bold'>Email</label>
                                 <Field type="email" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter email"/>
+                                <ValidationError name='email' />
                             </div>
                             <div class="mt-3 d-flex flex-column">
                                 <label for="password" className='font-size-13 fw-bold'>Password</label>
                                 <Field type="password" name="password" id="password" aria-describedby="emailHelp" placeholder="Enter email"/>
+                                <ValidationError name='password' />
                             </div>
                             {props.errors.name && <div id="feedback">{props.errors.name}</div>}
                             <button className="mt-3 login-submit" type="submit">Login</button>

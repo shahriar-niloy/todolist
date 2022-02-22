@@ -2,6 +2,7 @@ import React from 'react';
 import { Redirect, useLocation } from 'react-router-dom';
 import LoginForm from '../components/app/login-form.component';
 import useAuth from '../hooks/useAuth.hook';
+import { AppSchema } from '../../common';
 
 export default function Login() {
     const { isLoggedIn, login } = useAuth();
@@ -15,7 +16,7 @@ export default function Login() {
         {
             isLoggedIn
                 ? <Redirect to={redirectToPath} />
-                : <LoginForm onSubmit={handleSubmit} />
+                : <LoginForm schema={AppSchema.LoginSchema} onSubmit={handleSubmit} />
         }
     </div>;
 }

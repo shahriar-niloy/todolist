@@ -2,14 +2,16 @@ import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import PropTypes from 'prop-types';
 import SubmitButton from '../../ui/buttons/submit-button.component';
+import ValidationError from '../../misc/validation-error.component';
 
-function AccountForm({ profile, onChangeEmailClick, onChangePasswordClick, onSubmit }) {
+function AccountForm({ schema, profile, onChangeEmailClick, onChangePasswordClick, onSubmit }) {
     return <Formik
         className='account-form'
         initialValues={{
             first_name: profile?.first_name || '',
             last_name: profile?.last_name || ''
         }}
+        validationSchema={schema}
         onSubmit={values => onSubmit(values)}
         enableReinitialize
     >
@@ -23,14 +25,14 @@ function AccountForm({ profile, onChangeEmailClick, onChangePasswordClick, onSub
                         <div class="form-group mb-3">
                             <label className='fw-bold mb-2'>First Name</label>
                             <Field type="name" name="first_name" className="form-control" id="first_name" placeholder="Enter first name"/>
+                            <ValidationError name='first_name' />
                         </div>
-                        {props.errors.first_name && <div id="feedback">{props.errors.first_name}</div>}
 
                         <div class="form-group mb-3">
                             <label className='fw-bold mb-2'>Last Name</label>
                             <Field type="name" name="last_name" className="form-control" id="last_name" placeholder="Enter last name"/>
+                            <ValidationError name='last_name' />
                         </div>
-                        {props.errors.last_name && <div id="feedback">{props.errors.last_name}</div>}
 
                         <div class="form-group mb-3">
                             <div>

@@ -3,10 +3,12 @@ import { Formik, Form, Field } from 'formik';
 import PropTypes from 'prop-types';
 import BackIcon from '../../ui/icons/back.icon';
 import SubmitButton from '../../ui/buttons/submit-button.component';
+import ValidationError from '../../misc/validation-error.component';
 
-function PasswordForm({ initialValues, onClickBack, onSubmit }) {
+function PasswordForm({ schema, initialValues, onClickBack, onSubmit }) {
     return <Formik
         initialValues={initialValues}
+        validationSchema={schema}
         onSubmit={values => onSubmit(values)}
         enableReinitialize
     >
@@ -21,20 +23,21 @@ function PasswordForm({ initialValues, onClickBack, onSubmit }) {
                         <div class="form-group mb-3">
                             <label className='fw-bold mb-1'>Current Password</label>
                             <Field type="password" name="current_password" className="form-control" id="current_password" placeholder="Enter current password"/>
+                            <ValidationError name='current_password' />
                         </div>
-                        {props.errors.current_password && <div id="feedback">{props.errors.current_password}</div>}
+                        
 
                         <div class="form-group mb-3">
                             <label className='fw-bold mb-1'>New Password</label>
                             <Field type="password" name="new_password" className="form-control" id="new_password" placeholder="Enter new password"/>
+                            <ValidationError name='new_password' />
                         </div>
-                        {props.errors.new_password && <div id="feedback">{props.errors.new_password}</div>}
 
                         <div class="form-group mb-3">
                             <label className='fw-bold mb-1'>Confirm Password</label>
                             <Field type="password" name="confirm_password" className="form-control" id="confirm_password" placeholder="Enter confirm password"/>
+                            <ValidationError name='confirm_password' />
                         </div>
-                        {props.errors.confirm_password && <div id="feedback">{props.errors.confirm_password}</div>}
 
                         <div className="d-flex justify-content-end" >
                             <SubmitButton extendedClass="mt-3" label='Save' onClick={props.handleSubmit} />

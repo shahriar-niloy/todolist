@@ -99,6 +99,8 @@ async function createProjectSharedNotification(projectID, sharedToUserID, shared
 async function createCommentMentionNotification(commentID, mentionedUsers, mentioningUserID) {
     if (!commentID || !mentionedUsers || !mentioningUserID) return Return.service(null, [{ message: 'Must provide required parameters.' }]);
 
+    if (mentionedUsers.length === 0) return Return.service(null);
+
     const [comment, commentErr] = await CommentService.getComment(commentID);
     if (commentErr) return [null, commentErr];
 

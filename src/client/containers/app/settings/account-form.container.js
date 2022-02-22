@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import AccountForm from '../../../components/app/settings/account-form.component';
 import { updateMyProfileAction } from '../../../store/actions/user.actions';
+import { UserSchema } from '../../../../common';
 
 function AccountFormContainer() {
     const dispatch = useDispatch();
@@ -18,6 +19,7 @@ function AccountFormContainer() {
     };
 
     return <AccountForm 
+        schema={UserSchema.UserAccountFormSchema}
         profile={profile}
         onSubmit={handleOnSubmit}
         onChangeEmailClick={handleChangeEmailClick} 

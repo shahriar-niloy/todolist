@@ -11,6 +11,7 @@ import ToastTypes from '../../constants/toast.types';
 import { convertBufferToBlob } from '../../utility';
 import { debouncedSearchUsersAction } from '../../store/actions/user.actions';
 import { createCommentAction, deleteCommentAction } from '../../store/actions/comment.actions';
+import { TaskSchema } from '../../../common';
 
 function TaskFormContainer({ 
     subtasks, 
@@ -119,6 +120,7 @@ function TaskFormContainer({
     }, [taskID]);
 
     return <TaskForm 
+        schema={TaskSchema.TaskFormSchema}
         task={task} 
         attachments={attachments}
         comments={comments}
