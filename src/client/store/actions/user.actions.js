@@ -160,3 +160,43 @@ export function* createUser(data) {
         console.log(err);
     }
 }
+
+export function forgotPasswordAction(data, onSuccess) {
+    return {
+        type: actionTypes.FORGOT_PASSWORD,
+        payload: data,
+        onSuccess
+    }
+}
+
+export function* forgotPassword(data) {
+    try {
+        const { data: res } = yield axios.post('/api/users/forgot-password', data.payload);
+        
+        data.onSuccess && data.onSuccess(res);
+
+        yield put({ type: actionTypes.FORGOT_PASSWORD_SUCCESS , payload: res });
+    } catch(err) {
+        console.log(err);
+    }
+}
+
+export function resetPasswordAction(data, onSuccess) {
+    return {
+        type: actionTypes.RESET_PASSWORD,
+        payload: data,
+        onSuccess
+    }
+}
+
+export function* resetPassword(data) {
+    try {
+        const { data: res } = yield axios.post('/api/users/reset-password', data.payload);
+        
+        data.onSuccess && data.onSuccess(res);
+
+        yield put({ type: actionTypes.RESET_PASSWORD_SUCCESS , payload: res });
+    } catch(err) {
+        console.log(err);
+    }
+}

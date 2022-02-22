@@ -1,4 +1,6 @@
 export default {
-    SIGNIN: '/login',
-    SIGNUP: '/sign-up'
+    LOGIN: '/login',
+    SIGNUP: '/sign-up',
+    RESET_PASSWORD: '/reset-password',
+    FORGOT_PASSWORD: '/forgot-password'
 };

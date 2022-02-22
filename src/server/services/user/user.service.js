@@ -1,9 +1,12 @@
 const path = require('path');
+const jwt = require('jsonwebtoken');
 const { Op, fn, where, col } = require('sequelize');
 const UserModel = require(path.join(process.cwd(), 'src/server/models/user.model'));
 const ProjectModel = require(path.join(process.cwd(), 'src/server/models/project.model'));
 const { escapeWildcards } = require(path.join(process.cwd(), 'src/server/utility/misc'));
 const { Return } = require(path.join(process.cwd(), 'src/server/schemas'));
+const config = require(path.join(process.cwd(), 'src/server/config/config'));
+const { PASSWORD_RESET_TOKEN_EXPIRY_TIMESTRING } = require(path.join(process.cwd(), 'src/server/constants/app.constants'));
 
 async function getUsers() {
     const users = await UserModel.findAll();
@@ -117,6 +120,50 @@ async function updateUserPassword(id, newPassword) {
     return Return.service(user);
 }
 
+function generatePasswordResetToken(payload) {
+    return jwt.sign(payload, config.PASSWORD_RESET_TOKEN_SECRET, { expiresIn: PASSWORD_RESET_TOKEN_EXPIRY_TIMESTRING });
+}
+
+async function forgotPassword(email) {
+    if (!email) return Return.service(null, [{ message: 'Must provide required parameters.' }]);
+
+    const user = await UserModel.findOne({ 
+        where: { email: where(fn('lower', col('email')), fn('lower', email)) }
+    });
+
+    if (!user) return Return.service(null);
+
+    const passwordResetToken = generatePasswordResetToken({ id: user.id });
+
+    await user.update({ password_reset_token: passwordResetToken });
+
+    console.log(passwordResetToken);
+
+    return Return.service(user);
+}
+
+async function resetPassword(token, password) {
+    if (!token) return Return.service(null, [{ message: 'Must provide required parameters.' }]);
+    
+    let payload;
+
+    try {
+        payload = jwt.verify(token, config.PASSWORD_RESET_TOKEN_SECRET);
+    } catch(err) {
+        return Return.service(null, [{ message: err.message }]);
+    }
+
+    const user = await UserModel.findOne({ where: { id: payload.id }});
+
+    if (!user) return Return.service(null, [{ message: 'User does not exist.' }]);
+
+    if (!user.isValidPasswordResetToken(token)) return Return.service(null, [{ message: 'Invalid password reset token.' }]);
+
+    await user.update({ password_reset_token: null, password });
+    
+    return Return.service(user);
+}
+
 exports.getUsers = getUsers;
 exports.getUser = getUser;
 exports.searchUsers = searchUsers;
@@ -124,3 +171,5 @@ exports.updateUser = updateUser;
 exports.updateUserPassword = updateUserPassword;
 exports.getUserByEmail = getUserByEmail;
 exports.createUser = createUser;
+exports.forgotPassword = forgotPassword;
+exports.resetPassword = resetPassword;

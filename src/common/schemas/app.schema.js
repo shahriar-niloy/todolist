@@ -20,7 +20,21 @@ const SignupSchema = yup.object().shape({
         .required(FIELD_MISSING_ERROR)
 }); 
 
+const ForgotPasswordSchema = yup.object().shape({
+    email: PropertiesSchema.EMAIL
+});
+
+const ResetPasswordSchema = yup.object().shape({
+    new_password: PropertiesSchema.PASSWORD,
+    confirm_password: yup
+        .string()
+        .oneOf([yup.ref('new_password')], CONFIRM_PASSWORD_MISMATCH_ERROR)
+        .required(FIELD_MISSING_ERROR)
+});
+
 export {
     LoginSchema,
-    SignupSchema
+    SignupSchema,
+    ResetPasswordSchema,
+    ForgotPasswordSchema
 };

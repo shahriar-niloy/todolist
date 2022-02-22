@@ -1,6 +1,6 @@
 import { takeEvery, debounce, takeLatest } from 'redux-saga/effects';
 import actionTypes from '../../constants/action.types';
-import { createUser, debouncedSearchUsers, getMyNotifications, getMyProfile, markMyNotificationsAsRead, searchUsers, updateMyEmail, updateMyPassword, updateMyProfile } from '../actions/user.actions';
+import { createUser, debouncedSearchUsers, forgotPassword, getMyNotifications, getMyProfile, markMyNotificationsAsRead, resetPassword, searchUsers, updateMyEmail, updateMyPassword, updateMyProfile } from '../actions/user.actions';
 import appConstants from '../../constants/app.constants';
 
 function* userWatcher() {
@@ -13,6 +13,8 @@ function* userWatcher() {
     yield takeLatest(actionTypes.UPDATE_MY_EMAIL, updateMyEmail);
     yield takeLatest(actionTypes.UPDATE_MY_PASSWORD, updateMyPassword);
     yield takeEvery(actionTypes.CREATE_USER, createUser);
+    yield takeEvery(actionTypes.FORGOT_PASSWORD, forgotPassword);
+    yield takeEvery(actionTypes.RESET_PASSWORD, resetPassword);
 }
 
 export default userWatcher;

@@ -285,6 +285,53 @@ async function signup(req, res) {
     }
 }
 
+async function forgotPassword(req, res) {
+    try {
+        const successResponse = new Response.success();
+        const errorResponse = new Response.error();
+        const { email } = req.body;
+
+        const [, err] = await UserService.forgotPassword(email);
+
+        if (err) {
+            err.forEach(e => errorResponse.addError(e.message, ''));
+            return res.status(400).json(errorResponse);
+        }
+
+        successResponse.data = 'An email with instructions to reset the password has been sent to the email address provided';
+
+        res.json(successResponse);
+    } catch(err) {
+        console.error(err);
+    }
+}
+
+async function resetPassword(req, res) {
+    try {
+        const successResponse = new Response.success();
+        const errorResponse = new Response.error();
+        const { password_reset_token, new_password, confirm_password } = req.body;
+
+        if (new_password !== confirm_password) {
+            errorResponse.addError('Password and Confirm Password do not match.', '');
+            return res.status(400).json(errorResponse);
+        }
+
+        const [, err] = await UserService.resetPassword(password_reset_token, new_password);
+
+        if (err) {
+            err.forEach(e => errorResponse.addError(e.message, ''));
+            return res.status(400).json(errorResponse);
+        }
+
+        successResponse.data = 'Password has been successfully reset';
+
+        res.json(successResponse);
+    } catch(err) {
+        console.error(err);
+    }
+}
+
 exports.getProfile = getProfile;
 exports.addProject = addProject;
 exports.getUserProjects = getUserProjects;
@@ -296,3 +343,5 @@ exports.updateMyProfile = updateMyProfile;
 exports.updateMyEmail = updateMyEmail;
 exports.updateMyPassword = updateMyPassword;
 exports.signup = signup;
+exports.forgotPassword = forgotPassword;
+exports.resetPassword = resetPassword;

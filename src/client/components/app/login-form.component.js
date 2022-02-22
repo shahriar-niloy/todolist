@@ -33,7 +33,6 @@ export default function Login({ schema, onSubmit }) {
                                 <Field type="password" name="password" id="password" aria-describedby="emailHelp" placeholder="Enter email"/>
                                 <ValidationError name='password' />
                             </div>
-                            {props.errors.name && <div id="feedback">{props.errors.name}</div>}
                             <button className="mt-3 login-submit" type="submit">Login</button>
                         </div>
                     </div>
@@ -42,7 +41,8 @@ export default function Login({ schema, onSubmit }) {
             )}
         </Formik>
         <div className='login-footer'>
-            Don't have an account? <Link to='/sign-up' className='ms-1'>Sign Up</Link>
+            <div>Don't have an account?<Link to='/sign-up' className='ms-1'>Sign Up</Link></div>
+            <div>Forgot your password?<Link to='/forgot-password' className='ms-1'>Click Here</Link></div>
         </div>
     </div>;
 }

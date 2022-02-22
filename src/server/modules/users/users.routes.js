@@ -4,6 +4,10 @@ const controllerFunctionWrapper = require(path.join(process.cwd(), 'src/server/u
 const AUTHENTICATION_MIDDLEWARE = require(path.join(process.cwd(), 'src/server/middlewares/authentication.middleware'));
 
 module.exports = function(app) {
+    app.post('/api/users/forgot-password', controllerFunctionWrapper(controller.forgotPassword));
+
+    app.post('/api/users/reset-password', controllerFunctionWrapper(controller.resetPassword));
+
     app.get('/api/me/notifications', AUTHENTICATION_MIDDLEWARE, controller.getMyNotifications);
 
     app.put('/api/me/notifications/mark-as-read', AUTHENTICATION_MIDDLEWARE, controller.markMyNotificationsAsRead);
