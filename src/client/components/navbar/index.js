@@ -29,17 +29,6 @@ export default function Navbar({ unseenNotificationCount, initials, notification
                     <a class="navbar-brand" href="#">
                         ToDoList
                     </a>
-                    <form class="d-flex">
-                        <input
-                            class="form-control me-2"
-                            type="search"
-                            placeholder="Search"
-                            aria-label="Search"
-                        />
-                        <button className="btn navbar-search-button" type="submit">
-                            Search
-                        </button>
-                    </form>
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li className="nav-item me-2">
                             <Popover 
