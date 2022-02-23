@@ -1,12 +1,16 @@
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const { Op, fn, where, col } = require('sequelize');
+const EmailService = require(path.join(process.cwd(), 'src/server/services/email'));
 const UserModel = require(path.join(process.cwd(), 'src/server/models/user.model'));
 const ProjectModel = require(path.join(process.cwd(), 'src/server/models/project.model'));
 const { escapeWildcards } = require(path.join(process.cwd(), 'src/server/utility/misc'));
 const { Return } = require(path.join(process.cwd(), 'src/server/schemas'));
 const config = require(path.join(process.cwd(), 'src/server/config/config'));
 const { PASSWORD_RESET_TOKEN_EXPIRY_TIMESTRING } = require(path.join(process.cwd(), 'src/server/constants/app.constants'));
+const { TEMPLATE_PATHS } = require(path.join(process.cwd(), 'src/server/constants/template.constants'));
+const logger = require(path.join(process.cwd(), 'src/server/lib/logger'));
+const emailSubjects = require(path.join(process.cwd(), 'src/server/constants/email-subjects.constants'));
 
 async function getUsers() {
     const users = await UserModel.findAll();
@@ -124,7 +128,7 @@ function generatePasswordResetToken(payload) {
     return jwt.sign(payload, config.PASSWORD_RESET_TOKEN_SECRET, { expiresIn: PASSWORD_RESET_TOKEN_EXPIRY_TIMESTRING });
 }
 
-async function forgotPassword(email) {
+async function forgotPassword(email, requestingHost) {
     if (!email) return Return.service(null, [{ message: 'Must provide required parameters.' }]);
 
     const user = await UserModel.findOne({ 
@@ -137,7 +141,23 @@ async function forgotPassword(email) {
 
     await user.update({ password_reset_token: passwordResetToken });
 
-    console.log(passwordResetToken);
+    const emailTagReplace = { 
+        password_reset_link: `${requestingHost}/reset-password?token=${passwordResetToken}`
+    };
+
+    const resetPasswordEmail = new EmailService(
+        email, 
+        config.APPLICATION_EMAIL, 
+        emailSubjects.RESET_PASSWORD, 
+        TEMPLATE_PATHS.RESET_PASSWORD, 
+        emailTagReplace
+    );
+
+    try {
+        await resetPasswordEmail.send();
+    } catch(err) {
+        logger.error(err);
+    }
 
     return Return.service(user);
 }

@@ -1,6 +1,7 @@
 const path = require('path');
-const { RECENT_NOTIFICATIONS_LIMIT } = require(path.join(process.cwd(), 'src/server/constants/app.constants'));
+const url = require('url');
 
+const { RECENT_NOTIFICATIONS_LIMIT } = require(path.join(process.cwd(), 'src/server/constants/app.constants'));
 const UserService = require(path.join(process.cwd(), 'src/server/services/user'));
 const NotificationService = require(path.join(process.cwd(), 'src/server/services/notification'));
 const AuthenticationService = require(path.join(process.cwd(), 'src/server/services/authentication'));
@@ -291,7 +292,12 @@ async function forgotPassword(req, res) {
         const errorResponse = new Response.error();
         const { email } = req.body;
 
-        const [, err] = await UserService.forgotPassword(email);
+        const requestingHost = url.format({
+            protocol: req.protocol,
+            host: req.get('host')
+        });
+
+        const [, err] = await UserService.forgotPassword(email, requestingHost);
 
         if (err) {
             err.forEach(e => errorResponse.addError(e.message, ''));
