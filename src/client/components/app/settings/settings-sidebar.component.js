@@ -21,7 +21,7 @@ function SidebarItem({ path, name, ContextMenuTrigger, contextID, triggerID, isS
 function SettingSidebar ({ items, MenuItemContextMenuTrigger, menuItemContextMenuID, currentPathname }) {
     return (
         <div
-            className="d-flex flex-column flex-shrink-0 text-white setting-sidebar"
+            className="d-flex flex-column flex-shrink-0 setting-sidebar"
         >
             <div className='fw-bold font-size-19 mb-4'>Settings</div>
             <div className="nav nav-pills flex-column mb-auto expandable_menu_section">

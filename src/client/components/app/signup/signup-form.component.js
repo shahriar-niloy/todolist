@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import ValidationError from '../../misc/validation-error.component';
 
 function SignUpForm({ schema, initialValues, onSubmit }) {
-    return <div className='signup-form'>
+    return <div className='default-form-container'>
         <Formik
             initialValues={initialValues}
             validationSchema={schema}
@@ -52,14 +52,14 @@ function SignUpForm({ schema, initialValues, onSubmit }) {
                             </div>
                             {props.errors.name && <div id="feedback">{props.errors.confirm_password}</div>}
 
-                            <button className="mt-3 signup-submit" type="submit">Sign Up</button>
+                            <button className="mt-3 default-form-submit" type="submit">Sign Up</button>
                         </div>
                     </div>
                     
                 </Form>
             )}
         </Formik>
-        <div className='signup-footer'>
+        <div className='default-form-footer flex-row'>
             Already have an account? <Link to='/login' className='ms-1'>Sign In</Link>
         </div>
     </div>;

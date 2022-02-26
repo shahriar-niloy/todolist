@@ -6,7 +6,7 @@
 
     .duration {
         font-size: 12px;
-        color: white;
+        color: $primary-font-color;
         user-select: none;
     }
 }
@@ -17,13 +17,13 @@
     align-items: center;
 
     .audio-level-bar {
-        background: #5f6061;
+        background: $color-primary-shade3x;
         width: 3px;
         border-radius: 3px;
         margin-right: 1px;
     }
 
     .completed {
-        background: #e74d3291;
+        background: $color-accent-shade;
     }
 }

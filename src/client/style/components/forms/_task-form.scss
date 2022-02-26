@@ -3,11 +3,11 @@ $imageAattachmentPreviewSize: 200px;
 .task-form {
     &-action-icon {
         padding: 0.25rem;
-        color: #adadad;
+        color: $primary-font-color;
         cursor: pointer;
 
         &:hover {
-            background: #4d4d4d;
+            background: $default-hover-color;
             color: $primary-font-color;
             border-radius: 0.15rem;
         }
@@ -38,7 +38,7 @@ $imageAattachmentPreviewSize: 200px;
     }
 
     &-tabs {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-bottom: 1px solid $color-primary-shade3x !important;
         margin-bottom: 1rem !important;
         margin-top: 1rem !important;
         display: flex;
@@ -61,7 +61,7 @@ $imageAattachmentPreviewSize: 200px;
         .selected {
             color: $primary-font-color !important;
             font-weight: 700;
-            border-bottom: 1px solid white !important;
+            border-bottom: 1px solid $primary-font-color !important;
         }
 
         .nav-item {
@@ -93,7 +93,7 @@ $imageAattachmentPreviewSize: 200px;
     color: $secondary-font-color;
 
     span:hover {
-        color: #de4c4a;
+        color: $color-accent;
     }
 
     .add-icon {
@@ -112,7 +112,7 @@ $imageAattachmentPreviewSize: 200px;
     }
 
     &:hover .add-icon {
-        background: #de4c4a;
+        background: $color-accent;
     }
 }
 
@@ -128,7 +128,7 @@ $imageAattachmentPreviewSize: 200px;
 
 .task-attachments {
     .attachment-types {
-        border-top: 1px solid gray;
+        border-top: 1px solid $color-primary-shade4x;
         padding-top: 10px;
         margin-top: 10px;
 
@@ -205,7 +205,7 @@ $imageAattachmentPreviewSize: 200px;
 
         .image-preview-container {
             width: $imageAattachmentPreviewSize;
-            box-shadow: 0px 2px 2px 0px #1c1c1c;
+            box-shadow: 0px 2px 2px 0px $color-shadow;
             border-radius: 3px;
         }
 
@@ -262,7 +262,7 @@ $imageAattachmentPreviewSize: 200px;
                 font-weight: bold;
 
                 .image-action {
-                    color: #e2644c;
+                    color: $color-accent;
                     cursor: pointer;
                 }
             }
@@ -272,11 +272,11 @@ $imageAattachmentPreviewSize: 200px;
     .attachment {
         display: flex;
         padding: 13px 10px;
-        border: 1px solid #2e2e2e;
+        border: 1px solid $color-primary-shade2x;
         border-radius: 3px;
         margin-bottom: 10px;
         align-items: center;
-        box-shadow: 0px 2px 2px 0px #1c1c1c;
+        box-shadow: 0px 2px 2px 0px $color-shadow;
         user-select: none;
     }
 
@@ -313,7 +313,7 @@ $imageAattachmentPreviewSize: 200px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: #d4d4d4;
+    color: $primary-font-color;
     padding: 20px 10px;
 
     h5 {
@@ -331,22 +331,27 @@ $imageAattachmentPreviewSize: 200px;
         font-size: 40px;
         margin-bottom: 15px;
         padding: 10px;
-        border: 4px solid #d4d4d4;
+        border: 4px solid $primary-font-color;
         border-radius: 10px;
     }
 }
 
 .task-comment-input {
-    border: 1px solid #444444;
+    border: 1px solid $color-primary-shade3x;
     padding: 8px;
     border-radius: 3px;
 
     .btn-comment-submit {
         color: $primary-font-color;
         font-weight: 400 !important;
-        border: 1px solid #999999a6 !important;
+        border: 1px solid $color-primary-shade3x !important;
         font-size: 0.7rem !important;
         padding: 0.15rem 0.5rem !important;
         border-radius: 0.2rem !important;
+    }
+
+    .btn-comment-submit:hover {
+        color: $primary-font-color;
+        background: $default-hover-color;
     }
 }

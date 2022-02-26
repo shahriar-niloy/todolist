@@ -1,15 +1,15 @@
 .setting-container {
-    min-width: 450px;
+    min-width: 624px;
     min-height: 400px;
 
     input {
-        outline: 1px solid #3a3a3a;
+        outline: 1px solid $input-default-outline;
         border-radius: 5px;
     }
 
     input:focus-visible,
     input:focus {
-        outline: 1px solid #686868;
+        outline: 1px solid $input-default-outline-color-focus;
         border-radius: 5px;
     }
 }

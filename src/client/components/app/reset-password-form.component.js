@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import ValidationError from '../misc/validation-error.component';
 
 function ResetPasswordForm({ schema, initialValues, onSubmit }) {
-    return <div className='forgot-password-form'>
+    return <div className='default-form-container'>
         <Formik
             initialValues={initialValues}
             validationSchema={schema}
@@ -26,19 +26,19 @@ function ResetPasswordForm({ schema, initialValues, onSubmit }) {
                                 <ValidationError name='new_password' />
                             </div>
 
-                            <div class="d-flex flex-column">
+                            <div class="d-flex flex-column mt-3">
                                 <label for="confirm_password" className='font-size-13 fw-bold'>Confirm Password</label>
                                 <Field type="password" name="confirm_password" id="confirm_password" placeholder="Enter password again"/>
                                 <ValidationError name='confirm_password' />
                             </div>
 
-                            <button className="mt-3 forgot-password-submit" type="submit">Submit</button>
+                            <button className="mt-3 default-form-submit" type="submit">Submit</button>
                         </div>
                     </div>
                 </Form>
             )}
         </Formik>
-        <div className='forgot-password-footer'>
+        <div className='default-form-footer flex-row'>
             Already have an account? <Link to='/login' className='ms-1'>Sign In</Link>
         </div>
     </div>;

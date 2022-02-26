@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import ValidationError from '../misc/validation-error.component';
 
 function ForgotPasswordForm({ schema, initialValues, onSubmit }) {
-    return <div className='forgot-password-form'>
+    return <div className='default-form-container'>
         <Formik
             initialValues={initialValues}
             validationSchema={schema}
@@ -26,14 +26,14 @@ function ForgotPasswordForm({ schema, initialValues, onSubmit }) {
                                 <Field type="email" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter an email"/>
                                 <ValidationError name='email' />
                             </div>
-                            <button className="mt-3 forgot-password-submit" type="submit">Submit</button>
+                            <button className="mt-3 default-form-submit" type="submit">Submit</button>
                         </div>
                     </div>
                     
                 </Form>
             )}
         </Formik>
-        <div className='forgot-password-footer'>
+        <div className='default-form-footer flex-row'>
             Already have an account? <Link to='/login' className='ms-1'>Sign In</Link>
         </div>
     </div>;

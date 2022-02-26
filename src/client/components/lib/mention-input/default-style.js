@@ -66,7 +66,7 @@ export default {
         borderBottom: "1px solid rgba(0,0,0,0.15)",
   
         "&focused": {
-          backgroundColor: "#363636"
+          backgroundColor: "#404040"
         }
       }
     }

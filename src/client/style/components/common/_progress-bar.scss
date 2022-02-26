@@ -4,12 +4,12 @@ $progressBarBorderRadius: 10px;
 .file-upload-progress-bar {
     height: $progressBarHeight;
     border-radius: $progressBarBorderRadius;
-    background: #5f5f5f;
+    background: $color-primary-shade4x;
 
     .progress {
         height: $progressBarHeight;
         border-radius: $progressBarBorderRadius;
-        background: #dcdcdc;
+        background: $primary-font-color;
     }
 }
 
@@ -20,11 +20,11 @@ $progressBarBorderRadius: 10px;
     width: 100%;
     border-radius: 0px 0px 3px 3px;
     overflow: auto;
-    background: #dcdcdc38;
+    background: $color-primary-shade4x;
     box-shadow: 0px 0px 3px 0px #dcdcdc2e;
 
     .progress {
         height: inherit;
-        background: #dcdcdc;
+        background: $primary-font-color;
     }
 }

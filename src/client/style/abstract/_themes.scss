@@ -1,0 +1,83 @@
+:root {
+    /* Dark Color Scheme */
+    --gray1: #1f1f1f; 
+    --gray2: #202020; 
+    --gray3: #282828; 
+    --gray4: #404040; 
+    --gray5: grey;
+    --gray-violet: #3e3e47;
+    --gray-violet1: #7c7c82;
+    --white0: #ffffffde;
+    --gray-dark-shadow : #1a1a1a;
+
+    /* Light Color Scheme */
+    --white1: #f7f7f7;
+    --white2: #f5f5f5;
+    --white3: #e6e6e6;
+    --white4: #dbdbdb;
+    --white5: #d4d4d4;
+    --white6: #dddddd;
+    --faded-black: #383838;
+    --gray-light-shadow: #bfbfbf;
+    --white-red: #d7c7c7;
+    --white-red1: #e9c6c6;
+
+    /* Common Colors */
+    --red0: #c35454;
+    --red1: #d86e6e;
+}
+
+.dark-theme {
+    --color-primary: var(--gray1);
+    --color-primary-shade: var(--gray2);
+    --color-primary-shade2x: var(--gray3);
+    --color-primary-shade3x: var(--gray4);
+    --color-primary-shade4x: var(--gray5);
+
+    --color-primary-tint: var(--gray-violet);
+    --color-primary-tint-shade: var(--gray-violet1);
+
+    --color-accent: var(--red0);
+    --color-accent-shade: var(--red1);
+
+    --color-font-primary: var(--white0);
+    --color-font-secondary: var(--gray5);
+    --color-font-alternative: var(--white0);
+
+    --color-shadow: var(--gray-dark-shadow);
+
+    .theme-switcher .theme-active {
+        background: #404040 !important;
+        box-shadow: 0px 1px 1px #545454 inset !important;
+    }
+}
+
+.light-theme {
+    --color-primary: var(--white1);
+    --color-primary-shade: var(--white2);
+    --color-primary-shade2x: var(--white3);
+    --color-primary-shade3x: var(--white4);
+    --color-primary-shade4x: var(--white5);
+
+    --color-primary-tint: var(--white-red);
+    --color-primary-tint-shade: var(--white-red1);
+
+    --color-accent: var(--red0);
+    --color-accent-shade: var(--red1);
+
+    --color-font-primary: var(--faded-black);
+    --color-font-secondary: var(--gray5);
+    --color-font-alternative: var(--white0);
+
+    --color-shadow: var(--gray-light-shadow);
+
+    .default-form-container input {
+        --color-primary-shade2x: var(--color-primary-shade);
+    }
+
+    .task-attachments {
+        .attachment, .container-default {
+            --color-shadow: var(--white6);
+        }
+    }
+}

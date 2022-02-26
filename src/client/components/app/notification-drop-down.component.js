@@ -28,7 +28,7 @@ export default function NotificationDropDown({ notifications, rootRef, lastEleme
                                     }
                                 }) 
                             }
-                            {isLoading && <div className='px-3 align-xy my-2'><CircleSpinner scale={0.25} /></div>}
+                            {isLoading && <div className='px-3 align-xy my-2 mt-3'><CircleSpinner scale={0.25} /></div>}
                         </ul>
                     </div>
                 : <div className='notification-none px-3'>You have no unread notifications.</div>

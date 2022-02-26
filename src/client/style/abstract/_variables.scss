@@ -1,19 +1,58 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
 
+// colors
+$color-primary: var(--color-primary);
+$color-primary-shade: var(--color-primary-shade);
+$color-primary-shade2x: var(--color-primary-shade2x);
+$color-primary-shade3x: var(--color-primary-shade3x);
+$color-primary-shade4x: var(--color-primary-shade4x);
+$color-primary-shade5x: var(--color-primary-shade5x);
+$color-accent: var(--color-accent);
+$color-accent-shade: var(--color-accent-shade);
+$color-primary-tint: var(--color-accent-shade);
+
 // Font Variables
 $roboto-slab: "Roboto", serif;
 $default-font-size: 14px;
-$primary-font-color: hsla(0, 0%, 100%, 0.87);
-$secondary-font-color: grey;
+$primary-font-color: var(--color-font-primary);
+$secondary-font-color: var(--color-font-secondary);
+$color-font-alternative: var(--color-font-alternative);
 
 // Background
-$primary-bg: #1f1f1f;
-$secondary-bg: #282828;
-$task-completed-color: #6e6e6e;
+$primary-bg: var(--color-primary);
+$bg-primary-highlight: var(--color-primary-shade);
+$secondary-bg: var(--color-primary-shade2x);
+$bg-secondary-highlight: var(--color-primary-shade3x);
+
+// input
+$input-default-outline: var(--color-primary-tint);
+$input-default-outline-color-focus: var(--color-primary-tint-shade);
+$input-default-shadow-color: var(--color-primary-tint-shade);
+
+// button
+$button-primary-color: var(--color-accent);
+$button-secondary-border: var(--color-primary-shade3x);
+
+// container
+$floating-container-bg: var(--color-primary-shade2x);
+$floating-container-border-color: var(--color-primary-shade3x);
 
 // Border
-$default-border-color: #999999;
+$default-border-color: var(--color-primary-shade4x);
 
 // Hover
-$default-hover-color: #999999;
-$secondary-hover-color: #4d4d4d;
+$default-hover-color: var(--color-primary-shade3x);
+$secondary-hover-color: var(--color-primary-shade4x);
+
+// link
+$link-primary-color: var(--color-accent);
+
+// shadow
+$color-shadow: var(--color-shadow);
+
+// task
+$task-completed-color: #6e6e6e;
+
+// comment
+$comment-initials-bg: #8f6363;
+$comment-initials-border: #bb8585;

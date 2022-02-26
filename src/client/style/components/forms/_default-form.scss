@@ -1,0 +1,50 @@
+.default-form-container {
+    padding: 15px;
+    background: $floating-container-bg;
+    border-radius: 3px;
+    border: 1px solid $floating-container-border-color;
+    box-shadow: 0px 0px 5px $color-shadow;
+    min-width: 350px;
+    color: $primary-font-color;
+    font-size: 13px;
+
+    input {
+        border: 1px solid $input-default-outline;
+        background: $primary-bg;
+        border-radius: 4px;
+        padding: 7px;
+        margin-top: 3px;
+        color: inherit !important;
+        outline: none;
+        transition: box-shadow 0.2s;
+    }
+
+    input:focus-visible {
+        border: none !important;
+        box-shadow: 0px 0px 2px 3px $input-default-outline-color-focus;
+        outline: none;
+    }
+
+    .default-form-submit {
+        width: 100%;
+        border: none;
+        padding: 5px 7px;
+        border-radius: 3px;
+        background: $button-primary-color;
+        color: $color-font-alternative;
+        font-weight: 400;
+    }
+
+    .default-form-footer {
+        display: flex;
+        justify-content: center;
+        color: $secondary-font-color;
+        align-items: center;
+        flex-direction: column;
+        
+        a {
+            cursor: pointer;
+            color: $link-primary-color !important;
+        }
+    }
+}

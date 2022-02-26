@@ -1,0 +1,31 @@
+.theme-switcher {
+    width: 100%;
+    background: $color-primary-shade2x;
+    border-radius: 5px;
+    font-weight: bold;
+    display: flex;
+    padding: 0.2rem;
+
+    .theme-switch {
+        flex-grow: 1;
+        display: flex;
+        padding: 0.25rem;
+        border-radius: 5px;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0, 0, 0.45, 0.96);
+        user-select: none;
+    }
+
+    .theme-active {
+        background: $color-primary-shade;
+        box-shadow: 1px 1px 2px $color-shadow;
+    }
+
+    i {
+        margin-right: 0.4rem;
+        line-height: 0px !important;
+        font-size: 14px;
+    }
+}

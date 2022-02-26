@@ -29,7 +29,7 @@ export default function Navbar({ unseenNotificationCount, initials, notification
                     <a class="navbar-brand" href="#">
                         ToDoList
                     </a>
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-xy">
                         <li className="nav-item me-2">
                             <Popover 
                                 isOpen={isNotificationDropDownOpen}

@@ -1,7 +1,7 @@
 .account-form {
     .change-password-button {
         padding: 5px 15px;
-        border: 1px solid #686868;
+        border: 1px solid $default-border-color;
         border-radius: 5px;
         font-weight: bold;
         display: inline-block;
@@ -9,8 +9,8 @@
     }
     
     .change-password-button:hover {
-        background-color: #686868 !important;
-        color: rgba(255, 255, 255, 0.87) !important;
+        background-color: $secondary-hover-color !important;
+        color: $primary-font-color !important;
         font-weight: bold;
     }
 }

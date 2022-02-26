@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Modal from '../modal';
-import DeleteButton from '../ui/buttons/delete-button.component';
+import SubmitButton from '../ui/buttons/submit-button.component';
 import CancelButton from '../ui/buttons/cancel-button.component';
 
 const taskFormModalStyle = {
@@ -15,7 +15,7 @@ function DeleteConfirmation({ isOpen, children, onDelete, onCancel }) {
         <div className="py-3">{children}</div>
         <div className="d-flex justify-content-end">
             <CancelButton extendedClass="me-2" label="Cancel" onClick={onCancel} />
-            <DeleteButton onClick={onDelete} />
+            <SubmitButton label='Delete' onClick={onDelete} />
         </div>
     </Modal>
 }

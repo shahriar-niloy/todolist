@@ -16,9 +16,10 @@
 .expandable_menu_item {
     display: block;
     padding: 10px 5px;
-    color: white;
+    color: inherit;
     cursor: pointer;
     user-select: none;
+    margin-left: 5px;
 }
 
 .menuitem {
@@ -29,11 +30,11 @@
 }
 
 .menuitem-selected {
-    background: #363636;
+    background: $bg-secondary-highlight;
 }
 
 .menuitem:hover {
-    background: #363636;
+    background: $bg-secondary-highlight;
 }
 
 .menuitem a {
@@ -44,5 +45,5 @@
 
 .expand_icon {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.5);
+    color: $secondary-font-color;
 }

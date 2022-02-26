@@ -17,6 +17,7 @@ import CheckSquareIcon from '../ui/icons/check-square.icon';
 import TaskAttachments from './task-attachment.component';
 import TaskComments from './task-comment.component';
 import ValidationError from '../misc/validation-error.component';
+import DeleteButton from '../ui/buttons/delete-button.component';
 
 const TABS = {
     COMMENT: 'COMMENT',
@@ -70,7 +71,7 @@ function SubtaskForm({ parent_id, onCancel, onSubmit }) {
                     >
                         <ActionButton>
                             <div className="align-xy">
-                                <CalendarIcon fontSize={12} className="me-1" />
+                                <CalendarIcon fontSize={12} className="me-2" />
                                 <span>{formikProps.values.scheduled_at && new Date(formikProps.values.scheduled_at).toLocaleString('default', { day: 'numeric', month: 'short' }) || 'Schedule'}</span>
                             </div>
                         </ActionButton>
@@ -90,7 +91,7 @@ function SubtaskForm({ parent_id, onCancel, onSubmit }) {
                     </Popover>
                 </div>
                 <div className="d-flex justify-content-end" >
-                    <SubmitButton extendedClass="mt-3 me-2" label='Cancel' onClick={onCancel} />
+                    <DeleteButton extendedClass="mt-3 me-2" label='Cancel' onClick={onCancel} />
                     <SubmitButton extendedClass="mt-3" label='Add Subtask' onClick={formikProps.handleSubmit} />
                 </div>
             </Form>
@@ -201,7 +202,7 @@ function TaskForm({
                     >
                         <ActionButton>
                             <div className="align-xy">
-                                <CalendarIcon fontSize={12} className="me-1" />
+                                <CalendarIcon fontSize={12} className="me-2" />
                                 <span>{formikProps.values.scheduled_at && new Date(formikProps.values.scheduled_at).toLocaleString('default', { day: 'numeric', month: 'short' }) || 'Schedule'}</span>
                             </div>
                         </ActionButton>

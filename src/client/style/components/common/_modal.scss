@@ -1,6 +1,6 @@
 .modal-body {
-    background-color: #202020 !important;
-    box-shadow: 0px 0px 20px #131313;
+    background-color: $bg-primary-highlight !important;
+    box-shadow: 0px 0px 20px $color-shadow;
     border: 0;
     position: absolute !important;
     overflow: auto;
@@ -10,7 +10,7 @@
 }
 
 .modal-overlay {
-    background-color: rgba(255, 255, 255, 0) !important;
+    background-color: transparent !important;
     position: fixed !important;
     inset: 0px;
     display: flex;

@@ -5,7 +5,7 @@ export default function useLocalStorage(key, initValue) {
 
     const [value, setValue] = useState(() => {
         try {
-            if (initValue) {
+            if (!localStorage.getItem(key) && initValue) {
                 const stringifiedValue = JSON.stringify(initValue);
                 localStorage.setItem(key, stringifiedValue);
                 return initValue;

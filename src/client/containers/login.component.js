@@ -12,7 +12,7 @@ export default function Login() {
 
     const handleSubmit = (values) => login(values.email, values.password);
 
-    return <div className='login-container align-xy'>
+    return <div className='screen-container align-xy'>
         {
             isLoggedIn
                 ? <Redirect to={redirectToPath} />

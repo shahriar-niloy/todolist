@@ -9,7 +9,7 @@ function Settings({ show, children, onHide }) {
             <div>
                 <SettingSidebarContainer />
             </div>
-            <div className='p-4'>{children}</div>
+            <div className='p-4 w-100'>{children}</div>
         </div>
     </Modal>
 }

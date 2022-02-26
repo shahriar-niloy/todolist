@@ -9,7 +9,7 @@ function Sidebar ({ projects, onProjectAddClick, MenuItemContextMenuTrigger, men
 
     return (
         <div
-            className="d-flex flex-column flex-shrink-0 text-white sidebar"
+            className="d-flex flex-column flex-shrink-0 sidebar"
         >
             <div className="mb-3">
                 <SidebarItem 

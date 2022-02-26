@@ -1,7 +1,7 @@
 .context-menu {
-    border: 1px solid #ddd;
+    border: 1px solid $color-primary-shade5x;
     border-color: $primary-bg;
-    color: hsla(0, 0%, 100%, 0.87);
+    color: $primary-font-color;
     background-color: $secondary-bg;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     border-collapse: separate;
@@ -16,5 +16,5 @@
 }
 
 .context-menu-item:hover {
-    background-color: #383838;
+    background-color: $bg-secondary-highlight;
 }

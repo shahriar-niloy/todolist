@@ -4,7 +4,7 @@
     justify-content: center;
     align-items: center;
     min-height: 400px;
-    color: #d4d4d4;
+    color: $primary-font-color;
     flex-grow: 1;
 
     h5 {
@@ -21,7 +21,7 @@
         font-size: 70px;
         margin-bottom: 25px;
         padding: 20px;
-        border: 5px solid #d4d4d4;
+        border: 5px solid $primary-font-color;
         border-radius: 10px;
     }
 }

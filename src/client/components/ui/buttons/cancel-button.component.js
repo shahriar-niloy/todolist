@@ -7,7 +7,7 @@ function CancelButton({ className, extendedClass, label, onClick }) {
 
 CancelButton.defaultProps = {
     label: 'Submit',
-    className: 'btn btn-submit clickable',
+    className: 'btn btn-delete clickable',
     extendedClass: '',
     onClick: () => null
 }

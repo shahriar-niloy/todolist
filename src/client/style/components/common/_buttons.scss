@@ -1,34 +1,39 @@
 .btn-submit {
-    color: #fff !important;
-    background-color: transparent !important;
-    border: 2px solid $default-border-color !important;
+    color: $color-font-alternative !important;
+    background-color: $color-accent !important;
     padding-right: 15px !important;
     padding-left: 15px !important;
+    font-weight: 500;
 }
 
-.btn:hover {
-    background-color: $default-hover-color !important;
-    color: $primary-font-color !important;
+.btn-submit:hover {
+    background-color: $color-accent-shade !important;
+    color: $color-font-alternative !important;
 }
 
 .btn-action {
-    color: #adadad !important;
+    color: $primary-font-color !important;
     font-weight: 600 !important;
-    border: 1px solid #999999a6 !important;
+    border: 1.5px solid $button-secondary-border !important;
     font-size: 12px !important;
     padding: 0.25rem 0.6rem !important;
     border-radius: 0.2rem !important;
 }
 
+.btn-action:hover {
+    background-color: $default-hover-color !important;
+    color: $primary-font-color !important;
+}
+
 .btn-delete {
-    background-color: #de4c4a !important;
-    color: #fff !important;
-    box-shadow: 1px 1px 2px #1d1d1d;
+    background-color: transparent !important;
+    color: $primary-font-color !important;
+    border: 2px solid $color-primary-shade3x !important;
     padding-right: 15px !important;
     padding-left: 15px !important;
 }
 
 .btn-delete:hover {
-    background-color: #de4c4a !important;
-    color: #fff !important;
+    background-color: $default-hover-color !important;
+    color: $primary-font-color !important;
 }
