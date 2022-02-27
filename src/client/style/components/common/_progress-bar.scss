@@ -14,7 +14,7 @@ $progressBarBorderRadius: 10px;
 }
 
 .image-upload-progress-bar {
-    height: 2px;
+    height: 3px;
     position: absolute;
     bottom: 0px;
     width: 100%;
@@ -25,6 +25,6 @@ $progressBarBorderRadius: 10px;
 
     .progress {
         height: inherit;
-        background: $primary-font-color;
+        background: $color-accent;
     }
 }
