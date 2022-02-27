@@ -9,7 +9,8 @@
     "seed": "node scripts/seeder.js",
     "cleardist": "rm -rf dist",
     "build": "./node_modules/.bin/webpack --devtool source-map --mode development --stats-children",
-    "startcycle": "npm run cleardist && npm run build && node --inspect src/server/server.js"
+    "startcycle": "npm run cleardist && npm run build && node --inspect src/server/server.js",
+    "prod": "npm run cleardist && npm run build && node --inspect src/server/server.js"
   },
   "author": "shahriar_niloy@outlook.com",
   "license": "ISC",
