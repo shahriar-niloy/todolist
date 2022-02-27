@@ -38,12 +38,12 @@ function ProjectMenuContainer({ projectID, onlyReadOnlyActions, hidePopover, sho
                 ? <HideIcon className="me-2" /> 
                 : <CheckCircleIcon className="me-2" />,
         },
-        {
-            id: 'archive',
-            label: "Archive project",
-            onClick: () => console.log("Archive"),
-            icon: <ArchiveIcon className="me-2" />,
-        },
+        // {
+        //     id: 'archive',
+        //     label: "Archive project",
+        //     onClick: () => console.log("Archive"),
+        //     icon: <ArchiveIcon className="me-2" />,
+        // },
         {
             id: 'delete',
             label: "Delete project",

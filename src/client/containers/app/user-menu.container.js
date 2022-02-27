@@ -12,7 +12,7 @@ function UserMenuContainer({ hidePopover }) {
     const location = useLocation();
     const { logout } = useAuth();
 
-    const handleClickAccount = () => {
+    const handleClickSettings = () => {
         history.push('/settings/account', { previousPath: location.pathname });
         hidePopover();
     };
@@ -24,8 +24,7 @@ function UserMenuContainer({ hidePopover }) {
     }
 
     const menuitems = [
-        { label: 'Account', onClick: handleClickAccount, icon: <UserIcon className="me-2" /> },
-        { label: 'Settings', onClick: () => console.log('Settings'), icon: <SettingsIcon className="me-2" /> },
+        { label: 'Settings', onClick: handleClickSettings, icon: <SettingsIcon className="me-2" /> },
         { label: 'Logout', onClick: handleLogout, icon: <LogoutIcon className="me-2" /> }
     ];
 

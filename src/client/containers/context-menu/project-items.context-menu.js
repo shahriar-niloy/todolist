@@ -10,8 +10,7 @@ function ProjectItemContextMenu({ onProjectEditClick, onProjectShareClick, onPro
         { id: 'open', name: 'Open' },
         { id: 'edit', name: 'Edit' },
         { id: 'share', name: 'Share' },
-        { id: 'delete', name: 'Delete' },
-        { id: 'archive', name: 'Archive' },
+        { id: 'delete', name: 'Delete' }
     ];
 
     const dispatch = useDispatch();
