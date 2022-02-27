@@ -5,12 +5,12 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --exec npm run startcycle",
+    "dev": "nodemon --exec npm run startcycle",
     "seed": "node scripts/seeder.js",
     "cleardist": "rm -rf dist",
     "build": "./node_modules/.bin/webpack --devtool source-map --mode development --stats-children",
     "startcycle": "npm run cleardist && npm run build && node --inspect src/server/server.js",
-    "prod": "npm run cleardist && npm run build && node --inspect src/server/server.js"
+    "start": "npm run cleardist && npm run build && node --inspect src/server/server.js"
   },
   "author": "shahriar_niloy@outlook.com",
   "license": "ISC",
