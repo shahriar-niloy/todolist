@@ -1,0 +1,22 @@
+.task-comment-input {
+    background: transparent;
+
+    ul[role="listbox"] {
+        background-color: $primary-bg !important;
+        border-radius: 5px !important;
+        box-shadow: 0px 0px 2px $color-shadow;
+        border: 1px solid $color-primary-shade2x;
+
+        li[role="option"] {
+            background-color: $primary-bg !important;
+        }
+
+        li[role="option"]:hover {
+            background-color: $secondary-bg !important;
+        }
+    }
+
+    &> div:nth-child(1) > div:nth-child(2) {
+        background-color: transparent !important;
+    }
+}

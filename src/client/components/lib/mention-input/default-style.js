@@ -1,6 +1,6 @@
 export default {
     control: {
-      backgroundColor: "#fff",
+      backgroundColor: "transparent",
       fontSize: 14,
       fontWeight: "normal",
       maxHeight: '100px'
@@ -56,14 +56,14 @@ export default {
     suggestions: {
       list: {
         backgroundColor: '#282828',
-        padding: '5px',
+        padding: '5px 0px',
         minWidth: '200px',
         fontSize: 14
       },
   
       item: {
         padding: "5px 15px",
-        borderBottom: "1px solid rgba(0,0,0,0.15)",
+        // borderBottom: "1px solid rgba(0,0,0,0.15)",
   
         "&focused": {
           backgroundColor: "#404040"
