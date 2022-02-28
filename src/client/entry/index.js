@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Provider } from 'react-redux';
 import store from "../store/store";
 import ToastRoot from "../components/toast/toast.component";
+import LoadingIndicator from "../components/misc/loading-indicator.component";
 
 const appRouting = (
     <DndProvider backend={HTML5Backend} >
@@ -16,6 +17,7 @@ const appRouting = (
             <Router>
                 <App />
                 <ToastRoot />
+                <LoadingIndicator />
             </Router>
         </Provider>
     </DndProvider>
