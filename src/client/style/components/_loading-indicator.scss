@@ -1,0 +1,20 @@
+.loader-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: 1;
+    background: $color-loader-overlay;
+}
+
+.loader-container {
+    background-color: $color-loader-container;
+    opacity: 1;
+    transform: scale(0.35);
+    border-radius: 10px;
+    padding: 0px 35px;
+}

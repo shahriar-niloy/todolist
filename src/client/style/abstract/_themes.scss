@@ -46,6 +46,9 @@
 
     --color-shadow: var(--gray-dark-shadow);
 
+    --color-loader-container: #ffffff4d;
+    --color-loader-overlay: #ffffff13;
+
     .theme-switcher .theme-active {
         background: #404040 !important;
         box-shadow: 0px 1px 1px #545454 inset !important;
@@ -70,6 +73,9 @@
     --color-font-alternative: var(--white0);
 
     --color-shadow: var(--gray-light-shadow);
+
+    --color-loader-container: #0000001a;
+    --color-loader-overlay: #00000010;
 
     .default-form-container input {
         --color-primary-shade2x: var(--color-primary-shade);
