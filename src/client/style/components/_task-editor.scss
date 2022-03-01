@@ -80,6 +80,18 @@
                 color: $primary-font-color;
             }
         }
+
+        .high-priority-border-color {
+            border-color: rgb(255, 112, 102);
+        }
+        
+        .medium-priority-border-color {
+            border-color: rgb(255, 154, 20);
+        }
+        
+        .low-priority-border-color {
+            border-color: rgb(82, 151, 255);
+        }
     }
 
     .subtask-drawer-pad {

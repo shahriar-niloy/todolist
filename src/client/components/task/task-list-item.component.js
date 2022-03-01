@@ -9,6 +9,7 @@ import dragItemTypes from '../../constants/drag-item.types';
 import Checkbox from '../ui/icons/checkbox.component';
 import ArrowRightIcon from '../ui/icons/arrow-right.icon';
 import DROP_HIGHLIGHT_DRAWERS from '../../constants/taskitem-drop-highlight.constant';
+import priorityLevelsConstants from '../../constants/priority-levels.constants';
 
 function TaskListItem ({ 
     task, 
@@ -98,6 +99,13 @@ function TaskListItem ({
         [task, onDrop, containerRef.current, openedDropHighlightDrawer, isDropDisabled]
     );
 
+    const getCheckboxClass = priority => {
+        if (priority === priorityLevelsConstants.HIGH.value) return 'high-priority-border-color';
+        if (priority === priorityLevelsConstants.MEDIUM.value) return 'medium-priority-border-color';
+        if (priority === priorityLevelsConstants.LOW.value) return 'low-priority-border-color';
+        return '';
+    }
+
     useEffect(() => {
         setContainerWidth(
             containerRef?.current?.clientWidth 
@@ -134,6 +142,7 @@ function TaskListItem ({
                     <Checkbox 
                         checked={task.is_completed} 
                         disabled={isCompleteDisabled}
+                        extendedClass={getCheckboxClass(task.priority)}
                         onClick={() => onTaskComplete(task.id, task.is_completed)} 
                     />
                     <div className="flex-grow-1 task-title-desc">
