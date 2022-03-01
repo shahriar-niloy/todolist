@@ -8,7 +8,7 @@
     "dev": "nodemon --exec npm run startcycle",
     "seed": "node scripts/seeder.js",
     "cleardist": "rm -rf dist",
-    "build": "./node_modules/.bin/webpack --devtool source-map --mode development --stats-children",
+    "build": "./node_modules/.bin/webpack --mode development --stats-children",
     "startcycle": "npm run cleardist && npm run build && node --inspect src/server/server.js",
     "start": "npm run cleardist && npm run build && node --inspect src/server/server.js"
   },
