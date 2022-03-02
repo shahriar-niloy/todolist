@@ -40,7 +40,7 @@ function NotificationDropDownContainer({ hidePopover }) {
         }
 
         if (notification.type === Types.COMMENT_MENTION) {
-            history.push('/projects/' + projectID);
+            history.push(`/projects/${projectID}/tasks/${notification.data.taskID}?tab=COMMENT`);
         }
 
         hidePopover();

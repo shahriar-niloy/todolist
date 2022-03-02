@@ -86,10 +86,13 @@ function TaskFormContainer({
         dispatch(deleteAttachmentAction(id));
     };
 
-    const handleTabOpen = tabKey => {
+    const loadTabContent = tabKey => {
         if (tabKey === 'ATTACHMENT' && taskID) dispatch(getTaskAttachmentAction(taskID));
         if (tabKey === 'COMMENT' && taskID) dispatch(getTaskCommentsAction(taskID));
+    };
 
+    const handleTabOpen = tabKey => {
+        loadTabContent(tabKey);
         history.push(`${matchedRoute.url}?tab=${tabKey}`);
     };
 
@@ -128,6 +131,7 @@ function TaskFormContainer({
 
     useEffect(() => {
         if (taskID) dispatch(getTaskAction(taskID));
+        if (tabFromUrl) loadTabContent(tabFromUrl);
     }, [taskID]);
 
     return <TaskForm 
