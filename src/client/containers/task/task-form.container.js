@@ -12,12 +12,11 @@ import { convertBufferToBlob } from '../../utility';
 import { debouncedSearchUsersAction } from '../../store/actions/user.actions';
 import { createCommentAction, deleteCommentAction } from '../../store/actions/comment.actions';
 import { TaskSchema } from '../../../common';
+import { useHistory, useLocation, useParams, useRouteMatch } from 'react-router-dom';
 
-function TaskFormContainer({ 
-    subtasks, 
+function TaskFormContainer({  
     createAtOrder, 
     projectID, 
-    taskID, 
     isDetailView, 
     isEditDisabled,
     isCompleteDisabled,
@@ -34,6 +33,16 @@ function TaskFormContainer({
     const { details: task, attachments } = useSelector(state => state.task);
     const comments = useSelector(state => state.task.comments);
     const currentUser = useSelector(state => state.user.profile);
+    const { taskToSubtask } = useSelector(state => state.task.list);
+    const params = useParams();
+    const location = useLocation();
+    const history = useHistory();
+    const matchedRoute = useRouteMatch();
+
+    const searchParams = new URLSearchParams(location.search);
+    const taskID = params.taskID;
+    const subtasks = taskToSubtask?.get(taskID);
+    const tabFromUrl = searchParams.get('tab');
 
     const handleSubmit = values => {
         values.project_id = projectID;
@@ -80,6 +89,8 @@ function TaskFormContainer({
     const handleTabOpen = tabKey => {
         if (tabKey === 'ATTACHMENT' && taskID) dispatch(getTaskAttachmentAction(taskID));
         if (tabKey === 'COMMENT' && taskID) dispatch(getTaskCommentsAction(taskID));
+
+        history.push(`${matchedRoute.url}?tab=${tabKey}`);
     };
 
     const handleFileOpen = (data, fileName, mimetype) => {
@@ -126,6 +137,7 @@ function TaskFormContainer({
         comments={comments}
         subtasks={subtasks}
         currentUserID={currentUser.id}
+        defaultTab={tabFromUrl}
         isEditing={!!taskID} 
         isDetailView={isDetailView} 
         isEditDisabled={isEditDisabled}
@@ -160,12 +172,10 @@ TaskFormContainer.defaultProps = {
 TaskFormContainer.propTypes = {
     createAtOrder: PropTypes.number.isRequired,
     projectID: PropTypes.string.isRequired,
-    taskID: PropTypes.string,
     isDetailView: PropTypes.bool,
     isEditDisabled: PropTypes.bool,
     isCompleteDisabled: PropTypes.bool,
     isAttachmentReadOnly: PropTypes.bool,
-    subtasks: PropTypes.array,
     onSubmitSuccess: PropTypes.func,
     onTaskEdit: PropTypes.func,
     onTaskDelete: PropTypes.func.isRequired,

@@ -107,6 +107,7 @@ function TaskForm({
     attachments,
     comments,
     currentUserID,
+    defaultTab,
     isDetailView,
     isEditDisabled,
     isCompleteDisabled,
@@ -128,7 +129,7 @@ function TaskForm({
     onCommentSubmit,
     onCommentDelete
 }) {
-    const [selectedTab, setSelectedTab] = useState(TABS.SUBTASK);
+    const [selectedTab, setSelectedTab] = useState(defaultTab || TABS.SUBTASK);
     const [overrideDetailView, setOverrideDetailView] = useState(false);
     const [isAddingSubtask, setIsAddingSubtask] = useState(false);
 
@@ -139,6 +140,10 @@ function TaskForm({
         if (transformDate) date = transformDate(date);
         formikProps.setFieldValue('scheduled_at', date);
     };
+
+    useEffect(() => {
+        if (defaultTab) setSelectedTab(defaultTab);
+    }, [defaultTab]);
 
     return <Formik
         initialValues={{
@@ -310,7 +315,7 @@ TaskForm.propTypes = {
     onSubmit: PropTypes.func.isRequired,
     task: PropTypes.object,
     attachments: PropTypes.array,
-    attachments: PropTypes.array,
+    defaultTab: PropTypes.string,
     currentUserID: PropTypes.string,
     subtasks: PropTypes.array,
     isEditing: PropTypes.bool,

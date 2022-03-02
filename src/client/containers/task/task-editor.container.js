@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Route, Switch, useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import TaskEditor from '../../components/editor/task-editor.component';
 import Modal from '../../components/modal';
 import { getProjectAction } from '../../store/actions/project.action';
@@ -17,8 +17,10 @@ const taskFormModalStyle = {
 };
 
 function TaskEditorContainer() {
+    const history = useHistory();
     const dispatch = useDispatch();
     const params = useParams();
+    const matchedRoute = useRouteMatch();
     const projectID = params.id;
     const project = useSelector(state => state.project.details);
     const loggedInUser = useSelector(state => state.user.profile);
@@ -74,22 +76,20 @@ function TaskEditorContainer() {
                 is_completed: task.is_completed
             };
         });
-    }
+    };
 
     const handleTaskAddIconClick = () => {
-        setTaskID(null);
         setShowTaskForm(true);
-    }
+    };
 
     const handleTaskDelete = (id) => {
         setShowDeleteConfirmation(true);
         setTaskID(id);
-    }
+    };
 
     const handleTaskEdit = (id) => {
-        setShowTaskForm(true);
-        setTaskID(id);
-    }
+        history.push(`${matchedRoute.url}/tasks/${id}`);
+    };
 
     const handleTaskDrop = useCallback((source, target, droppedOn) => {        
         const updatedTaskToSubtask = new Map(taskToSubtask);
@@ -154,8 +154,7 @@ function TaskEditorContainer() {
     }
 
     const handleTaskClick = id => {
-        setTaskID(id);
-        setShowTaskForm(true);
+        history.push(`${matchedRoute.url}/tasks/${id}`);
         setOpenTaskFormInDetailView(true);
     }
 
@@ -163,10 +162,11 @@ function TaskEditorContainer() {
         setTaskID(null);
         setOpenTaskFormInDetailView(false);
         setShowTaskForm(false);
+        history.push(matchedRoute.url);
     }
 
     const handleNavigateToParentTask = taskID => {
-        setTaskID(taskID);
+        history.push(`${matchedRoute.url}/tasks/${taskID}`);
     };
 
     useEffect(() => {
@@ -198,8 +198,6 @@ function TaskEditorContainer() {
         <Modal isOpen={showTaskForm} onRequestClose={handleTaskFormClose} style={taskFormModalStyle} >
             <TaskFormContainer 
                 projectID={project?.id}
-                taskID={taskID}
-                subtasks={taskID ? taskToSubtask?.get(taskID) : []}
                 isEditDisabled={isReadOnly}
                 isDetailView={openTaskFormInDetailView}
                 isCompleteDisabled={isReadOnly}
@@ -207,7 +205,7 @@ function TaskEditorContainer() {
                 createAtOrder={taskList?.filter(task => !task.is_completed).length || 0} 
                 onSubmitSuccess={() => { 
                     setShowTaskForm(false); 
-                    setTaskID(null); 
+                    history.push(matchedRoute.url);
                 }} 
                 onTaskEdit={handleTaskEdit}
                 onTaskDelete={handleTaskDelete}
@@ -217,11 +215,36 @@ function TaskEditorContainer() {
                 onNavigateToParentTask={handleNavigateToParentTask}
             />
         </Modal>
+        <Switch>
+            <Route path="/projects/:id/tasks/:taskID">                
+                <Modal isOpen={true} onRequestClose={handleTaskFormClose} style={taskFormModalStyle} >
+                    <TaskFormContainer 
+                        projectID={project?.id}
+                        isEditDisabled={isReadOnly}
+                        isDetailView={openTaskFormInDetailView}
+                        isCompleteDisabled={isReadOnly}
+                        isAttachmentReadOnly={isReadOnly}
+                        createAtOrder={taskList?.filter(task => !task.is_completed).length || 0} 
+                        onSubmitSuccess={() => { 
+                            setShowTaskForm(false); 
+                            history.push(matchedRoute.url);
+                        }} 
+                        onTaskEdit={handleTaskEdit}
+                        onTaskDelete={handleTaskDelete}
+                        onDrop={handleTaskDrop}
+                        onTaskComplete={handleTaskComplete}
+                        onTaskClick={handleTaskClick}
+                        onNavigateToParentTask={handleNavigateToParentTask}
+                    />
+                </Modal>
+            </Route>
+        </Switch>
         <DeleteConfirmation 
             isOpen={showDeleteConfirmation}
             onDelete={() => {
                 dispatch(deleteTaskAction(taskID, project?.id));
                 setShowDeleteConfirmation(false);
+                setTaskID(null);
             }}
             onCancel={() => { 
                 setShowDeleteConfirmation(false);
