@@ -8,6 +8,7 @@ module.exports = {
         filename: "bundle.js",
         path: path.resolve(process.cwd(), "dist"),
         publicPath: "/",
+        clean: true
     },
     module: {
         rules:[
@@ -41,5 +42,8 @@ module.exports = {
         new HTMLWebpackPlugin({
             template: "src/client/entry/index.html"
         })
-    ]
+    ],
+    optimization: {
+        realContentHash: false
+    }
 }

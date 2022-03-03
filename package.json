@@ -5,12 +5,12 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --exec npm run startcycle",
+    "dev": "nodemon --exec npm run start:dev",
     "seed": "node scripts/seeder.js",
-    "cleardist": "rm -rf dist",
-    "build": "./node_modules/.bin/webpack --mode development --stats-children",
-    "startcycle": "npm run cleardist && npm run build && node --inspect src/server/server.js",
-    "start": "npm run cleardist && npm run build && node --inspect src/server/server.js"
+    "build:dev": "./node_modules/.bin/webpack --mode development --stats-children",
+    "build": "./node_modules/.bin/webpack --stats-children",
+    "start:dev": "npm run build:dev && node --inspect src/server/server.js",
+    "start": "npm run build && node --inspect src/server/server.js"
   },
   "author": "shahriar_niloy@outlook.com",
   "license": "ISC",
