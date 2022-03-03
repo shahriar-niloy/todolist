@@ -33,7 +33,7 @@ function Sidebar ({ projects, onProjectAddClick, MenuItemContextMenuTrigger, men
                 <input class="hidden" id="expandable_menuitem" type="checkbox" onClick={() => setIsProjectExanded(!isProjectExpanded)} checked={isProjectExpanded} />
                 <div className="expanded_section">
                     {projects &&
-                        projects.length &&
+                        projects.length > 0 &&
                         projects.map((i) => (
                             <SidebarItem 
                                 key={i.path} 
