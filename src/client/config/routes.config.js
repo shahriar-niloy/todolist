@@ -1,3 +1,4 @@
+import Contact from '../components/app/contact.component';
 import ForgotPasswordFormContainer from '../containers/app/forgot-password-form.container';
 import ResetPasswordFormContainer from '../containers/app/reset-password-form.container';
 import SignUpContainer from '../containers/app/signup/signup.container';
@@ -24,6 +25,11 @@ const routeConfig = [
         path: '/forgot-password',
         exact: true,
         component: ForgotPasswordFormContainer
+    },
+    { 
+        path: '/about-us',
+        exact: true,
+        component: Contact
     },
     { 
         path: '',

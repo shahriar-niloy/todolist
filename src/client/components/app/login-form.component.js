@@ -43,6 +43,7 @@ export default function Login({ schema, onSubmit }) {
         <div className='default-form-footer'>
             <div>Don't have an account?<Link to='/sign-up' className='ms-1'>Sign Up</Link></div>
             <div>Forgot your password?<Link to='/forgot-password' className='ms-1'>Click Here</Link></div>
+            <Link to='/about-us'>© 2022 Al Shahriar Niloy</Link>
         </div>
     </div>;
 }
