@@ -99,9 +99,9 @@ async function searchUsers(query, notInProject) {
 async function updateUser(id, data) {
     if (!id) return Return.service(null, [{ message: 'Must provide required parameters.' }]);
 
-    const user = await UserModel.findOne({ where: { id } });
+    const [user, userErr] = await getUser(id);
 
-    if (!user) return Return.service(null, [{ message: 'User does not exist.' }]);
+    if (userErr) return Return.service(user, userErr);
 
     await user.update({ 
         first_name: data.firstName, 
