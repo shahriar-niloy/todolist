@@ -15,6 +15,8 @@ export default function taskReducer(state = initialState, action) {
             if (parentTask) taskDetails.parentTask = parentTask;
 
             return { ...state, details: taskDetails };
+        case actions.CLEAR_TASK_DATA:
+            return { ...state, details: null };
         case actions.CREATE_TASK_SUCCESS:
             return { ...state, details: action.payload.data.data };
         case actions.GET_PROJECT_SUCCESS:{

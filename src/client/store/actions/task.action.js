@@ -22,6 +22,12 @@ export function* getTask(data) {
     }
 }
 
+export function clearTaskData() {
+    return {
+        type: actionTypes.CLEAR_TASK_DATA
+    }
+}
+
 export function createTaskAction(data) {
     return {
         type: actionTypes.CREATE_TASK,

@@ -4,7 +4,7 @@ import { Route, Switch, useHistory, useParams, useRouteMatch } from 'react-route
 import TaskEditor from '../../components/editor/task-editor.component';
 import Modal from '../../components/modal';
 import { getProjectAction } from '../../store/actions/project.action';
-import { bulkUpdateTasksAction, deleteTaskAction, dropTask } from '../../store/actions/task.action';
+import { bulkUpdateTasksAction, clearTaskData, deleteTaskAction, dropTask } from '../../store/actions/task.action';
 import ProjectMenuContainer from '../project/project-menu.container';
 import TaskFormContainer from './task-form.container';
 import DROP_HIGHLIGHT_DRAWERS from '../../constants/taskitem-drop-highlight.constant';
@@ -159,6 +159,7 @@ function TaskEditorContainer() {
     }
 
     const handleTaskFormClose = () => {
+        dispatch(clearTaskData());
         setTaskID(null);
         setOpenTaskFormInDetailView(false);
         setShowTaskForm(false);

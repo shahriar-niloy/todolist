@@ -63,6 +63,8 @@ function TaskFormContainer({
     }
 
     const handleTaskComplete = (taskID, isCurrentlyComplete) => {
+        if (!taskID) return;
+
         onTaskComplete(taskID, isCurrentlyComplete, () => {
             dispatch(getTaskAction(taskID));
         });
