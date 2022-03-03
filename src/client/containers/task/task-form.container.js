@@ -68,6 +68,12 @@ function TaskFormContainer({
         });
     };
 
+    const handleSubTaskComplete = (subtaskID, isCurrentlyComplete) => {
+        onTaskComplete(subtaskID, isCurrentlyComplete, () => {
+            dispatch(getTaskAction(taskID));
+        });
+    };
+
     const handleTaskProgress = (loaded, total, onProgress) => onProgress && onProgress(Math.round((loaded * 100) / total));
 
     const handleSaveAttachment = (data, onSuccess, onProgress) => {
@@ -156,6 +162,7 @@ function TaskFormContainer({
         onTaskDelete={onTaskDelete}
         onDrop={onDrop}
         onTaskComplete={handleTaskComplete}
+        onSubTaskComplete={handleSubTaskComplete}
         onTaskClick={onTaskClick}
         onSubtaskAdd={handleSubtaskAdd}
         onNavigateToParentTask={onNavigateToParentTask}

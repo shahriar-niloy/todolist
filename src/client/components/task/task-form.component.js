@@ -119,6 +119,7 @@ function TaskForm({
     onTaskDelete, 
     onDrop, 
     onTaskComplete, 
+    onSubTaskComplete,
     onTaskClick,
     onNavigateToParentTask,
     onSaveAttachment,
@@ -250,12 +251,12 @@ function TaskForm({
                         <div className="ms-5 task-editor" style={{ minWidth: '0%' }} >
                             <TaskListManager 
                                 tasks={subtasks}
-                                showCompletedTasks={false}
+                                showCompletedTasks={true}
                                 isCompleteDisabled={isCompleteDisabled}
                                 onTaskEdit={onTaskEdit}
                                 onTaskDelete={onTaskDelete}
                                 onDrop={onDrop}
-                                onTaskComplete={onTaskComplete}
+                                onTaskComplete={onSubTaskComplete}
                                 onTaskClick={onTaskClick}
                             />
                             {isAddingSubtask && 
@@ -329,7 +330,8 @@ TaskForm.propTypes = {
     onFileOpen: PropTypes.func,
     onMentionSuggestion: PropTypes.func.isRequired,
     onCommentSubmit: PropTypes.func.isRequired,
-    onCommentDelete: PropTypes.func.isRequired
+    onCommentDelete: PropTypes.func.isRequired,
+    onSubTaskComplete: PropTypes.func.isRequired
 }
 
 export default TaskForm;
