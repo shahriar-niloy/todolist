@@ -1,5 +1,5 @@
 const path = require('path');
-const { AwsSesMailer: Mailer } = require(path.join(process.cwd(), 'src/server/lib/mailers'));
+const { NodeMailer: Mailer } = require(path.join(process.cwd(), 'src/server/lib/mailers'));
 const TemplateService = require(path.join(process.cwd(), 'src/server/services/template'));
 
 function EmailService(to, from, subject, templatePath, data) {
