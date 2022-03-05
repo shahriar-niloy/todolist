@@ -1,8 +1,8 @@
 import React from 'react';
 import Proptypes from 'prop-types';
 
-function SubmitButton({ className, extendedClass, label, disabled, onClick }) {
-    return <span className={`${className} ${extendedClass} ${disabled ? 'disabled': ''}`} onClick={onClick} >{label}</span>
+function SubmitButton({ className, extendedClass, style, label, disabled, children, onClick }) {
+    return <span style={style} className={`${className} ${extendedClass} ${disabled ? 'disabled': ''}`} onClick={onClick} >{children ? children : label}</span>
 }
 
 SubmitButton.defaultProps = {

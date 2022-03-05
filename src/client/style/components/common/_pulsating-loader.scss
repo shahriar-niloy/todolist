@@ -1,0 +1,13 @@
+.pulsate-loader {
+    animation: pulsate 1s ease-out;
+    animation-iteration-count: infinite;
+    opacity: 0.0;
+    border: 3px solid $color-font-alternative;
+    border-radius: 30px;
+    height: 0.8rem;
+    width: 0.8rem;
+    position: relative;
+    display: inline-block;
+    margin-top: 0px;
+    text-align: center;
+}

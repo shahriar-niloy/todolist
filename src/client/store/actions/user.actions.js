@@ -93,16 +93,18 @@ export function* markMyNotificationsAsRead(data) {
     }
 }
 
-export function updateMyProfileAction(data) {
+export function updateMyProfileAction(data, onSuccess) {
     return {
         type: actionTypes.UPDATE_MY_PROFILE,
-        payload: data
+        payload: data,
+        onSuccess
     }
 }
 
 export function* updateMyProfile(data) {
     try {
         const myProfile = yield axios.put('/api/me', data.payload);
+        data.onSuccess && data.onSuccess(myProfile);
         yield put({ type: actionTypes.UPDATE_MY_PROFILE_SUCCESS , payload: myProfile });
     } catch(err) {
         console.log(err);
