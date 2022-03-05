@@ -11,18 +11,32 @@ function AccountFormContainer() {
     const profile = useSelector(state => state.user.profile);
     const [isPending, setIsPending] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
+    const [timer, setTimer] = useState(null);
 
     const handleChangePasswordClick = () => history.push('/settings/account/password');
 
     const handleChangeEmailClick = () => history.push('/settings/account/email');
 
     const handleOnSubmit = (values) => {
+        if (timer) {
+            clearTimeout(timer);
+            setTimer(null);
+        };
+
         setIsPending(true);
         setIsSuccess(false);
-        
+
         dispatch(updateMyProfileAction(values, () => {
             setIsSuccess(true);
             setIsPending(false);
+
+            setTimer(
+                setTimeout(() => {
+                    setIsSuccess(false);
+                    setIsPending(false);
+                    setTimer(null);
+                }, 4000)
+            );
         }));
     };
 
