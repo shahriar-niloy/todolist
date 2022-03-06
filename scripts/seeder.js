@@ -92,6 +92,11 @@ async function seedDatabase() {
                 name: 'book',
                 class: 'far fa-books',
                 type: iconTypes.STYLESHEET
+            },
+            {
+                name: 'bug',
+                class: 'far fa-bug',
+                type: iconTypes.STYLESHEET
             }
         ]);
 
