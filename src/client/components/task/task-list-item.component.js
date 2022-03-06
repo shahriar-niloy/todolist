@@ -130,7 +130,7 @@ function TaskListItem ({
                 {!isDropDisabled && !task.is_completed && <div style={dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.TOP ? { height: dragItemContainerHeight + adjustSlideDownHeight } : { height: '0px' }} className={`drop-extendable ${dropProps.isOver && openedDropHighlightDrawer === DROP_HIGHLIGHT_DRAWERS.TOP  ? `drop-highlight${hasSubtasks ? '-wide' : ''}` : ''}`} ></div>}
                 <div className={`list-item ${task.is_completed ? 'completed' : ''}`} >
                     <div className="left-actions">
-                        <GripIcon className={`me-2 active-on-hover ${!isDraggable || task.is_completed ? 'click-disabled invisible' : ''}`} fontSize="16" innerRef={drag} />
+                        <GripIcon className={`me-2 active-on-hover grip-icon ${!isDraggable || task.is_completed ? 'click-disabled invisible' : ''}`} fontSize="16" innerRef={drag} />
                         { task.subtasks && task.subtasks.length > 0 && 
                             <ArrowRightIcon 
                                 className="me-2 active-on-hover" 

@@ -126,6 +126,10 @@
             transition: height 0.1s;
         }
     }
+
+    .grip-icon {
+        cursor: move;
+    }
 }
 
 .notask {
