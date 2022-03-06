@@ -6,7 +6,8 @@ function project(project) {
     if (project) {
         viewModel.id = project.id;
         viewModel.name = project.name;
-
+        viewModel.icon = project.icon;
+        
         if (project.users) {
             viewModel.users =  project.users.map(u => ({ 
                 id: u.id, 

@@ -1,0 +1,41 @@
+.project-form {
+    max-width: 450px !important;
+
+    .icons-header {
+        font-weight: bold;
+    }
+
+    .icons-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: start;
+    }
+    
+    .icon-wrapper {
+        padding: 0.54rem;
+        border: 2px solid $color-primary-shade2x;
+        margin-right: 1rem;
+        border-radius: 5px;
+        margin-bottom: 0.4rem;
+        cursor: pointer;
+        font-size: 1.2rem;
+        margin-right: 0.4rem !important;
+        transition: border-color 0.2s;
+
+        &:hover {
+            border: 2px solid $color-primary-shade4x;
+        }
+
+        &-selected {
+            border: 2px solid $color-accent !important;
+        }
+
+        input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+    }
+}

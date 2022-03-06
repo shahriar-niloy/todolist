@@ -1,10 +1,13 @@
 const path = require('path');
+const { Op } = require('sequelize');
 const { performLogicalAnd } = require(path.join(process.cwd(), 'src/server/utility/misc'));
 const ProjectModel = require(path.join(process.cwd(), 'src/server/models/project.model'));
+const IconModel = require(path.join(process.cwd(), 'src/server/models/icon.model'));
 const TaskModel = require(path.join(process.cwd(), 'src/server/models/task.model'));
 const UserModel = require(path.join(process.cwd(), 'src/server/models/user.model'));
 const UserProjectModel = require(path.join(process.cwd(), 'src/server/models/user_project.model'));
 const { Return } = require(path.join(process.cwd(), 'src/server/schemas'));
+const IconService = require(path.join(process.cwd(), 'src/server/services/icon'));
 
 async function getProject(id) {
     if (!id) return Return.service(null, [{ message: 'Must provide project id.' }]);
@@ -13,6 +16,8 @@ async function getProject(id) {
         where: { id }, 
         include: [{ 
             model: TaskModel
+        }, {
+            model: IconModel
         }],
         order: [[TaskModel, 'order', 'ASC']] 
     });
@@ -41,14 +46,16 @@ async function getProject(id) {
     return Return.service(project);
 }
 
-async function createProject({ name, user_id }) {
+async function createProject({ name, user_id, iconID }) {
     if (!name || !user_id) return Return.service(null, [{ message: 'Must provide required parameters.' }]);
 
     const projectWithSameName = await ProjectModel.findOne({ where: { name }});
 
     if (projectWithSameName) return Return.service(null, [{ message: 'Project with the same name already exists.' }]);
 
-    const project = await ProjectModel.create({ name });
+    const [defaultIcon] = await IconService.getIcon({ name: 'tasks' });
+
+    const project = await ProjectModel.create({ name, icon_id: iconID || defaultIcon?.id || null });
     
     await project.addUser(user_id, { through: { is_owner: true } });
 
@@ -57,18 +64,18 @@ async function createProject({ name, user_id }) {
     return Return.service(project);
 }
 
-async function updateProject(id, { name }) {
+async function updateProject(id, { name, iconID }) {
     if (!id) return Return.service(null, [{ message: 'Must provide project id.' }]);
     
     const project = await ProjectModel.findOne({ where: { id }});
 
     if (!project) return Return.service(null, [{ message: 'Project does not exist.' }]);
 
-    const projectWithSameName = await ProjectModel.findOne({ where: { name }});
+    const projectWithSameName = await ProjectModel.findOne({ where: { id: { [Op.ne]: id },name }});
 
     if (projectWithSameName) return Return.service(null, [{ message: 'Project with the same name already exists.' }]);
 
-    await project.update({ name });
+    await project.update({ name, icon_id: iconID || null });
     
     return Return.service(project);
 }

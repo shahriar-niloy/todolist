@@ -18,7 +18,8 @@ function SidebarContainer({ projects=[], onProjectAddClick, onProjectEditClick, 
                 is_shared: project.is_shared, 
                 path: `/projects/${project.id}`,
                 can_write: project.can_write,
-                can_read: project.can_read
+                can_read: project.can_read,
+                icon: project.icon
             }))} 
             MenuItemContextMenuTrigger={ContextMenuTrigger}
             menuItemContextMenuID={contextMenuIDs.SIDEBAR_PROJECT_CHILD_CONTEXT_MENU}

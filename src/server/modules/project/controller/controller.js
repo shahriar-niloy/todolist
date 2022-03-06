@@ -33,7 +33,7 @@ async function createProject(req, res) {
     const successResponse = new Response.success();
     const errorResponse = new Response.error();
 
-    const { name, user_id } = req.body;
+    const { name, user_id, icon_id } = req.body;
 
     if (!name || !user_id) {
         errorResponse.addError('Invalid parameters.', '');
@@ -47,7 +47,7 @@ async function createProject(req, res) {
         return res.status(400).json(errorResponse);
     }
     
-    const [project, err] = await ProjectService.createProject({ name, user_id });
+    const [project, err] = await ProjectService.createProject({ name, user_id, iconID: icon_id });
 
     if (err) {
         err.forEach(e => errorResponse.addError(e.message, ''));
@@ -64,7 +64,7 @@ async function updateProject(req, res) {
     const errorResponse = new Response.error();
 
     const id = req.params.id;
-    const { name } = req.body;
+    const { name, icon_id } = req.body;
 
     if (!name || !id) {
         errorResponse.addError('Invalid parameters.', '');
@@ -83,7 +83,7 @@ async function updateProject(req, res) {
         return res.status(403).send(errorResponse);
     }
 
-    const [project, err] = await ProjectService.updateProject(id, { name });
+    const [project, err] = await ProjectService.updateProject(id, { name, iconID: icon_id });
 
     if (err) {
         err.forEach(e => errorResponse.addError(e.message, ''));

@@ -10,6 +10,7 @@ function profile(user) {
                         projects: user.projects.map(up => ({
                             id: up.id, 
                             name: up.name,
+                            icon: up.icon,
                             is_owner: up.user_project.is_owner,
                             is_shared: !up.user_project.is_owner,
                             can_write: up.user_project.can_write,

@@ -17,6 +17,9 @@ const Project = sequelize.define("project", {
         type: DataTypes.STRING(50),
         allowNull: false
     },
+    icon_id: {
+        type: UUID
+    },
     is_archived: {
         type: DataTypes.BOOLEAN,
         defaultValue: false

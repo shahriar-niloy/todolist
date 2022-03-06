@@ -5,12 +5,14 @@ import PropTypes from 'prop-types';
 import ProjectForm from '../../components/project/project-form.component';
 import { createProjectAction, updateProjectAction } from '../../store/actions/project.action';
 import { getProjectAction } from '../../store/actions/project.action';
+import { getIconsAction } from '../../store/actions/icon.actions';
 import { ProjectSchema } from '../../../common';
 
 function ProjectFormContainer({ onClose, projectID }) {
     const dispatch = useDispatch();
     const currentUser = useSelector(state => state.user.profile);
     const project = useSelector(state => state.project.details);
+    const icons = useSelector(state => state.icon.list);
 
     const createProject = (values) => {
         values.user_id = currentUser.id; 
@@ -29,9 +31,21 @@ function ProjectFormContainer({ onClose, projectID }) {
         }
     }, [projectID]);
 
-    return <ProjectForm 
+    useEffect(() => dispatch(getIconsAction()), []);
+
+    return <ProjectForm
+        icons={icons.data}
         schema={ProjectSchema.ProjectFormSchema}
-        initialValues={projectID && project ? { name: project?.name } : { name: '' }}
+        initialValues={projectID && project ? 
+            { 
+                name: project.name,
+                icon_id: project.icon?.id || ''
+            } : 
+            { 
+                name: '',
+                icon_id: ''
+            }
+        }
         isEditing={!!projectID}
         onSubmit={projectID ? updateProject : createProject} 
     />;

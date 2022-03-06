@@ -45,6 +45,7 @@ function Sidebar ({ projects, onProjectAddClick, MenuItemContextMenuTrigger, men
                                 contextID={menuItemContextMenuID}
                                 isSelected={currentPathname === i.path}
                             >
+                                <i className={`${i?.icon?.class || ''} me-2`} />
                                 <span>{i.name}</span>
                                 {i.is_shared && <i class="far fa-share-alt ms-2 font-size-12 todolist-secondary-font-color" aria-hidden="true" />}
                             </SidebarItem>

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import SubmitButton from '../ui/buttons/submit-button.component';
 import ValidationError from '../misc/validation-error.component';
 
-function ProjectForm({ schema, isEditing, onSubmit, initialValues }) {
+function ProjectForm({ icons, schema, isEditing, onSubmit, initialValues }) {
     return <Formik
         initialValues={initialValues}
         validationSchema={schema}
@@ -12,17 +12,30 @@ function ProjectForm({ schema, isEditing, onSubmit, initialValues }) {
         enableReinitialize
     >
         {props => (
-            <Form className="container p-3" onSubmit={props.handleSubmit}>
+            <Form className="container p-3 project-form" onSubmit={props.handleSubmit}>
                 <div className="row justify-content-center form-primary">
                     <div className="col">
                         <div class="form-group">
                             <Field type="name" name="name" className="form-control" id="name" placeholder="Enter project name"/>
                         </div>
                         <ValidationError name='name' />
-                        <div className="d-flex justify-content-end" >
-                            <SubmitButton extendedClass="mt-3" label={isEditing ? 'Save' : 'Add'} onClick={props.handleSubmit} />
-                        </div>
                     </div>
+                </div>
+                {icons && icons.length > 0 && <div className='mt-4'>
+                    <h6 className='icons-header'>Project Icon</h6>
+                    <div className='icons-container'>
+                        {
+                            icons.map(icon => {
+                                return <label key={icon.id} className={`icon-wrapper ${props.values.icon_id === icon.id ? 'icon-wrapper-selected': ''}`}>
+                                    <Field type="radio" name="icon_id" value={icon.id} />
+                                    <i className={icon.class} />
+                                </label>
+                            })
+                        }
+                    </div>
+                </div>}
+                <div className="d-flex justify-content-end" >
+                    <SubmitButton extendedClass="mt-3 fw-bold" label={isEditing ? 'Save' : 'Add'} onClick={props.handleSubmit} />
                 </div>
             </Form>
         )}
@@ -36,7 +49,8 @@ ProjectForm.defaultProps = {
 
 ProjectForm.propTypes = {
     onSubmit: PropTypes.func.isRequired,
-    isEditing: PropTypes.bool
+    isEditing: PropTypes.bool,
+    icons: PropTypes.array
 }
 
 export default ProjectForm;

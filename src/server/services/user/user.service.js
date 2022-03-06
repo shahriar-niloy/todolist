@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const { Op, fn, where, col } = require('sequelize');
 const EmailService = require(path.join(process.cwd(), 'src/server/services/email'));
 const UserModel = require(path.join(process.cwd(), 'src/server/models/user.model'));
+const IconModel = require(path.join(process.cwd(), 'src/server/models/icon.model'));
 const ProjectModel = require(path.join(process.cwd(), 'src/server/models/project.model'));
 const { escapeWildcards } = require(path.join(process.cwd(), 'src/server/utility/misc'));
 const { Return } = require(path.join(process.cwd(), 'src/server/schemas'));
@@ -20,7 +21,13 @@ async function getUsers() {
 async function getUser(id) {
     if (!id) return Return.service(null, [{ message: 'Must provide required parameters.' }]);
 
-    const user = await UserModel.findOne({ where: { id }, include: ProjectModel });
+    const user = await UserModel.findOne({ 
+        where: { id }, 
+        include: {
+            model: ProjectModel,
+            include: IconModel
+        } 
+    });
 
     if (!user) return Return.service(null, [{ message: 'User does not exist.' }]);
 
