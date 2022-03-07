@@ -10,7 +10,8 @@
     "build:dev": "./node_modules/.bin/webpack --mode development --stats-children",
     "build": "./node_modules/.bin/webpack --stats-children",
     "start:dev": "npm run build:dev && node --inspect src/server/server.js",
-    "start": "npm run build && node --inspect src/server/server.js"
+    "start": "node --inspect src/server/server.js",
+    "postinstall": "npm run build"
   },
   "author": "shahriar_niloy@outlook.com",
   "license": "ISC",
