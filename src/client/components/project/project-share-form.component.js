@@ -15,7 +15,6 @@ function ProjectShareForm({
     const [isTouched, setIsTouched] = useState(false);
 
     const getSearchQueryError = (searchQuery) => {
-        console.log(searchQuery);
         if (!searchQuery) return 'This field must not be empty';
         if (searchQuery.length > 30) return 'This field must at most 30 characters long';
         return '';

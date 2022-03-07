@@ -5,6 +5,7 @@ var JwtStrategy = require('passport-jwt').Strategy;
 const config = require(path.join(process.cwd(), 'src/server/config/config'));
 const UserModel = require(path.join(process.cwd(), 'src/server/models/user.model'));
 const { AUTHENTICATION_COOKIE_NAME } = require(path.join(process.cwd(), 'src/server/constants/app.constants'));
+const logger = require(path.join(process.cwd(), 'src/server/lib/logger'));
 
 var opts = {};
 
@@ -27,7 +28,7 @@ passport.use('user-jwt', new JwtStrategy(opts, async function(jwt_payload, done)
         if (user) done(null, user); 
         else done(null, false);
     } catch(err) {
-        console.error(err);
+        logger.error(err);
         done(err, false);
     }
 }));

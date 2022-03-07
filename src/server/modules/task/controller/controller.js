@@ -104,7 +104,7 @@ async function updateTask(req, res) {
 
     if (task.is_completed === false && is_completed === true) {
         const [, notificationErr] = await NotificationService.createTaskCompletedNotification(updatedTask.id, req.user.id);
-        if (notificationErr) console.error(notificationErr);
+        if (notificationErr) logger.error(notificationErr);
     }
 
     if (errors) {

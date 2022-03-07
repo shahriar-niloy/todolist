@@ -1,3 +1,5 @@
+const { config } = require('dotenv');
+
 require('dotenv').config();
 
 module.exports = {
@@ -12,5 +14,7 @@ module.exports = {
     SMTP_PORT: process.env.SMTP_PORT,
     SMTP_USER: process.env.SMTP_USER,
     SMTP_AUTHENTICATION_KEY: process.env.SMTP_AUTHENTICATION_KEY,
-    SMTP_ENCRYPTION_KEY: process.env.SMTP_ENCRYPTION_KEY
+    ENCRYPTION_KEY: process.env.ENCRYPTION_KEY,
+    LOGGER_HOST: process.env.LOGGER_HOST,
+    LOGGER_PORT: process.env.LOGGER_PORT
 }

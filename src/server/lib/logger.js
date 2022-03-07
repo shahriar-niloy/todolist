@@ -1,8 +1,9 @@
 const path = require('path');
 const CONSOLE_COLORS = require(path.join(process.cwd(), 'src/server/constants/console-color.constants'));
+const winstonLogger = require(path.join(process.cwd(), 'src/server/lib/winston'));
 
 function error (err) {
-    console.error(err);
+    winstonLogger.error(err);
 }
 
 function info (err) {

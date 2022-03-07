@@ -7,6 +7,7 @@ const NotificationService = require(path.join(process.cwd(), 'src/server/service
 const AuthenticationService = require(path.join(process.cwd(), 'src/server/services/authentication'));
 const { UserViewModels } = require(path.join(process.cwd(), 'src/server/view-models'));
 const { Response } = require(path.join(process.cwd(), 'src/server/schemas'));
+const logger = require(path.join(process.cwd(), 'src/server/lib/logger'));
 
 async function getProfile(req, res) {
     const successResponse = new Response.success();
@@ -36,7 +37,7 @@ async function getMyProfile(req, res) {
 
         res.json(successResponse);
     } catch(err) {
-        console.error(err);
+        logger.error(err);
     }
 }
 
@@ -169,7 +170,7 @@ async function updateMyProfile(req, res) {
 
         res.json(successResponse);
     } catch(err) {
-        console.error(err);
+        logger.error(err);
     }
 }
 
@@ -201,7 +202,7 @@ async function updateMyEmail(req, res) {
 
         res.json(successResponse);
     } catch(err) {
-        console.error(err);
+        logger.error(err);
     }
 }
 
@@ -238,7 +239,7 @@ async function updateMyPassword(req, res) {
 
         res.json(successResponse);
     } catch(err) {
-        console.error(err);
+        logger.error(err);
     }
 }
 
@@ -282,7 +283,7 @@ async function signup(req, res) {
 
         res.json(successResponse);
     } catch(err) {
-        console.error(err);
+        logger.error(err);
     }
 }
 
@@ -308,7 +309,7 @@ async function forgotPassword(req, res) {
 
         res.json(successResponse);
     } catch(err) {
-        console.error(err);
+        logger.error(err);
     }
 }
 
@@ -334,7 +335,7 @@ async function resetPassword(req, res) {
 
         res.json(successResponse);
     } catch(err) {
-        console.error(err);
+        logger.error(err);
     }
 }
 

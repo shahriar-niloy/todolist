@@ -11,6 +11,7 @@ const eventDataSchema = require(path.join(process.cwd(), 'src/server/schemas/eve
 
 const eventManager = require(path.join(process.cwd(), 'src/server/lib/events'));
 const eventConstants = require(path.join(process.cwd(), 'src/server/constants/event.constants'));
+const logger = require(path.join(process.cwd(), 'src/server/lib/logger'));
 
 const { TASK_COMPLETED, PROJECT_SHARED, COMMENT_MENTION } = notificationConstants;
 
@@ -154,7 +155,7 @@ async function getNotifications(userID, isRead, page, limit) {
 
     const countOptions = { through: { where: { is_read: isRead }} };
 
-    const userNotificationsCount = await user.countNotifications(countOptions).catch(err => console.error(err));
+    const userNotificationsCount = await user.countNotifications(countOptions).catch(err => logger.error(err));
 
     if (page && limit) {
         options.offset = (page - 1) * limit;

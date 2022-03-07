@@ -4,7 +4,7 @@ const logger = require(path.join(process.cwd(), 'src/server/lib/logger'));
 const config = require(path.join(process.cwd(), 'src/server/config/config'));
 const { decrypt } = require(path.join(process.cwd(), 'src/server/utility/encryption'));
 
-const [iv, key] = config.SMTP_ENCRYPTION_KEY.split('-');
+const [iv, key] = config.ENCRYPTION_KEY.split('-');
 
 const transporter = nodemailer.createTransport({
     host: config.SMTP_HOST,

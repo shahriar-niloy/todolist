@@ -41,8 +41,6 @@ export function useAudioPlayer(_audioBlob) {
             audioHTMLElement.pause();
     }, [audioHTMLElement]);
 
-    console.log(audioPlayerProps)
-
     return { 
         setAudio: blob => {
             if (audioHTMLElement) audioHTMLElement.pause();
