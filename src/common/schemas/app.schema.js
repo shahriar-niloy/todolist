@@ -6,7 +6,9 @@ const { CONFIRM_PASSWORD_MISMATCH_ERROR, FIELD_MISSING_ERROR } = ValidationMessa
 
 const LoginSchema = yup.object().shape({
     email: PropertiesSchema.EMAIL,
-    password: PropertiesSchema.PASSWORD
+    password: yup
+        .string()
+        .required(FIELD_MISSING_ERROR)
 });
 
 const SignupSchema = yup.object().shape({
