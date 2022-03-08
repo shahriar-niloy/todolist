@@ -80,6 +80,7 @@ function TaskEditorContainer() {
 
     const handleTaskAddIconClick = () => {
         setShowTaskForm(true);
+        setOpenTaskFormInDetailView(false);
     };
 
     const handleTaskDelete = (id) => {
@@ -89,6 +90,7 @@ function TaskEditorContainer() {
 
     const handleTaskEdit = (id) => {
         history.push(`${matchedRoute.url}/tasks/${id}`);
+        setOpenTaskFormInDetailView(false);
     };
 
     const handleTaskDrop = useCallback((source, target, droppedOn) => {        
@@ -206,6 +208,7 @@ function TaskEditorContainer() {
                 createAtOrder={taskList?.filter(task => !task.is_completed).length || 0} 
                 onSubmitSuccess={() => { 
                     setShowTaskForm(false); 
+                    setOpenTaskFormInDetailView(false);
                     history.push(matchedRoute.url);
                 }} 
                 onTaskEdit={handleTaskEdit}
@@ -228,6 +231,7 @@ function TaskEditorContainer() {
                         createAtOrder={taskList?.filter(task => !task.is_completed).length || 0} 
                         onSubmitSuccess={() => { 
                             setShowTaskForm(false); 
+                            setOpenTaskFormInDetailView(false);
                             history.push(matchedRoute.url);
                         }} 
                         onTaskEdit={handleTaskEdit}
