@@ -26,7 +26,8 @@ async function getUser(id) {
         include: {
             model: ProjectModel,
             include: IconModel
-        } 
+        },
+        order: [['projects', 'created_at', 'asc']],
     });
 
     if (!user) return Return.service(null, [{ message: 'User does not exist.' }]);
