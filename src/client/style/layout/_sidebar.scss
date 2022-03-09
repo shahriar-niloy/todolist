@@ -31,6 +31,23 @@
     i {
         color: $color-accent-shade;
     }
+
+    .count-badge-container {
+        display: flex;
+        justify-content: end;
+        width: 100%;
+        align-items: center;
+        
+        .count-badge {
+            background: $color-primary-shade3x;
+            font-size: 0.7rem;
+            line-height: 1.5;
+            border-radius: 2rem;
+            text-align: center;
+            width: 1rem;
+            height: 1rem;
+        }
+    }
 }
 
 .menuitem-selected {

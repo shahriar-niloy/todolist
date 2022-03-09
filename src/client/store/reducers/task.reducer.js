@@ -3,7 +3,8 @@ import { processTaskList } from "../../utility";
 
 const initialState = {
     details: null,
-    list: {}
+    list: {},
+    todayTaskCount: []
 };
 
 export default function taskReducer(state = initialState, action) {
@@ -62,6 +63,12 @@ export default function taskReducer(state = initialState, action) {
             return { 
                 ...state, 
                 comments: action.payload
+            };
+        }
+        case actions.GET_TODAY_TASKS_COUNT_FULFILLED: {
+            return { 
+                ...state, 
+                todayTaskCount: action.payload
             };
         }
         default:

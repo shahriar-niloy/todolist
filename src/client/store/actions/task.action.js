@@ -28,18 +28,24 @@ export function clearTaskData() {
     }
 }
 
-export function createTaskAction(data) {
+export function createTaskAction(data, onSuccess) {
     return {
         type: actionTypes.CREATE_TASK,
-        payload:data
+        payload:data,
+        onSuccess
     }
 }
 
 export function* createTask(data) {
     try {
+        const { onSuccess } = data;
         const task = yield axios.post('/api/tasks', data.payload);
+        
+        onSuccess && onSuccess(task);
+
         yield put({ type: actionTypes.CREATE_TASK_SUCCESS , payload: task });
         yield put(getProjectAction(task.data.data.project_id));
+        yield put(getTodayTasksCountAction());
     } catch(err) {
         console.log(err);
     }
@@ -57,23 +63,30 @@ export function* createSubTask(data) {
         const task = yield axios.post('/api/tasks', data.payload);
         yield put({ type: actionTypes.CREATE_SUBTASK_SUCCESS , payload: task });
         yield put(getProjectAction(task.data.data.project_id));
+        yield put(getTodayTasksCountAction());
     } catch(err) {
         console.log(err);
     }
 }
 
-export function updateTaskAction(id, data) {
+export function updateTaskAction(id, data, onSuccess) {
     return {
         type: actionTypes.UPDATE_TASK,
-        payload: { id, data }
+        payload: { id, data },
+        onSuccess
     }
 }
 
 export function* updateTask(data) {
     try {
+        const { onSuccess } = data;
         const task = yield axios.put(`/api/tasks/${data.payload.id}`, data.payload.data);
+        
+        onSuccess && onSuccess(task);
+
         yield put({ type: actionTypes.UPDATE_TASK_SUCCESS , payload: task });
         yield put(getProjectAction(task.data.data.project_id));
+        yield put(getTodayTasksCountAction());
     } catch(err) {
         console.log(err);
     }
@@ -91,6 +104,7 @@ export function* deleteTask(data) {
         const { data: task } = yield axios.delete(`/api/tasks/${data.payload.taskID}`);
         yield put({ type: actionTypes.DELETE_TASK_SUCCESS , payload: task });
         yield put(getProjectAction(task.data.project_id));
+        yield put(getTodayTasksCountAction());
     } catch(err) {
         console.log(err);
     }
@@ -121,6 +135,7 @@ export function* bulkUpdateTasks(data) {
         onSuccess && onSuccess();
 
         yield put({ type: actionTypes.BULK_UPDATE_TASKS_SUCCESS , payload: tasks });
+        yield put(getTodayTasksCountAction());
     } catch(err) {
         onError && onError(err);
     }
@@ -148,6 +163,31 @@ export function* getTasks(data) {
         onSuccess && onSuccess(tasks);
 
         yield put({ type: actionTypes.GET_TASKS_SUCCESS, payload: tasks });
+    } catch(err) {
+        onError && onError(err);
+    }
+}
+
+export function getTodayTasksCountAction(onSuccess) {
+    return {
+        type: actionTypes.GET_TODAY_TASKS_COUNT,
+        onSuccess
+    }
+}
+
+export function* getTodayTasksCount(data) {
+    const { onSuccess, onError } = data;
+    
+    try {
+        let dateToday = new Date();
+        dateToday = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDate());
+        dateToday = convertDateToUTC(dateToday);
+
+        const { data: res } = yield axios.get(`/api/tasks?count_only=true&scheduled_date=${dateToday.toISOString()}`);
+
+        onSuccess && onSuccess(res.data);
+
+        yield put({ type: actionTypes.GET_TODAY_TASKS_COUNT_FULFILLED, payload: res.data });
     } catch(err) {
         onError && onError(err);
     }

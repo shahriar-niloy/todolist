@@ -232,20 +232,23 @@ async function getTasks(req, res) {
     const successResponse = new Response.success();
     const errorResponse = new Response.error();
     const scheduled_date = req.query.scheduled_date;
+    const countOnly = (req.query.count_only || '').toLowerCase() === 'true';
     const userID = req.user.id;
-
+    
     const where = {};
 
     if (scheduled_date) where.scheduled_date = scheduled_date;
 
-    const [tasks, errors] = await TaskService.getTasks(userID, where);
+    const [result, errors] = await TaskService.getTasks(userID, where, countOnly);
 
     if (errors) {
         errors.forEach(e => errorResponse.addError(e.message, ''));
         return res.status(400).json(errorResponse);
     }
 
-    successResponse.data = tasks.map(task => TaskViewModels.task(task));
+    successResponse.data = countOnly 
+        ? result
+        : result.map(task => TaskViewModels.task(task));
 
     res.json(successResponse);
 }

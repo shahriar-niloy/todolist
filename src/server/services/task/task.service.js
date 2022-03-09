@@ -29,7 +29,7 @@ async function getTask(id) {
     return Return.service(task);
 }
 
-async function getTasks(user_id, conditions) {
+async function getTasks(user_id, conditions, countOnly) {
     if (!user_id) return Return.service(null, [{ message: 'Must provide required paramters.' }]);
 
     let where = {};
@@ -58,6 +58,16 @@ async function getTasks(user_id, conditions) {
         ...where, 
         ...conditions, 
         project_id: projectIDs 
+    };
+
+    if (countOnly) {
+        const res = await TaskModel.count({ 
+            where, 
+            group: ['is_completed'],
+            attributes: ['is_completed', [sequelize.fn('COUNT', 'is_completed'), 'count']]
+        });
+
+        return Return.service(res);
     };
 
     const tasks = await TaskModel.findAll({ where });

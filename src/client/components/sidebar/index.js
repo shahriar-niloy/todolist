@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import CalendarTodayIcon from '../ui/icons/calendar-today.icon';
 import SidebarItem from './sidebar-item.component';
 
-function Sidebar ({ projects, onProjectAddClick, MenuItemContextMenuTrigger, menuItemContextMenuID, currentPathname }) {
+function Sidebar ({ projects, todayTasksCount, onProjectAddClick, MenuItemContextMenuTrigger, menuItemContextMenuID, currentPathname }) {
     const isAProjectSelected = projects && projects.some(project => project.path === currentPathname);
     const [isProjectExpanded, setIsProjectExanded]= useState(isAProjectSelected);
 
@@ -19,6 +19,11 @@ function Sidebar ({ projects, onProjectAddClick, MenuItemContextMenuTrigger, men
                     <div className="align-y">
                         <CalendarTodayIcon className="me-2" fontSize="14" />
                         <span>Today</span>
+                        {todayTasksCount > 0 && 
+                        <div className='count-badge-container'>
+                            <span className='count-badge'>{todayTasksCount}</span>
+                        </div>        
+                        }
                     </div>
                 </SidebarItem>
             </div>
@@ -61,7 +66,8 @@ Sidebar.propTypes = {
     onProjectAddClick: PropTypes.func.isRequired,
     MenuItemContextMenuTrigger: PropTypes.func,
     menuItemContextMenuID: PropTypes.string,
-    currentPathname: PropTypes.string
+    currentPathname: PropTypes.string,
+    todayTasksCount: PropTypes.number
 }
 
 export default Sidebar;
