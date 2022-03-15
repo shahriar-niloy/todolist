@@ -156,8 +156,9 @@ function TaskFormContainer({
         isCompleteDisabled={isCompleteDisabled}
         isAttachmentReadOnly={isAttachmentReadOnly}
         transformDate={date => { 
+            if (!date) return '';
             date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-            return convertDateToUTC(date)
+            return convertDateToUTC(date);
         }}
         onSubmit={handleSubmit} 
         onTaskEdit={onTaskEdit}

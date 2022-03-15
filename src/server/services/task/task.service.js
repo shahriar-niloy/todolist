@@ -131,7 +131,7 @@ async function updateTask(data) {
     await task.update({ 
         name, 
         description, 
-        scheduled_at, 
+        scheduled_at: scheduled_at || null, 
         is_completed, 
         order, 
         priority,
