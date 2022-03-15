@@ -4,8 +4,8 @@ import CalendarTodayIcon from '../ui/icons/calendar-today.icon';
 import SidebarItem from './sidebar-item.component';
 
 function Sidebar ({ projects, todayTasksCount, onProjectAddClick, MenuItemContextMenuTrigger, menuItemContextMenuID, currentPathname }) {
-    const isAProjectSelected = projects && projects.some(project => project.path === currentPathname);
-    const [isProjectExpanded, setIsProjectExanded]= useState(isAProjectSelected);
+    const doesUserHasProjects = projects && projects.length;
+    const [isProjectExpanded, setIsProjectExanded] = useState(doesUserHasProjects);
 
     return (
         <div
