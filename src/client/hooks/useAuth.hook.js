@@ -1,4 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { showToast } from '../components/toast/toast.component';
+import ToastTypes from '../constants/toast.types';
 import { loginActionCreator, logoutActionCreator } from '../store/actions/authenticate.action';
 
 export default function useAuth() {
@@ -8,7 +10,14 @@ export default function useAuth() {
     const isLoggedIn = !!profile;
 
     const login = async (email, password) => {
-        dispatch(loginActionCreator(email, password));    
+        dispatch(
+            loginActionCreator(
+                email, 
+                password, 
+                null, 
+                error => showToast(ToastTypes.ERROR, error)
+            )
+        );    
     };
 
     const logout = () => dispatch(logoutActionCreator());

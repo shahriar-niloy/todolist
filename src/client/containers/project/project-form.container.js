@@ -7,6 +7,8 @@ import { createProjectAction, updateProjectAction } from '../../store/actions/pr
 import { getProjectAction } from '../../store/actions/project.action';
 import { getIconsAction } from '../../store/actions/icon.actions';
 import { ProjectSchema } from '../../../common';
+import { showToast } from '../../components/toast/toast.component';
+import ToastTypes from '../../constants/toast.types';
 
 function ProjectFormContainer({ onClose, projectID }) {
     const dispatch = useDispatch();
@@ -16,13 +18,24 @@ function ProjectFormContainer({ onClose, projectID }) {
 
     const createProject = (values) => {
         values.user_id = currentUser.id; 
-        dispatch(createProjectAction(values));
-        onClose && onClose();
+        dispatch(
+            createProjectAction(
+                values,
+                () => onClose && onClose(),
+                errors => showToast(ToastTypes.ERROR, errors.map(error => error.message))
+            )
+        );
     };
 
     const updateProject = (values) => {
-        dispatch(updateProjectAction(projectID, values));
-        onClose && onClose();
+        dispatch(
+            updateProjectAction(
+                projectID, 
+                values,
+                () => onClose && onClose(),
+                errors => showToast(ToastTypes.ERROR, errors.map(error => error.message))
+            )
+        );
     };
 
     useEffect(() => {

@@ -19,20 +19,28 @@ export function* getProject(data) {
     }
 }
 
-export function createProjectAction(data) {
+export function createProjectAction(data, onSuccess, onError) {
     return {
         type: actionTypes.CREATE_PROJECT,
-        payload:data
+        payload:data,
+        onSuccess, 
+        onError
     }
 }
 
 export function* createProject(data) {
+    const { onSuccess, onError, payload } = data;
+    
     try {
-        const project = yield axios.post('/api/projects', data.payload);
+        const project = yield axios.post('/api/projects', payload);
+        
+        onSuccess && onSuccess(project);
+
         yield put({ type: actionTypes.CREATE_PROJECT_SUCCESS , payload: project });
         yield put(getMyProfileAction());
     } catch(err) {
         console.log(err);
+        onError && onError(err.response.data.errors);
     }
 }
 
@@ -53,23 +61,30 @@ export function* deleteProject(data) {
     }
 }
 
-export function updateProjectAction(id, data) {
+export function updateProjectAction(id, data, onSuccess, onError) {
     return {
         type: actionTypes.UPDATE_PROJECT,
         payload: {
             id,
             body: data
-        }
+        },
+        onSuccess, 
+        onError
     }
 }
 
 export function* updateProject(data) {
+    const { onSuccess, onError, payload } = data;
     try {
-        const project = yield axios.put(`/api/projects/${data.payload.id}`, data.payload.body);
+        const project = yield axios.put(`/api/projects/${payload.id}`, payload.body);
+
+        onSuccess && onSuccess(project);
+
         yield put({ type: actionTypes.UPDATE_PROJECT_SUCCESS , payload: project });
         yield put(getMyProfileAction());
     } catch(err) {
         console.log(err);
+        onError && onError(err.response.data.errors);
     }
 }
 
