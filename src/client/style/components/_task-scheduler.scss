@@ -134,3 +134,9 @@
 .react-datepicker__day--today {
     color: $color-accent;
 }
+
+.react-datepicker__day--disabled {
+    opacity: 20% !important;
+    cursor: default !important;
+    pointer-events: none;
+}

@@ -22,6 +22,7 @@ function TaskScheduler({ date, hidePopover, onDateChange }) {
             selected={date && new Date(date) || null} 
             inline
             onChange={handleDateChange} 
+            minDate={new Date()}
         />
     </div>
 }
