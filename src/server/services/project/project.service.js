@@ -1,5 +1,5 @@
 const path = require('path');
-const { Op } = require('sequelize');
+const { Op, where, fn, col } = require('sequelize');
 const { performLogicalAnd } = require(path.join(process.cwd(), 'src/server/utility/misc'));
 const ProjectModel = require(path.join(process.cwd(), 'src/server/models/project.model'));
 const IconModel = require(path.join(process.cwd(), 'src/server/models/icon.model'));
@@ -49,7 +49,14 @@ async function getProject(id) {
 async function createProject({ name, user_id, iconID }) {
     if (!name || !user_id) return Return.service(null, [{ message: 'Must provide required parameters.' }]);
 
-    const projectWithSameName = await ProjectModel.findOne({ where: { name }});
+    const projectWithSameName = await ProjectModel.findOne({ 
+        where: { name: where(fn('LOWER', col('name')), name.toLowerCase()) },
+        include: [{ 
+            model: UserModel,
+            where: { id: user_id },
+            through: { where: { is_owner: true } }
+        }]
+    });
 
     if (projectWithSameName) return Return.service(null, [{ message: 'Project with the same name already exists.' }]);
 
@@ -71,7 +78,19 @@ async function updateProject(id, { name, iconID }) {
 
     if (!project) return Return.service(null, [{ message: 'Project does not exist.' }]);
 
-    const projectWithSameName = await ProjectModel.findOne({ where: { id: { [Op.ne]: id },name }});
+    const projectOwner = await project.getUsers({ through: { where: { is_owner: true } }});
+
+    const projectWithSameName = await ProjectModel.findOne({ 
+        where: { 
+            id: { [Op.ne]: id },
+            name: where(fn('LOWER', col('name')), name.toLowerCase())
+        },
+        include: [{
+            model: UserModel,
+            where: { id: projectOwner[0].id },
+            through: { where: { is_owner: true } }
+        }]
+    });
 
     if (projectWithSameName) return Return.service(null, [{ message: 'Project with the same name already exists.' }]);
 
