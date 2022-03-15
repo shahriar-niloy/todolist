@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux';
 import AppContextMenu from '../../components/context-menu';
 import contextMenuConstants from '../../constants/context-menu.constants';
 import { deleteProjectAction } from '../../store/actions/project.action';
+import DeleteConfirmation from '../../components/confirmation/delete-confirmation.component';
+import { useHistory } from 'react-router-dom';
 
 function ProjectItemContextMenu({ onProjectEditClick, onProjectShareClick, onProjectOpenClick }) {
     const defaultMenuItems = [
@@ -12,9 +14,11 @@ function ProjectItemContextMenu({ onProjectEditClick, onProjectShareClick, onPro
         { id: 'share', name: 'Share' },
         { id: 'delete', name: 'Delete' }
     ];
-
+    
+    const history = useHistory();
     const dispatch = useDispatch();
     const [menuItems, setMenuItems] = useState(defaultMenuItems);
+    const [projectToDelete, setProjectToDelete] = useState(null);
 
     const menuItemsAvailableForDisplay = menuItems.filter(mi => !mi.hidden);
 
@@ -52,18 +56,38 @@ function ProjectItemContextMenu({ onProjectEditClick, onProjectShareClick, onPro
         }
 
         if (itemID === 'delete') {
-            const response = confirm('Are you sure you want to delete this project?');
-            if (response) dispatch(deleteProjectAction(triggerID));
+            setProjectToDelete(triggerID);
         }
 
     };
 
-    return <AppContextMenu 
-        contextID={contextMenuConstants.SIDEBAR_PROJECT_CHILD_CONTEXT_MENU}
-        menuItems={menuItemsAvailableForDisplay} 
-        onClick={handleMenuItemClick}
-        onShow={handleOnMenuShow}
-    />
+    const handleProjectDelete = () => {
+        dispatch(
+            deleteProjectAction(
+                projectToDelete, 
+                () => {
+                    setProjectToDelete(null);
+                    history.replace('/');
+                }
+            )
+        );
+    };
+
+    return <>
+        <AppContextMenu 
+            contextID={contextMenuConstants.SIDEBAR_PROJECT_CHILD_CONTEXT_MENU}
+            menuItems={menuItemsAvailableForDisplay} 
+            onClick={handleMenuItemClick}
+            onShow={handleOnMenuShow}
+        />
+        <DeleteConfirmation 
+            isOpen={!!projectToDelete}
+            onDelete={handleProjectDelete}
+            onCancel={() => setProjectToDelete(null)}
+        >
+            Are you sure you want to delete this project?
+        </DeleteConfirmation>
+    </>
 }
 
 ProjectItemContextMenu.propTypes = {

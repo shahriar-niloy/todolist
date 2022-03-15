@@ -44,20 +44,27 @@ export function* createProject(data) {
     }
 }
 
-export function deleteProjectAction(id) {
+export function deleteProjectAction(id, onSuccess, onError) {
     return {
         type: actionTypes.DELETE_PROJECT,
-        payload: { id }
+        payload: { id },
+        onSuccess, 
+        onError
     }
 }
 
 export function* deleteProject(data) {
+    const { onSuccess, onError, payload } = data;
     try {
-        yield axios.delete(`/api/projects/${data.payload.id}`);
+        yield axios.delete(`/api/projects/${payload.id}`);
+        
+        onSuccess && onSuccess();
+
         yield put({ type: actionTypes.DELETE_PROJECT_SUCCESS });
         yield put(getMyProfileAction());
     } catch(err) {
         console.log(err);
+        onError && onError(err.response.data.errors);
     }
 }
 
