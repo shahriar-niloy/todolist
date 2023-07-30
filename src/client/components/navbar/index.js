@@ -4,15 +4,15 @@ import NotificationDropDownContainer from '../../containers/notification/notific
 import Popover from '../lib/popover';
 import NotificationIcon from '../ui/icons/notification.icon';
 
-export default function Navbar({ unseenNotificationCount, initials, notifications=[], onShowNotifications }) {    
+export default function Navbar({ unseenNotificationCount, initials, notifications=[], onShowNotifications }) {
     const [isNotificationDropDownOpen, setIsNotificationDropdownOpen] = useState(false);
-    
+
     const handleShowNotifications = () => {
         onShowNotifications(notifications.map(n => n.id));
     };
 
     return (
-        <nav class="navbar navbar-expand-lg dashboard_navbar">
+        <nav class="navbar navbar-expand-sm dashboard_navbar">
             <div class="container-fluid">
                 <button
                     class="navbar-toggler"
@@ -31,7 +31,7 @@ export default function Navbar({ unseenNotificationCount, initials, notification
                     </a>
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-xy">
                         <li className="nav-item me-2">
-                            <Popover 
+                            <Popover
                                 isOpen={isNotificationDropDownOpen}
                                 component={NotificationDropDownContainer}
                                 onShow={handleShowNotifications}
