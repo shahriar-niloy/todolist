@@ -59,7 +59,7 @@ async function addProject(req, res) {
         errorResponse.addError('User not found.', '');
         return res.status(400).json(errorResponse);
     }
-    
+
     await user.addProject(project_id, { through: { is_owner: is_owner || false } });
 
     successResponse.data = UserViewModels.profile(user);
@@ -79,6 +79,27 @@ async function getUserProjects(req, res) {
     }
 
     const [user] = await UserService.getUser(id);
+
+    if (!user) {
+        errorResponse.addError('User not found.', '');
+        return res.status(400).json(errorResponse);
+    }
+
+    successResponse.data = UserViewModels.projects(user);
+
+    res.json(successResponse);
+}
+
+async function getMyProjects(req, res) {
+    const successResponse = new Response.success();
+    const errorResponse = new Response.error();
+
+    if (!req?.user?.id) {
+        errorResponse.addError('Invalid parameters.', '');
+        return res.status(400).json(errorResponse);
+    }
+
+    const [user] = await UserService.getUser(req.user.id);
 
     if (!user) {
         errorResponse.addError('User not found.', '');
@@ -112,7 +133,7 @@ async function searchUsers(req, res) {
 async function getMyNotifications(req, res) {
     const successResponse = new Response.success();
     const errorResponse = new Response.error();
-    
+
     const userID = req.user.id;
     const page = req.query.page ? +req.query.page : 1;
     const limit = req.query.limit ? +req.query.limit : 10;
@@ -132,7 +153,7 @@ async function getMyNotifications(req, res) {
 
 async function markMyNotificationsAsRead(req, res) {
     const errorResponse = new Response.error();
-    
+
     const userID = req.user.id;
     const notificationIDs = req.body.notification_ids;
 
@@ -247,12 +268,12 @@ async function signup(req, res) {
     try {
         const successResponse = new Response.success();
         const errorResponse = new Response.error();
-        const { 
-            first_name, 
+        const {
+            first_name,
             last_name,
             email,
-            password, 
-            confirm_password 
+            password,
+            confirm_password
         } = req.body;
 
         if (password !== confirm_password) {
@@ -343,6 +364,7 @@ exports.getProfile = getProfile;
 exports.addProject = addProject;
 exports.getUserProjects = getUserProjects;
 exports.getMyProfile = getMyProfile;
+exports.getMyProjects = getMyProjects;
 exports.searchUsers = searchUsers;
 exports.getMyNotifications = getMyNotifications;
 exports.markMyNotificationsAsRead = markMyNotificationsAsRead;

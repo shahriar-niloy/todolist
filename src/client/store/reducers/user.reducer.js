@@ -10,6 +10,8 @@ export default function userReducer(state = initialState, action) {
             return { ...state, profile: action.payload.data };
         case actions.GET_MY_PROFILE_SUCCESS:
             return { ...state, profile: action.payload.data.data };
+        case actions.GET_MY_PROJECTS_SUCCESS:
+            return { ...state, profile: { ...state.profile, projects: action.payload.data.data } };
         case actions.UPDATE_MY_PROFILE_SUCCESS:
             return { ...state, profile: action.payload.data.data };
         case actions.UPDATE_MY_EMAIL_SUCCESS:
@@ -23,5 +25,5 @@ export default function userReducer(state = initialState, action) {
         default:
             break;
     }
-    return state; 
+    return state;
 }

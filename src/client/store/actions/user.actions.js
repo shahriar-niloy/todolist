@@ -17,6 +17,21 @@ export function* getMyProfile() {
     }
 }
 
+export function getMyProjectsAction() {
+    return {
+        type: actionTypes.GET_MY_PROJECTS
+    }
+}
+
+export function* getMyProjects() {
+    try {
+        const myProjects = yield axios.get(`/api/me/projects`);
+        yield put({ type: actionTypes.GET_MY_PROJECTS_SUCCESS, payload: myProjects });
+    } catch(err) {
+        console.log(err);
+    }
+}
+
 export function debouncedSearchUsersAction(query, notInProject, onSuccess) {
     return {
         type: actionTypes.DEBOUNCE_SEARCH_USERS,
@@ -30,7 +45,7 @@ export function* debouncedSearchUsers(data) {
 
 export function* searchUsers(data) {
     const queryParams = new URLSearchParams();
-    
+
     queryParams.append('query', data.payload.query);
     queryParams.append('not_in_project', data.payload.notInProject);
 
@@ -154,7 +169,7 @@ export function createUserAction(data, onSuccess) {
 export function* createUser(data) {
     try {
         const profile = yield axios.post('/api/users', data.payload);
-        
+
         data.onSuccess && data.onSuccess(profile);
 
         yield put({ type: actionTypes.CREATE_USER_SUCCESS , payload: profile });
@@ -174,7 +189,7 @@ export function forgotPasswordAction(data, onSuccess) {
 export function* forgotPassword(data) {
     try {
         const { data: res } = yield axios.post('/api/users/forgot-password', data.payload);
-        
+
         data.onSuccess && data.onSuccess(res);
 
         yield put({ type: actionTypes.FORGOT_PASSWORD_SUCCESS , payload: res });
@@ -194,7 +209,7 @@ export function resetPasswordAction(data, onSuccess) {
 export function* resetPassword(data) {
     try {
         const { data: res } = yield axios.post('/api/users/reset-password', data.payload);
-        
+
         data.onSuccess && data.onSuccess(res);
 
         yield put({ type: actionTypes.RESET_PASSWORD_SUCCESS , payload: res });
