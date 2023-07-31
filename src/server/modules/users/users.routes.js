@@ -25,4 +25,6 @@ module.exports = function(app) {
 
     app.get('/api/users/:id/projects', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.getUserProjects))
         .post('/api/users/:id/projects', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.addProject));
+
+    app.get('/api/me/projects', AUTHENTICATION_MIDDLEWARE, controllerFunctionWrapper(controller.getMyProjects));
 }

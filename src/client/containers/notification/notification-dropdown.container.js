@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import NotificationDropDown from '../../components/app/notification-drop-down.component';
-import { getMyNotificationsAction, markMyNotificationsAsReadAction } from '../../store/actions/user.actions';
+import { getMyNotificationsAction, markMyNotificationsAsReadAction, getMyProjectsAction } from '../../store/actions/user.actions';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll.hook';
 import { Types } from '../../constants/notification.constants';
 
@@ -14,13 +14,13 @@ function NotificationDropDownContainer({ hidePopover }) {
     const recentNotifications = useSelector(state => state.notification.recentNotifications.data);
     const recentNotificationsMetadata = useSelector(state => state.notification.recentNotifications.metadata);
     const isNotificationLoading = useSelector(state => state.notification.recentNotifications.isPending);
-    
+
     const { lastElementRef } = useInfiniteScroll(
         () => {
             const { page, hasMore } = recentNotificationsMetadata;
             if (hasMore) dispatch(getMyNotificationsAction(page + 1, true));
-        }, 
-        isNotificationLoading, 
+        },
+        isNotificationLoading,
         rootRef
     );
 
@@ -33,6 +33,7 @@ function NotificationDropDownContainer({ hidePopover }) {
 
         if (notification.type === Types.PROJECT_SHARED) {
             history.push('/projects/' + projectID);
+            dispatch(getMyProjectsAction());
         }
 
         if (notification.type === Types.TASK_COMPLETED) {
@@ -46,12 +47,12 @@ function NotificationDropDownContainer({ hidePopover }) {
         hidePopover();
     }
 
-    return <NotificationDropDown 
+    return <NotificationDropDown
         lastElementRef={lastElementRef}
         isLoading={isNotificationLoading}
         rootRef={rootRef}
         notifications={recentNotifications}
-        onMarkAsRead={handleMarkAsRead} 
+        onMarkAsRead={handleMarkAsRead}
         onNotificationClick={handleNotificationClick}
     />
 }
